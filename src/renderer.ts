@@ -11,7 +11,7 @@
  *
  * https://electronjs.org/docs/tutorial/security
  *
- * To enable Node.js integration in this file, open up `main_electron.ts` and enable the `nodeIntegration`
+ * To enable Node.js integration in this file, open up `mainElectron.ts` and enable the `nodeIntegration`
  * flag:
  *
  * ```
@@ -27,7 +27,5 @@
  */
 
 import './index.css';
+import './mainReact';
 
-console.log('👋 This message is being logged by "renderer.ts", included via Vite');
-// Add this to the end of the existing file
-import './main_react';
