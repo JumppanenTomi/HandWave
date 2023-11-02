@@ -1,0 +1,22 @@
+.formSection{
+    padding: 8px;
+}
+
+.formContainer{
+    background-color: #eaeaea;
+    padding: 16px;
+    border-radius: 5px;
+    margin: 8px;
+}
+
+.alignCenter{
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    vertical-align: center;
+}
+
+.smallMarginHorizontal{
+    margin-left: 8px;
+    margin-right: 8px;
+}

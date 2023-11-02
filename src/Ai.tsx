@@ -5,7 +5,7 @@ import {GestureData} from "./types/GestureData";
 let gestureRecognizer: GestureRecognizer
 let webcamRunning = false
 
-export default function Ai(video: HTMLVideoElement, canvasElement: HTMLCanvasElement, setGestureData: Dispatch<SetStateAction<GestureData[]>>, setBtnText: Dispatch<SetStateAction<string>>, setError: Dispatch<SetStateAction<string | undefined>>) {
+export default function Ai(video: HTMLVideoElement, canvasElement: HTMLCanvasElement, setGestureData: Dispatch<SetStateAction<GestureData[]>>, setError: Dispatch<SetStateAction<string | undefined>>) {
 
     const createGestureRecognizer = async () => {
         const vision = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm")
@@ -17,6 +17,7 @@ export default function Ai(video: HTMLVideoElement, canvasElement: HTMLCanvasEle
             numHands: 2,
             runningMode: "VIDEO"
         })
+        return
     }
 
     const canvasCtx = canvasElement.getContext("2d")
@@ -26,13 +27,7 @@ export default function Ai(video: HTMLVideoElement, canvasElement: HTMLCanvasEle
             setError("Wait for recognizer to load")
             return
         }
-        if (webcamRunning === true) {
-            webcamRunning = false
-            setBtnText("Start analyzing")
-        } else {
-            webcamRunning = true
-            setBtnText("Stop analyzing")
-        }
+        webcamRunning = true
         navigator.mediaDevices.getUserMedia({video: true}).then((stream) => video.srcObject = stream)
     };
 
@@ -57,13 +52,9 @@ export default function Ai(video: HTMLVideoElement, canvasElement: HTMLCanvasEle
                     GestureRecognizer.HAND_CONNECTIONS,
                     {
                         color: "#009dff",
-                        lineWidth: 2
+                        lineWidth: 1
                     }
                 )
-                drawingUtils.drawLandmarks(landmarks, {
-                    color: "#68ff00",
-                    lineWidth: 1
-                })
             }
         }
         canvasCtx.restore();
