@@ -1,8 +1,9 @@
 import {MutableRefObject, useEffect, useRef, useState} from 'react';
+import {ipcRenderer } from 'electron';
+
 import {GestureData} from "./types/GestureData";
 import Ai from "./Ai";
 import {Button} from "react-bootstrap";
-import { Key, keyboard } from '@nut-tree/nut-js';
 
 const constraints = {
     video: true
@@ -41,10 +42,9 @@ function App() {
 
     useEffect(() => {
         if (gestureData && gestureData[0].category == "paper") {
-            (async () => {
-                await keyboard.pressKey(Key.Space)
-                await keyboard.releaseKey(Key.Space)
-            })();
+            window.myapi.pressKey('Space');
+            window.myapi.releaseKey('Space')
+
          
         }
     }, [gestureData]);
