@@ -55,10 +55,18 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
-ipcMain.handle('pressKey', async () => {
+ipcMain.handle('pressKey', async (event, data) => {
+  console.log('press before', data);
+  if (data.kind === 'space') {
     await keyboard.pressKey(Key.Space);
+  }
+  console.log('press after', data);
 });
 
-ipcMain.handle('releaseKey', async () => {
+ipcMain.handle('releaseKey', async (event, data) => {
+  console.log('release before', data);
+  if (data.kind === 'space') {
     await keyboard.releaseKey(Key.Space);
+  }
+  console.log('release after', data);
 });
