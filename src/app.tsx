@@ -2,6 +2,8 @@ import {MutableRefObject, useEffect, useRef, useState} from 'react';
 import {GestureData} from "./types/GestureData";
 import Ai from "./Ai";
 import {Button} from "react-bootstrap";
+import SourceDropdown from './SourceDropdown';
+
 
 const constraints = {
     video: true
@@ -40,19 +42,27 @@ function App() {
 
     return (
         <>
+                <video
+                    id=""
+                    src=""
+                    autoPlay
+                    playsInline
+                    style={{position: "absolute", top: 0, left: 0, width: "50%", height: "100%"}}
+                />
             <div style={{position: "relative"}}>
                 <video
                     autoPlay
                     playsInline
                     ref={webCamRef}
                     style={{width: "50%", height: "50%", objectFit: "cover"}}
-                />
+                    />
                 <canvas
                     ref={canvasRef}
                     style={{position: "absolute", top: 0, left: 0, width: "50%", height: "100%", zIndex: 1}}
                 />
             </div>
-            <Button ref={buttonRef} onClick={ai && ai.enableCam}>{btnText}</Button>
+                <Button ref={buttonRef} onClick={ai && ai.enableCam}>{btnText}</Button>
+                <SourceDropdown/>
             {gestureData &&
                 gestureData.map((item) => (
                     <p>{item.category} {item.confidence.toFixed(2)} {item.hand}</p>

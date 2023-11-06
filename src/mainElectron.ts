@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, desktopCapturer } from 'electron'
 import path from 'path';
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -11,7 +11,7 @@ const createWindow = () => {
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.resolve(app.getAppPath(), 'src/preload.ts'),
     },
   });
 
@@ -21,6 +21,13 @@ const createWindow = () => {
   } else {
     mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
   }
+
+  desktopCapturer.getSources({ types: ['window', 'screen'] }).then(async sources => {
+    for (const source of sources) {
+        mainWindow.webContents.send('SET_SOURCE', source.id)
+        console.log("SOURCES", source.name);
+    }
+  })
 };
 
 // This method will be called when Electron has finished
