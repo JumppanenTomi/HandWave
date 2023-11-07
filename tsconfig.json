@@ -13,5 +13,10 @@
     "moduleResolution": "node",
     "resolveJsonModule": true
   },
+  "paths": {
+    "@/*": [
+      "src/*"
+    ]
+  },
   "include": ["src"]
 }
