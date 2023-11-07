@@ -9,7 +9,7 @@ export default function InputsToJson(inputs: InputTypeInput[]): { [key: string]:
     const result: { [key: string]: string } = {};
 
     for (const input of inputs) {
-        if (input.value.length !== 0){
+        if (input.value && input.value.length !== 0){
             result[input.key] = input.value;
         }
     }

@@ -7,14 +7,14 @@ type InputProps = {
 }
 
 export default function useSelectInput(title: string, key: string, items: string[], props?: InputProps) {
-    const [value, setValue] = useState<string>();
+    const [value, setValue] = useState<string>(props?.initial || items[0]);
 
     const validate = (v: string) => {
         setValue(v);
     }
 
     const clear = () => {
-        setValue("")
+        setValue(undefined)
     }
 
     const element = (

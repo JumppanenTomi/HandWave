@@ -1,17 +1,11 @@
-import {Button, Col, Container, Row, Table} from "react-bootstrap";
-import {faInfo, faPenToSquare, faTrash} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import AddAction from "./addAction";
+import {Col, Container, Row, Table} from "react-bootstrap";
+import ModAction from "./modAction";
+import DeleteAction from "./deleteAction";
+import {useState} from "react";
+import {TriggerData} from "./types/TriggerData";
 
 export default function Actions() {
-    const dummyData = [
-        {
-            id: 0,
-            name: "dummy1",
-            trigger: "thumbsup",
-            actions: "keyboard_arrow_up"
-        }
-    ]
+    const [actionsData, setActionsData] = useState<TriggerData[]>()
 
     return (
         <Container>
@@ -20,7 +14,7 @@ export default function Actions() {
                     <h2>Actions</h2>
                 </Col>
                 <Col xs={"auto"}>
-                    <AddAction/>
+                    <ModAction button idToUse={0} setToArray={setActionsData}/>
                 </Col>
             </Row>
             <Table>
@@ -33,15 +27,13 @@ export default function Actions() {
                 </tr>
                 </thead>
                 <tbody>
-                {dummyData.map((e, i) => (
+                {actionsData && actionsData.map((e, i) => (
                     <tr key={i}>
                         <td>{e.name}</td>
                         <td>{e.trigger}</td>
-                        <td>{e.actions}</td>
                         <td>
-                            <FontAwesomeIcon icon={faTrash}/>
-                            <FontAwesomeIcon icon={faInfo}/>
-                            <FontAwesomeIcon icon={faPenToSquare}/>
+                            <DeleteAction action_id={1}/>
+                            <ModAction button={false} idToUse={0} setToArray={setActionsData}/>
                         </td>
                     </tr>
                 ))}

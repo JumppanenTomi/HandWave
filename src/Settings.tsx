@@ -1,6 +1,6 @@
-import {Button, Col, Container, Nav, Navbar, Row} from "react-bootstrap";
+import {Container, Nav, Navbar} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faChevronLeft, faGear} from "@fortawesome/free-solid-svg-icons";
+import {faChevronLeft} from "@fortawesome/free-solid-svg-icons";
 import {Link} from "react-router-dom";
 import React from "react";
 import Actions from "./Actions";
@@ -11,8 +11,7 @@ export default function Settings() {
             <Navbar expand={"lg"}>
                 <Container>
                     <Nav>
-                        <Navbar.Text><h1><Link to={"/"}><FontAwesomeIcon icon={faChevronLeft} size={"xs"}
-                                                                         color={"#000"}/></Link> Settings</h1>
+                        <Navbar.Text><h1><Link to={"/"}><FontAwesomeIcon icon={faChevronLeft} size={"xs"} color={"#000"}/></Link> Settings</h1>
                         </Navbar.Text>
                     </Nav>
                 </Container>
