@@ -1,6 +1,6 @@
 import { app, BrowserWindow, shell, ipcMain } from 'electron'
+import { release } from "os";
 import path from 'path';
-import { join } from "path";
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -23,17 +23,26 @@ const getSource = (mainWindow: BrowserWindow) => {
     });
 };
 
-const preload = join(__dirname, "src/preload.js");
 
+let mainWindow: BrowserWindow | null = null;
 const createWindow = () => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
       preload: path.resolve(app.getAppPath(), 'src/preload.ts'),
+      nodeIntegration: true,
+      contextIsolation: false,
     },
   });
+
+
+    // Test actively push message to the Electron-Renderer
+    mainWindow.webContents.on("did-finish-load", () => {
+      getSource(mainWindow);
+      mainWindow?.webContents.send("main-process-message", new Date().toLocaleString());
+    });
 
   // and load the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {

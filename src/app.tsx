@@ -43,67 +43,68 @@ function App() {
         }
     }, [error]);
 
-    /*useEffect(() => {
-        ipcRenderer.on("GET_SOURCES", (e, content) => {
-          console.log("Have Event", { e, content });
-          setSources(content);
-        });
-        if (videoRef.current) {
-          ipcRenderer.on("SET_SOURCE", async (event, sourceId) => {
-            console.log(event);
-            try {
-              (navigator.mediaDevices as any)
-                .getUserMedia({
-                  audio: false,
-                  video: {
-                    mandatory: {
-                      chromeMediaSource: "desktop",
-                      chromeMediaSourceId: sourceId,
-                      minWidth: 1280,
-                      maxWidth: 1280,
-                      minHeight: 720,
-                      maxHeight: 720,
-                    },
-                  },
-                })
-                .then((stream: MediaStream) => {
-                  handleStream(stream, videoRef.current!);
-                });
-            } catch (e) {
-              handleError(e);
-            }
-          });
-        }
-      }, [videoRef.current]);
-    
-      function handleStream(stream: MediaStream, video: HTMLVideoElement) {
-        video.srcObject = stream;
-        video.onloadedmetadata = (e) => video.play();
-      }
-    
-      function handleError(e: any) {
-        console.log(e);
-      }
-    
-      const changeSource = (source: Electron.DesktopCapturerSource) => {
-        (navigator.mediaDevices as any)
-                .getUserMedia({
-            audio: false,
-            video: {
-              mandatory: {
-                chromeMediaSource: "desktop",
-                chromeMediaSourceId: source.id,
-                minWidth: 1280,
-                maxWidth: 1280,
-                minHeight: 720,
-                maxHeight: 720,
+    /*
+    useEffect(() => {
+    ipcRenderer.on("GET_SOURCES", (e, content) => {
+      console.log("Have Event", { e, content });
+      setSources(content);
+    });
+    if (videoRef.current) {
+      ipcRenderer.on("SET_SOURCE", async (event, sourceId) => {
+        console.log(event);
+        try {
+          (navigator.mediaDevices as any)
+            .getUserMedia({
+              audio: false,
+              video: {
+                mandatory: {
+                  chromeMediaSource: "desktop",
+                  chromeMediaSourceId: sourceId,
+                  minWidth: 1280,
+                  maxWidth: 1280,
+                  minHeight: 720,
+                  maxHeight: 720,
+                },
               },
-            },
-          })
-          .then((stream: MediaStream) => {
-            handleStream(stream, videoRef.current!);
-          });
-      };*/
+            })
+            .then((stream: MediaStream) => {
+              handleStream(stream, videoRef.current!);
+            });
+        } catch (e) {
+          handleError(e);
+        }
+      });
+    }
+  }, [videoRef.current]);
+
+  function handleStream(stream: MediaStream, video: HTMLVideoElement) {
+    video.srcObject = stream;
+    video.onloadedmetadata = (e) => video.play();
+  }
+
+  function handleError(e: any) {
+    console.log(e);
+  }
+
+  const changeSource = (source: Electron.DesktopCapturerSource) => {
+    (navigator.mediaDevices as any)
+            .getUserMedia({
+        audio: false,
+        video: {
+          mandatory: {
+            chromeMediaSource: "desktop",
+            chromeMediaSourceId: source.id,
+            minWidth: 1280,
+            maxWidth: 1280,
+            minHeight: 720,
+            maxHeight: 720,
+          },
+        },
+      })
+      .then((stream: MediaStream) => {
+        handleStream(stream, videoRef.current!);
+      });
+  };*/
 
 
 
@@ -134,6 +135,11 @@ function App() {
                 <video id="video" ref={videoRef}></video>
                 <div className="App">
       <video ref={videoRef} autoPlay></video>
+      {sources.map((source) => {
+        return (
+          <button onClick={() => changeSource(source)}>{source.name}</button>
+        );
+      })}
     </div>
         </>
     );
