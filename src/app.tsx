@@ -43,9 +43,7 @@ function App() {
     useEffect(() => {
         if (gestureData && gestureData[0].category == "paper") {
             window.myapi.pressKey('space');
-            window.myapi.releaseKey('space')
-
-         
+            window.myapi.releaseKey('space')         
         }
     }, [gestureData]);
 

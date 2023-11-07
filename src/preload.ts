@@ -5,8 +5,7 @@ const { contextBridge, ipcRenderer } = require("electron")
 contextBridge.exposeInMainWorld('myapi', {
     pressKey: async (data) => await ipcRenderer.invoke('pressKey', data),
     releaseKey: async (data) => await ipcRenderer.invoke('releaseKey', data)
-}
-)
+})
 
 
 
