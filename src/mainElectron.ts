@@ -1,9 +1,29 @@
-import { app, BrowserWindow, desktopCapturer } from 'electron'
+import { app, BrowserWindow, shell, ipcMain } from 'electron'
 import path from 'path';
+import { join } from "path";
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
+
+const { desktopCapturer } = require("electron");
+
+const getSource = (mainWindow: BrowserWindow) => {
+  desktopCapturer
+    .getSources({ types: ["window", "screen"] })
+    .then(async (sources) => {
+      console.log(sources);
+      mainWindow.webContents.send("GET_SOURCES", sources);
+      for (const source of sources) {
+        if (source.name === "Screen 1") {
+          mainWindow.webContents.send("SET_SOURCE", source.id);
+          return;
+        }
+      }
+    });
+};
+
+const preload = join(__dirname, "src/preload.js");
 
 const createWindow = () => {
   // Create the browser window.
