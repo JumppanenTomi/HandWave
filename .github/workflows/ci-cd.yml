@@ -1,32 +1,28 @@
-version: 2.1
+name: Electron CI
+
+on:
+  push:
+    branches:
+      - feature/ci-cd-integration 
+
 jobs:
   build:
-    working_directory: ~/repo
-    docker:
-      - image: circleci/node:11
+    runs-on: ubuntu-latest
+
     steps:
-      - checkout
-      - run:
-          name: Update NPM
-          command: "sudo npm install -g npm"
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-      - run:
-          name: Install Dependencies
-          command: npm install
-      - run:
-          name: Install dpkg and fakeroot
-          command: |
-            sudo apt-get update -y
-            sudo apt-get install -y dpkg fakeroot
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
-      - run:
-          name: Generate Builds
-          command: npm run make
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18.17.1 
 
-      - store_artifacts:
-          path: ~/repo/out/make
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Electron app
+        run: npm run build
+
+      - name: Run tests
+        run: npm test
