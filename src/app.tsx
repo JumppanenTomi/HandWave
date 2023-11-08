@@ -1,5 +1,4 @@
 import {MutableRefObject, useEffect, useRef, useState} from 'react';
-import {ipcRenderer } from 'electron';
 
 import {GestureData} from "./types/GestureData";
 import Ai from "./Ai";
@@ -42,8 +41,12 @@ function App() {
 
     useEffect(() => {
         if (gestureData && gestureData[0].category == "paper") {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
             window.myapi.pressKey('space');
-            window.myapi.releaseKey('space')         
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
+            window.myapi.releaseKey('space')
         }
     }, [gestureData]);
 
