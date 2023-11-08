@@ -1,10 +1,11 @@
-import {Col, Container, Row, Button, Navbar, Nav} from "react-bootstrap";
+import {Col, Container, Row, Button, Navbar, Nav, DropdownButton, Dropdown} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faGear} from "@fortawesome/free-solid-svg-icons";
 import React, {MutableRefObject, useEffect, useRef, useState} from "react";
 import {GestureData} from "./types/GestureData";
 import Ai from "./Ai";
 import {Link} from "react-router-dom";
+import { ipcRenderer } from "electron";
 
 const constraints = {
     video: true
@@ -15,9 +16,12 @@ function Home() {
 
     const canvasRef: MutableRefObject<HTMLCanvasElement | null> = useRef(null);
 
+    const videoRef = useRef<HTMLVideoElement | null>(null);
+
     const [gestureData, setGestureData] = useState<GestureData[]>()
     const [error, setError] = useState<string | undefined>()
     const [ai, setAi] = useState<any>()
+    const [sources, setSources] = useState<Electron.DesktopCapturerSource[]>([]);
 
     useEffect(() => {
         if (canvasRef !== null) {
@@ -37,21 +41,94 @@ function Home() {
     }, [ai]);
 
     useEffect(() => {
-        if (gestureData && gestureData[0].category == "paper") {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            //@ts-ignore
-            window.myapi.pressKey('space')
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            //@ts-ignore
-            window.myapi.releaseKey('space')
-        }
-    }, [gestureData]);
+        const handleGestureData = () => {
+          if (gestureData && gestureData[0].category === 'paper') {
+            ipcRenderer.invoke('pressKey', 'space')
+              .then(() => ipcRenderer.invoke('releaseKey', 'space'))
+              .catch(error => console.error(error));
+          }
+        };
+    
+        handleGestureData();
+      }, [gestureData]);
 
     useEffect(() => {
         if (error) {
             alert(error)
         }
     }, [error]);
+
+    useEffect(() => {
+        ipcRenderer.on("GET_SOURCES", (e, content) => {
+          setSources(content);
+        });
+        if (videoRef.current) {
+          ipcRenderer.on("SET_SOURCE", async (event, sourceId) => {
+            console.log(event);
+            try {
+              (navigator.mediaDevices as any)
+                .getUserMedia({
+                  audio: false,
+                  video: {
+                    mandatory: {
+                      chromeMediaSource: "desktop",
+                      chromeMediaSourceId: sourceId,
+                      minWidth: 1280,
+                      maxWidth: 1280,
+                      minHeight: 720,
+                      maxHeight: 720,
+                    },
+                  },
+                })
+                .then((stream: MediaStream) => {
+                    handleStream(stream, videoRef.current!);                    
+                });
+            } catch (e) {
+              handleError(e);
+            }
+          });
+        }
+      }, [videoRef.current]);
+
+      useEffect(() => {
+        ipcRenderer.on("GET_SOURCES", (e, content) => {
+          setSources(content);
+          console.log("Sources set:", content);
+        });
+    return () => {
+        ipcRenderer.removeAllListeners("GET_SOURCES");
+      };
+    }, []);
+    
+      function handleStream(stream: MediaStream, video: HTMLVideoElement) {
+        video.srcObject = stream;
+        video.onloadedmetadata = (e) => video.play();
+      }
+    
+      function handleError(e: any) {
+        console.log(e);
+      }
+    
+      const changeSource = (source: Electron.DesktopCapturerSource) => {
+        console.log("Selected source:", source);
+        (navigator.mediaDevices as any)
+                .getUserMedia({
+            audio: false,
+            video: {
+              mandatory: {
+                chromeMediaSource: "desktop",
+                chromeMediaSourceId: source.id,
+                minWidth: 1280,
+                maxWidth: 1280,
+                minHeight: 720,
+                maxHeight: 720,
+              },
+            },
+          })
+          .then((stream: MediaStream) => {
+            handleStream(stream, videoRef.current!);
+          });
+      };
 
     return (
         <Container>
@@ -92,6 +169,12 @@ function Home() {
                     }
                 </Col>
                 <Col>
+      <video ref={videoRef} autoPlay style={{width: "100%", objectFit: "cover", borderRadius: 5}}/>
+      <DropdownButton title="Select Desktop Source" id="dropdown-basic-button">
+          {sources.map((source, index) => (
+            <Dropdown.Item key={index} onClick={() => changeSource(source)}>{source.name}</Dropdown.Item>
+          ))}
+        </DropdownButton>
                 </Col>
             </Row>
         </Container>

@@ -1,32 +1,32 @@
 .formSection{
-    padding: 8px;
+  padding: 8px;
 }
 
 .formContainer{
-    background-color: #eaeaea;
-    padding: 16px;
-    border-radius: 5px;
-    margin: 8px;
+  background-color: #eaeaea;
+  padding: 16px;
+  border-radius: 5px;
+  margin: 8px;
 }
 
 .alignCenter{
-    align-content: center;
-    align-items: center;
-    text-align: center;
-    vertical-align: center;
+  align-content: center;
+  align-items: center;
+  text-align: center;
+  vertical-align: center;
 }
 
 .smallMarginHorizontal{
-    margin-left: 8px;
-    margin-right: 8px;
+  margin-left: 8px;
+  margin-right: 8px;
 }
 
 .iconLink{
-    cursor: pointer;
-    margin: 5px;
-    transition: .3s;
+  cursor: pointer;
+  margin: 5px;
+  transition: .3s;
 }
 
 .iconLink:hover{
-    scale: 1.15;
+  scale: 1.15;
 }

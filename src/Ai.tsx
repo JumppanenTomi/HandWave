@@ -11,7 +11,7 @@ export default function Ai(video: HTMLVideoElement, canvasElement: HTMLCanvasEle
         const vision = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm")
         gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
             baseOptions: {
-                modelAssetPath: "src/models/gesture_recognizer.task",
+                modelAssetPath: "src/models/rps.task",
                 delegate: "GPU"
             },
             numHands: 2,
