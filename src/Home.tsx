@@ -12,7 +12,6 @@ const constraints = {
 
 function Home() {
     const webCamRef: MutableRefObject<HTMLVideoElement | null> = useRef(null);
-    const screenCaptureRef: MutableRefObject<HTMLVideoElement | null> = useRef(null);
 
     const canvasRef: MutableRefObject<HTMLCanvasElement | null> = useRef(null);
 
@@ -36,6 +35,17 @@ function Home() {
             });
         }
     }, [ai]);
+
+    useEffect(() => {
+        if (gestureData && gestureData[0].category == "paper") {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
+            window.myapi.pressKey('space')
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
+            window.myapi.releaseKey('space')
+        }
+    }, [gestureData]);
 
     useEffect(() => {
         if (error) {
