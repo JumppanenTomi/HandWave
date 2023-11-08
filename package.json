@@ -12,6 +12,23 @@
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts,.tsx ."
   },
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "linux"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        }
+      ]
+    }
+  },
   "keywords": [],
   "author": "Tomi Jumppanen",
   "license": "",
@@ -58,10 +75,5 @@
     "react-router-dom": "^6.18.0",
     "robotjs": "^0.6.0",
     "socket.io": "^4.7.2"
-  },
-  "browser": {
-    "fs": false,
-    "path": false,
-    "os": false
   }
 }
