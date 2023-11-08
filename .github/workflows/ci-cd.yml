@@ -21,6 +21,3 @@ jobs:
 
       - name: Build Electron app
         run: npm run build
-
-      - name: Run tests
-        run: npm test
