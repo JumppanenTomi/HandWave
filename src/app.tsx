@@ -1,4 +1,6 @@
 import {MutableRefObject, useEffect, useRef, useState} from 'react';
+import {ipcRenderer } from 'electron';
+
 import {GestureData} from "./types/GestureData";
 import Ai from "./Ai";
 import {Button} from "react-bootstrap";
@@ -37,6 +39,13 @@ function App() {
             alert(error)
         }
     }, [error]);
+
+    useEffect(() => {
+        if (gestureData && gestureData[0].category == "paper") {
+            window.myapi.pressKey('space');
+            window.myapi.releaseKey('space')         
+        }
+    }, [gestureData]);
 
     return (
         <>
