@@ -7,4 +7,7 @@ export default defineConfig({
     browserField: false,
     mainFields: ['module', 'jsnext:main', 'jsnext'],
   },
+  ssr: {
+    noExternal: ["better-sqlite3", "@types/better-sqlite3"]
+  }
 });

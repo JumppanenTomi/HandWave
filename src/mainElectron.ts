@@ -1,5 +1,8 @@
 import { app, BrowserWindow } from 'electron'
 import path from 'path';
+import SQLite from 'better-sqlite3';
+const db = SQLite('datatest.db')
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -21,6 +24,35 @@ const createWindow = () => {
   } else {
     mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
   }
+
+  mainWindow.webContents.once('dom-ready', () => {
+		const tableName = 'cats'
+		const createTable = db.prepare(
+			`CREATE TABLE IF NOT EXISTS ${tableName} (name CHAR(20), age INT)`
+		)
+		createTable.run()
+
+		const insert = db.prepare(
+			`INSERT INTO ${tableName} (name, age) VALUES (@name, @age)`
+		)
+		const insertMany = db.transaction((cats: any) => {
+			for (const cat of cats) insert.run(cat)
+		})
+
+		const selectAllCats = db.prepare(`SELECT * FROM ${tableName}`)
+		const rows = selectAllCats.all()
+
+		if (!rows.length)
+			insertMany([
+				{ name: 'Joey', age: 2 },
+				{ name: 'Sally', age: 4 },
+				{ name: 'Junior', age: 1 },
+			])
+
+		rows.forEach((row: any) => {
+			console.log(row)
+		})
+	})
 };
 
 // This method will be called when Electron has finished
