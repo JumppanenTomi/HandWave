@@ -59,8 +59,16 @@ function Home() {
     }, [error]);
 
     useEffect(() => {
+        ipcRenderer.send('REQUEST_SOURCES');
         ipcRenderer.on("GET_SOURCES", (e, content) => {
+            console.log("ASDASDASDASDASDASD");
           setSources(content);
+        // Check if there are available sources
+        if (content.length > 0) {
+            // Set the first source to the video element
+            const firstSource = content[0];
+            changeSource(firstSource);
+        }
         });
         if (videoRef.current) {
           ipcRenderer.on("SET_SOURCE", async (event, sourceId) => {
@@ -90,16 +98,6 @@ function Home() {
         }
       }, [videoRef.current]);
 
-      useEffect(() => {
-        ipcRenderer.on("GET_SOURCES", (e, content) => {
-          setSources(content);
-          console.log("Sources set:", content);
-        });
-    return () => {
-        ipcRenderer.removeAllListeners("GET_SOURCES");
-      };
-    }, []);
-    
       function handleStream(stream: MediaStream, video: HTMLVideoElement) {
         video.srcObject = stream;
         video.onloadedmetadata = (e) => video.play();

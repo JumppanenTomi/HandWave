@@ -148,3 +148,7 @@ ipcMain.handle('releaseKey', async (event, data) => {
  await keyboard.releaseKey(Key.Space);
 });
 
+ipcMain.on('REQUEST_SOURCES', () => {
+  getSource(win);
+});
+
