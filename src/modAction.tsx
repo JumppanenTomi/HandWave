@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useMemo, useState} from "react";
 import {
     Accordion,
     Button,
@@ -17,6 +17,7 @@ import useStringInput from "./useInputs/useStringInput";
 import useSelectInput from "./useInputs/useSelectInput";
 import {TriggerData} from "./types/TriggerData";
 import {ActionType} from "./types/ActionType";
+import arrayIndexAsValue from "./sharedUtilities/arrayIndexAsValue";
 
 //TODO: after database is done remove setTo array and finish save function
 export default function ModAction({button, idToUse, setToArray}: {
@@ -25,6 +26,11 @@ export default function ModAction({button, idToUse, setToArray}: {
     setToArray: React.SetStateAction<any>
 }) {
     const [show, setShow] = useState(false);
+    const keys = useMemo(async () => {
+        window.myapi.getKeyboardKeys().then((result) => {
+            return result
+        })
+    }, []);
 
     const initialData: TriggerData = {
         id: idToUse,
@@ -45,11 +51,11 @@ export default function ModAction({button, idToUse, setToArray}: {
         unit: "ms",
     });
 
-    const keysInput = useSelectInput("Key to press", "key", keyData.map((e) => e.key));
+    const keysInput = useSelectInput("Key to press", "key", keys));
 
     const gestureInput = useSelectInput("Triggering gesture", "trigger", gestureData);
 
-    const actionTypeInput = useSelectInput("Action type", "type", ["keyboard", "delay"]);
+    const actionTypeInput = useSelectInput("Action type", "type", [{name: "keyboard", value: "keyboard"}, {name: "delay", value: "delay"}]);
 
     const addAction = () => {
         const parentJson = InputsToJson([nameInput, gestureInput]) as unknown as TriggerData;

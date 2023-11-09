@@ -12,5 +12,8 @@
     "plugin:import/electron",
     "plugin:import/typescript"
   ],
+  "rules": {
+        "@typescript-eslint/no-var-requires": 0
+  },
   "parser": "@typescript-eslint/parser"
 }

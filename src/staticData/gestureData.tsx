@@ -1,5 +1,5 @@
 export const gestureData = [
-    "thumbsup",
-    "thumbsDown",
-    "stop"
+    {name: "thumbsup", value: "thumbsup"},
+    {name: "thumbsup", value: "thumbsup"},
+    {name: "thumbsup", value: "thumbsup"},
 ]

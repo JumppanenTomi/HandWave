@@ -6,8 +6,13 @@ type InputProps = {
     required?: boolean,
 }
 
-export default function useSelectInput(title: string, key: string, items: string[], props?: InputProps) {
-    const [value, setValue] = useState<string>(props?.initial || items[0]);
+export type SelectInputType = {
+    name: string | number,
+    value: any
+}
+
+export default function useSelectInput(title: string, key: string, items: SelectInputType[], props?: InputProps) {
+    const [value, setValue] = useState<string>(props?.initial || items[0].value);
 
     const validate = (v: string) => {
         setValue(v);
@@ -22,7 +27,7 @@ export default function useSelectInput(title: string, key: string, items: string
             <InputGroup.Text>{title}</InputGroup.Text>
             <Form.Select value={value} onChange={(e) => validate(e.target.value)}>
                 {items.map((e, i) => (
-                    <option key={i} value={e}>{e}</option>
+                    <option key={i} value={e.value}>{e.name}</option>
                 ))}
             </Form.Select>
         </>

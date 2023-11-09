@@ -5,6 +5,7 @@ import React, {MutableRefObject, useEffect, useRef, useState} from "react";
 import {GestureData} from "./types/GestureData";
 import Ai from "./Ai";
 import {Link} from "react-router-dom";
+import arrayIndexAsValue from "./sharedUtilities/arrayIndexAsValue";
 
 const constraints = {
     video: true

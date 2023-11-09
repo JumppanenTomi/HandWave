@@ -1,6 +1,6 @@
 import {ActionType} from "./ActionType";
 
-export type TriggerData = {
+export interface TriggerData {
   id: number;
   name: string;
   trigger: string;
