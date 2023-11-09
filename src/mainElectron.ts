@@ -61,9 +61,10 @@ ipcMain.handle('getKeyboardKeys', async () => {
 });
 
 ipcMain.handle('pressKey', async (event, data) => {
-    await keyboard.pressKey(Key.Space);
+    console.log(data)
+    await keyboard.pressKey(parseInt(data));
 });
 
 ipcMain.handle('releaseKey', async (event, data) => {
-    await keyboard.releaseKey(Key.Space);
+    await keyboard.releaseKey(parseInt(data));
 });

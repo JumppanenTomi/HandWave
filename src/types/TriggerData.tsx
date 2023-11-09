@@ -5,4 +5,4 @@ export interface TriggerData {
   name: string;
   trigger: string;
   actions: ActionType[];
-};
+}

@@ -1,5 +1,5 @@
-export type GestureData = {
+export interface GestureData {
     category: string,
     confidence: number,
     hand: "left" | "right"
-} | undefined
+}

@@ -1,17 +1,23 @@
 import {Col, Container, Row, Button, Navbar, Nav} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faGear} from "@fortawesome/free-solid-svg-icons";
-import React, {MutableRefObject, useEffect, useRef, useState} from "react";
+import React, {MutableRefObject, useContext, useEffect, useRef, useState} from "react";
 import {GestureData} from "./types/GestureData";
 import Ai from "./Ai";
 import {Link} from "react-router-dom";
 import arrayIndexAsValue from "./sharedUtilities/arrayIndexAsValue";
+import {ActionsDataContext} from "./App";
+import {timeout} from "@nut-tree/nut-js/dist/lib/util/timeout.function";
 
 const constraints = {
     video: true
 };
 
+let disabled
+
 function Home() {
+    const {actionData} = useContext(ActionsDataContext)
+
     const webCamRef: MutableRefObject<HTMLVideoElement | null> = useRef(null);
 
     const canvasRef: MutableRefObject<HTMLCanvasElement | null> = useRef(null);
@@ -38,15 +44,28 @@ function Home() {
     }, [ai]);
 
     useEffect(() => {
-        if (gestureData && gestureData[0].category == "paper") {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            //@ts-ignore
-            window.myapi.pressKey('space')
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            //@ts-ignore
-            window.myapi.releaseKey('space')
+        if (gestureData && actionData) {
+            const foundAction = actionData.find((entry) => entry.trigger === gestureData[0].category);
+            if (foundAction && disabled !== foundAction.trigger) {
+                disabled = foundAction.trigger
+                foundAction.actions.forEach((action) => {
+                    switch (action.type) {
+                        case "keyboard":
+                            window.myapi.pressKey(action.key);
+                            window.myapi.releaseKey(action.key);
+                            break;
+                        case "delay":
+                            setTimeout(() => {
+                                console.log("time ended")
+                            }, action.delay);
+                            break;
+                        default:
+                            break;
+                    }
+                });
+            }
         }
-    }, [gestureData]);
+    }, [gestureData, actionData]);
 
     useEffect(() => {
         if (error) {
