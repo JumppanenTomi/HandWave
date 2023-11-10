@@ -21,3 +21,5 @@ jobs:
 
       - name: Build Electron app
         run: npm run make 
+      - name: Test Setting element
+        run: npm run test
