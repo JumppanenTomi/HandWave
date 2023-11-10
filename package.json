@@ -6,13 +6,7 @@
   "main": ".vite/build/mainElectron.js",
   "jest": {
     "testEnvironment": "jsdom",
-    "roots": [
-      "<rootDir>/src",
-      "<rootDir>/out/presentation-tool-with-hand-gestures-linux-x64/resources/app"
-    ],
-    "testPathIgnorePatterns": [
-      "<rootDir>/out/"
-    ]
+    
   },
   "scripts": {
     "start": "electron-forge start",
