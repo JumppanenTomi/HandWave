@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useContext, useEffect, useMemo, useState} from "react";
 import {
     Accordion,
     Button,
@@ -10,33 +10,56 @@ import {
 } from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPenSquare, faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
-import {keyData} from "./staticData/keyData";
 import {gestureData} from "./staticData/gestureData";
 import InputsToJson from "./sharedUtilities/inputsToJson";
 import useStringInput from "./useInputs/useStringInput";
 import useSelectInput from "./useInputs/useSelectInput";
 import {TriggerData} from "./types/TriggerData";
 import {ActionType} from "./types/ActionType";
+import arrayIndexAsValue from "./sharedUtilities/arrayIndexAsValue";
+import {ActionsDataContext} from "./App";
+import {ipcRenderer} from "electron";
 
 //TODO: after database is done remove setTo array and finish save function
-export default function ModAction({button, idToUse, setToArray}: {
+export default function EditAction({button, setToArray, actionToModify}: {
     button: boolean,
-    idToUse: number,
-    setToArray: React.SetStateAction<any>
+    setToArray: React.SetStateAction<any>,
+    actionToModify: TriggerData | null
 }) {
+    const {actionData, setActionData} = useContext(ActionsDataContext)
+
     const [show, setShow] = useState(false);
 
+    const [keys, setKeys] = useState<any>([{name: "undefined", value: 0}]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const result = await ipcRenderer.invoke('getKeyboardKeys')
+            setKeys(arrayIndexAsValue(result));
+        };
+
+        fetchData();
+    }, [show]);
+
+    useEffect(() => {
+        console.log(keys)
+    }, [keys]);
+
+
     const initialData: TriggerData = {
-        id: idToUse,
+        id: actionData ? actionData.length + 1 : 1,
         name: "",
         trigger: "",
         actions: [],
     };
 
-    const [data, setData] = useState<TriggerData>(initialData);
+    const [data, setData] = useState<TriggerData>(actionToModify ? actionToModify : initialData);
+
+    const keysInput = useSelectInput("Select key", "key", keys)
 
     const nameInput = useStringInput("Action name", "name", {
         required: true,
+        initial: actionToModify ? actionToModify.name : "",
         placeholder: "For example, Change slide",
     });
 
@@ -45,11 +68,12 @@ export default function ModAction({button, idToUse, setToArray}: {
         unit: "ms",
     });
 
-    const keysInput = useSelectInput("Key to press", "key", keyData.map((e) => e.key));
+    const gestureInput = useSelectInput("Triggering gesture", "trigger", gestureData)
 
-    const gestureInput = useSelectInput("Triggering gesture", "trigger", gestureData);
-
-    const actionTypeInput = useSelectInput("Action type", "type", ["keyboard", "delay"]);
+    const actionTypeInput = useSelectInput("Action type", "type", [{
+        name: "keyboard",
+        value: "keyboard"
+    }, {name: "delay", value: "delay"}]);
 
     const addAction = () => {
         const parentJson = InputsToJson([nameInput, gestureInput]) as unknown as TriggerData;
@@ -71,12 +95,27 @@ export default function ModAction({button, idToUse, setToArray}: {
         }));
     };
 
-    const close = () => setShow(false);
+    const clearInputs = () => {
+        keysInput.clear()
+        nameInput.clear()
+        delayInput.clear()
+        gestureInput.clear()
+        actionTypeInput.clear()
+        setData(actionToModify ? actionToModify : initialData)
+    }
+
+    const close = () => {
+        setShow(false)
+        clearInputs()
+    };
     const open = () => setShow(true);
 
     const save = () => {
+        if (!nameInput.value) {
+            return;
+        }
         setToArray((prevArray: any) => {
-            if (prevArray){
+            if (prevArray) {
                 return [...prevArray, data]
             } else {
                 return [data]
@@ -107,7 +146,7 @@ export default function ModAction({button, idToUse, setToArray}: {
                     </Container>
                     <Accordion>
                         {data.actions.map((e, i) => (
-                            <Accordion.Item key={i} eventKey={String(e.id)}>
+                            <Accordion.Item key={i} eventKey={String(i)}>
                                 <Accordion.Header>
                                     <div className={"alignCenter"}>
                                         {e.type} {e.delay && e.delay} {e.key && e.key}
