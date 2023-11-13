@@ -61,7 +61,6 @@ function Home() {
     useEffect(() => {
         ipcRenderer.send('REQUEST_SOURCES');
         ipcRenderer.on("GET_SOURCES", (e, content) => {
-            console.log("ASDASDASDASDASDASD");
           setSources(content);
         // Check if there are available sources
         if (content.length > 0) {
