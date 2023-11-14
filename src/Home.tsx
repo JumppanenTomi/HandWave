@@ -7,12 +7,11 @@ import Ai from "./Ai";
 import {Link} from "react-router-dom";
 import {ipcRenderer} from "electron";
 import {ActionsDataContext} from "@/App";
+import ExecuteActions from "@/executeActions";
 
 const constraints = {
     video: true
 };
-
-let disabled: string
 
 function Home() {
     const webCamRef: MutableRefObject<HTMLVideoElement | null> = useRef(null);
@@ -21,6 +20,7 @@ function Home() {
 
     const videoRef = useRef<HTMLVideoElement | null>(null);
 
+    const [lastExecutionTime, setLastExecutionTime] = useState<number | null>(null);
     const {actionData, setActionData} = useContext(ActionsDataContext)
     const [gestureData, setGestureData] = useState<GestureData[]>()
     const [error, setError] = useState<string | undefined>()
@@ -47,30 +47,13 @@ function Home() {
     }, [ai]);
 
     useEffect(() => {
-        if (gestureData && actionData) {
-            const foundAction = actionData.find((entry) => entry.trigger === gestureData[0].category);
-            if (foundAction) {
-                const processActions = async () => {
-                    for (const action of foundAction.actions) {
-                        switch (action.type) {
-                            case "keyboard":
-                                await ipcRenderer.invoke('getKeyboardKeys', action.key);
-                                // Add logic to handle the result if needed
-                                break;
-                            case "delay":
-                                setTimeout(() => {
-                                    console.log("time ended");
-                                }, action.delay);
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                };
-                processActions();
-            }
+        const currentTime = Date.now();
+        if (gestureData && actionData && (!lastExecutionTime || currentTime - lastExecutionTime >= 3000)) {
+            // Execute the actions only if the last execution was more than 3 seconds ago
+            ExecuteActions(gestureData, actionData);
+            setLastExecutionTime(currentTime);
         }
-    }, [gestureData, actionData]);
+    }, [gestureData, actionData, lastExecutionTime]);
 
     useEffect(() => {
         if (error) {
@@ -81,7 +64,6 @@ function Home() {
     useEffect(() => {
         ipcRenderer.send('REQUEST_SOURCES');
         ipcRenderer.on("GET_SOURCES", (e, content) => {
-            console.log("ASDASDASDASDASDASD");
             setSources(content);
             // Check if there are available sources
             if (content.length > 0) {
@@ -107,7 +89,7 @@ function Home() {
                                     maxHeight: 720,
                                 },
                             },
-                        })
+                        } as MediaStreamConstraints)
                         .then((stream: MediaStream) => {
                             handleStream(stream, videoRef.current!);
                         });
@@ -142,7 +124,7 @@ function Home() {
                         maxHeight: 720,
                     },
                 },
-            })
+            } as MediaStreamConstraints)
             .then((stream: MediaStream) => {
                 handleStream(stream, videoRef.current!);
             });

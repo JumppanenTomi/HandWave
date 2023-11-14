@@ -19,32 +19,24 @@ import {ActionType} from "./types/ActionType";
 import arrayIndexAsValue from "./sharedUtilities/arrayIndexAsValue";
 import {ActionsDataContext} from "./App";
 import {ipcRenderer} from "electron";
+import useNumberInput from "@/useInputs/useNumberInput";
 
-//TODO: after database is done remove setTo array and finish save function
 export default function EditAction({button, setToArray, actionToModify}: {
     button: boolean,
     setToArray: React.SetStateAction<any>,
     actionToModify: TriggerData | null
 }) {
-    const {actionData, setActionData} = useContext(ActionsDataContext)
-
+    const {actionData, setActionData} = useContext(ActionsDataContext);
     const [show, setShow] = useState(false);
-
     const [keys, setKeys] = useState<any>([{name: "undefined", value: 0}]);
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await ipcRenderer.invoke('getKeyboardKeys')
+            const result = await ipcRenderer.invoke('getKeyboardKeys');
             setKeys(arrayIndexAsValue(result));
         };
-
         fetchData();
     }, [show]);
-
-    useEffect(() => {
-        console.log(keys)
-    }, [keys]);
-
 
     const initialData: TriggerData = {
         id: actionData ? actionData.length + 1 : 1,
@@ -53,78 +45,97 @@ export default function EditAction({button, setToArray, actionToModify}: {
         actions: [],
     };
 
-    const [data, setData] = useState<TriggerData>(actionToModify ? actionToModify : initialData);
+    const [newAction, setNewAction] = useState<TriggerData>(actionToModify ? actionToModify : initialData);
 
-    const keysInput = useSelectInput("Select key", "key", keys)
+    const mainInputs = [
+        useStringInput("Action name", "name", {
+            required: true,
+            placeholder: "For example, Change slide",
+        }),
+        useSelectInput("Triggering gesture", "trigger", gestureData),
+    ];
 
-    const nameInput = useStringInput("Action name", "name", {
-        required: true,
-        initial: actionToModify ? actionToModify.name : "",
-        placeholder: "For example, Change slide",
-    });
+    const actionTypeInput = useSelectInput("Action type", "type", [
+        {name: "keyboard", value: "keyboard"},
+        {name: "delay", value: "delay"},
+    ]);
 
-    const delayInput = useStringInput("Delay", "delay", {
-        placeholder: "Delay in milliseconds",
-        unit: "ms",
-    });
+    const keyboardInputs = [
+        useSelectInput("Press or Release", "press", [
+            {name: "Press", value: true},
+            {name: "Release", value: false},
+        ]),
+        useSelectInput("Select key", "key", keys),
+    ];
 
-    const gestureInput = useSelectInput("Triggering gesture", "trigger", gestureData)
+    const delayInputs = [
+        useNumberInput("Delay", "delay", {
+            placeholder: "Delay in milliseconds",
+            unit: "ms",
+        }),
+    ];
 
-    const actionTypeInput = useSelectInput("Action type", "type", [{
-        name: "keyboard",
-        value: "keyboard"
-    }, {name: "delay", value: "delay"}]);
+    const clearAll = () => {
+        mainInputs.forEach((e) => e.clear());
+        actionTypeInput.clear();
+        keyboardInputs.forEach((e) => e.clear());
+        delayInputs.forEach((e) => e.clear());
+        setNewAction(actionToModify ? actionToModify : initialData);
+    };
+
+    const validateInputs = () => {
+        const isValidMainInputs = mainInputs.every((input) => input.isValid);
+        const isValidActionType = actionTypeInput.isValid;
+
+        const isValidKeyboardInputs = keyboardInputs.every((input) => input.isValid);
+        const isValidDelayInputs = delayInputs.every((input) => input.isValid);
+
+        return isValidMainInputs && isValidActionType && (actionTypeInput.value === "keyboard" ? isValidKeyboardInputs : isValidDelayInputs);
+    };
 
     const addAction = () => {
-        const parentJson = InputsToJson([nameInput, gestureInput]) as unknown as TriggerData;
-        const actionsJson = InputsToJson([delayInput, keysInput, actionTypeInput]) as unknown as ActionType;
-        switch (actionsJson.type) {
-            case "keyboard":
-                actionsJson.delay = undefined
-                break
-            case "delay":
-                actionsJson.key = undefined
-                break
-            default:
-                break
+        if (!validateInputs()) {
+            // Validation failed, prevent adding action
+            return;
         }
-        setData((prevData) => ({
-            ...prevData,
+
+        const parentJson = InputsToJson(mainInputs) as unknown as TriggerData;
+        const actionsJson = InputsToJson(actionTypeInput.value === "keyboard" ? keyboardInputs : delayInputs) as unknown as ActionType;
+        actionsJson.type = actionTypeInput.value as "keyboard" | "delay"
+
+        setNewAction((prevState) => ({
+            ...prevState,
             ...parentJson,
-            actions: [...prevData.actions, actionsJson],
+            actions: [...prevState.actions, actionsJson],
         }));
     };
 
-    const clearInputs = () => {
-        keysInput.clear()
-        nameInput.clear()
-        delayInput.clear()
-        gestureInput.clear()
-        actionTypeInput.clear()
-        setData(actionToModify ? actionToModify : initialData)
-    }
-
     const close = () => {
-        setShow(false)
-        clearInputs()
+        clearAll();
+        setShow(false);
     };
     const open = () => setShow(true);
 
     const save = () => {
-        if (!nameInput.value) {
+        if (!validateInputs()) {
+            // Validation failed, prevent saving
             return;
         }
+        const parentJson = InputsToJson(mainInputs) as unknown as TriggerData;
+        setNewAction((prevState) => ({
+            ...prevState,
+            ...parentJson
+        }));
         setToArray((prevArray: any) => {
             if (prevArray) {
-                return [...prevArray, data]
+                return [...prevArray, newAction];
             } else {
-                return [data]
+                return [newAction];
             }
-        })
-        //TODO: add logic
-        console.log(data)
-        close()
-    }
+        });
+        console.log(newAction)
+        close();
+    };
 
     return (
         <>
@@ -141,15 +152,16 @@ export default function EditAction({button, setToArray, actionToModify}: {
                 </Modal.Header>
                 <Modal.Body>
                     <Container className={"formContainer"}>
-                        <InputGroup className={"formSection"}>{nameInput.element}</InputGroup>
-                        <InputGroup className={"formSection"}>{gestureInput.element}</InputGroup>
+                        {mainInputs.map((e) => (
+                            <InputGroup className={"formSection"}>{e.element}</InputGroup>
+                        ))}
                     </Container>
                     <Accordion>
-                        {data.actions.map((e, i) => (
+                        {newAction.actions.map((e, i) => (
                             <Accordion.Item key={i} eventKey={String(i)}>
                                 <Accordion.Header>
                                     <div className={"alignCenter"}>
-                                        {e.type} {e.delay && e.delay} {e.key && e.key}
+                                        {e.type} {e.delay && e.delay} {e.key && e.key} {e.press}
                                     </div>
                                 </Accordion.Header>
                                 <Accordion.Body>
@@ -168,8 +180,14 @@ export default function EditAction({button, setToArray, actionToModify}: {
                         <h4>Add new</h4>
                         <InputGroup className={"formSection"}>
                             {actionTypeInput.element}
-                            {actionTypeInput.value === "delay" && delayInput.element}
-                            {actionTypeInput.value === "keyboard" && keysInput.element}
+                        </InputGroup>
+                        <InputGroup className={"formSection"}>
+                            {actionTypeInput.value === "delay" && delayInputs.map((e, i) => {
+                                return e.element;
+                            })}
+                            {actionTypeInput.value === "keyboard" && keyboardInputs.map((e, i) => {
+                                return e.element;
+                            })}
                         </InputGroup>
                         <Button onClick={addAction}>
                             <FontAwesomeIcon icon={faPlus}/> Add Group
