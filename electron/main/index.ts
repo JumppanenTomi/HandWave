@@ -1,5 +1,4 @@
-import { app, BrowserWindow, shell, ipcMain, Menu, dialog } from 'electron'
-import { writeFile } from 'fs/promises'
+import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron'
 import { release } from 'node:os'
 import { join } from 'node:path'
 import { update } from './update'
@@ -153,120 +152,44 @@ ipcMain.on('REQUEST_SOURCES', () => {
   getSource(win);
 });
 
+const chunks: Buffer[] = [];
+
 ipcMain.on("stream-chunk-received", (event, chunk) => {
-  // Handle received chunk data here
-  // For example, save it to a file or perform processing
-
-  // Saving to a file (example using Node.js fs module)
-  const fs = require("fs");
-  const filePaath = "recordedFile.webm";
-  const { filePath } = dialog.showSaveDialog(win, {
-    buttonLabel: "Save video",
-    defaultPath: "recording-" + Date.now() + ".webm",
-  })
-
-  // Convert Uint8Array chunk to Buffer (assuming chunk is Uint8Array)
   const bufferData = Buffer.from(chunk);
-
-  // Append chunk data to the file or save it as a new file
-  fs.appendFile(filePath, bufferData, (err) => {
-      if (err) {
-          console.error("Error saving chunk:", err);
-          // Handle error scenario
-      } else {
-          console.log("Chunk saved successfully");
-          // Perform any necessary actions after saving the chunk
-      }
-  });
+  chunks.push(bufferData);
 });
-
-const { dialog } = require("electron");
 
 ipcMain.on("recording-stopped", async (event) => {
-    try {
-        const result = await dialog.showSaveDialog({
-            title: "Save Recorded File",
-            defaultPath: "recordedFile.webm",
-            buttonLabel: "Save",
-            filters: [{ name: "WebM Files", extensions: ["webm"] }],
-        });
+  const fs = require("fs");
+  const { dialog, BrowserWindow } = require('electron');
+  const win = BrowserWindow.getFocusedWindow();
 
-        if (!result.canceled && result.filePath) {
-            // File save path selected by the user
-            const filePath = result.filePath;
+  try {
+    const result = await dialog.showSaveDialog(win, {
+      title: "Save Recorded File",
+      defaultPath: `recording-${Date.now()}.webm`,
+      buttonLabel: "Save",
+      filters: [{ name: "WebM Files", extensions: ["webm"] }],
+    });
 
-            // Perform actions with the filePath, such as saving recorded data to this file
-            // Example: Save recorded data to the selected file
-            // Example: Move or process the recorded file as needed
-            event.sender.send("file-selection-success", filePath);
+    if (!result.canceled && result.filePath) {
+      const filePath = result.filePath;
+      const bufferData = Buffer.concat(chunks);
+
+      fs.writeFile(filePath, bufferData, (err) => {
+        if (err) {
+          console.error("Error saving recording:", err);
+          event.sender.send("file-selection-error", err.message || "An error occurred during file selection.");
         } else {
-            event.sender.send("file-selection-cancelled");
+          console.log("Recording saved successfully");
+          event.sender.send("file-selection-success", filePath);
         }
-    } catch (error) {
-        console.error("Error during file selection:", error);
-        event.sender.send("file-selection-error", error.message || "An error occurred during file selection.");
+      });
+    } else {
+      event.sender.send("file-selection-cancelled");
     }
-});
-
-
-
-
-ipcMain.on("show-select-file", async () => {
-
-	/**
-	 * Open file selection dialog
-	 */
-	const { filePath } = await dialog.showSaveDialog(win, {
-		buttonLabel: "Save video",
-		defaultPath: "vid-" + Date.now() + ".webm",
-	});
-
-	if (filePath) {
-		try {
-			const buffer = Buffer.concat(win);
-
-			/**
-			 * Write file to disk, propably worth to show a save dialog if it worked
-			 */
-			await writeFile(filePath, buffer);
-
-			await dialog.showMessageBox(win, {
-				type: "info",
-				buttons: ["Ok"],
-				defaultId: 1,
-				title: "Success",
-				message: "Video has been saved under: " + filePath,
-			});
-
-			/**
-			 * Clear the chunks after the file has been saved, thus a new video can be recorder
-			 * without the data of the previous
-			 */
-			const mediaChunks = [];
-		} catch (error) {
-			/**
-			 * The file could not be saved for various reasons
-			 */
-			console.log(error);
-			await dialog.showMessageBox(win, {
-				type: "error",
-				buttons: ["Ok"],
-				defaultId: 1,
-				title: "Error",
-				message: "Video could not been saved under: " + filePath,
-				detail: e.message,
-			});
-		}
-	} else {
-		/**
-		 * No file path has been selected
-		 */
-		await dialog.showMessageBox(win, {
-			type: "error",
-			buttons: ["Ok"],
-			defaultId: 1,
-			title: "Error",
-			message: "No path to a file was provided",
-		});
-	}
+  } catch (error) {
+    console.error("Error during file selection:", error);
+    event.sender.send("file-selection-error", error.message || "An error occurred during file selection.");
+  }
 });
