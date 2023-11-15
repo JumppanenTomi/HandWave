@@ -2,7 +2,17 @@ import { app, BrowserWindow, shell, ipcMain } from "electron";
 import { release } from "node:os";
 import { join } from "node:path";
 import { update } from "./update";
-const { Key, keyboard, mouse, left } = require("@nut-tree/nut-js");
+import { useState } from "react";
+import { IndexFinger } from "@/types/IndexFinger";
+const {
+  Key,
+  keyboard,
+  mouse,
+  left,
+  right,
+  up,
+  down,
+} = require("@nut-tree/nut-js");
 
 // The built directory structure
 //
@@ -148,8 +158,18 @@ ipcMain.handle("releaseKey", async (event, data) => {
   await keyboard.releaseKey(Key.Space);
 });
 
-ipcMain.handle("moveMouse", async (event, data) => {
-  await mouse.move(left(10));
+ipcMain.handle("moveMouse", async (event, data, currentPosition) => {
+  if (data[0].x < currentPosition[0].x) {
+    await mouse.move(right(10));
+  } else if (data[0].x > currentPosition[0].x) {
+    await mouse.move(left(10));
+  }
+
+  if (data[0].y < currentPosition[0].y) {
+    await mouse.move(up(10));
+  } else if (data[0].y > currentPosition[0].y) {
+    await mouse.move(down(10));
+  }
 });
 
 ipcMain.on("REQUEST_SOURCES", () => {
