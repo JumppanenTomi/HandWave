@@ -140,6 +140,10 @@ ipcMain.handle('open-win', (_, arg) => {
   }
 })
 
+ipcMain.handle('getKeyboardKeys', async () => {
+    return Key
+});
+
 ipcMain.handle('pressKey', async (event, data) => {
   await keyboard.pressKey(Key.Space);
 });

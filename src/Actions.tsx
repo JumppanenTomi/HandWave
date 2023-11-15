@@ -1,11 +1,11 @@
 import {Col, Container, Row, Table} from "react-bootstrap";
-import ModAction from "./modAction";
 import DeleteAction from "./deleteAction";
-import {useState} from "react";
-import {TriggerData} from "./types/TriggerData";
+import {useContext} from "react";
+import {ActionsDataContext} from "./App";
+import EditAction from "./editAction";
 
 export default function Actions() {
-    const [actionsData, setActionsData] = useState<TriggerData[]>()
+    const {actionData, setActionData} = useContext(ActionsDataContext)
 
     return (
         <Container>
@@ -14,7 +14,7 @@ export default function Actions() {
                     <h2>Actions</h2>
                 </Col>
                 <Col xs={"auto"}>
-                    <ModAction button idToUse={0} setToArray={setActionsData}/>
+                    <EditAction button setToArray={setActionData} actionToModify={null}/>
                 </Col>
             </Row>
             <Table>
@@ -27,13 +27,13 @@ export default function Actions() {
                 </tr>
                 </thead>
                 <tbody>
-                {actionsData && actionsData.map((e, i) => (
+                {actionData && actionData.map((e, i) => (
                     <tr key={i}>
                         <td>{e.name}</td>
                         <td>{e.trigger}</td>
                         <td>
                             <DeleteAction action_id={1}/>
-                            <ModAction button={false} idToUse={0} setToArray={setActionsData}/>
+                            <EditAction button={false} setToArray={setActionData} actionToModify={e}/>
                         </td>
                     </tr>
                 ))}
