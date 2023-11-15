@@ -2,8 +2,6 @@ import {MutableRefObject, useEffect, useRef, useState} from 'react';
 import {GestureData} from "./types/GestureData";
 import Ai from "./Ai";
 import {Button} from "react-bootstrap";
-import { getAllUsers } from "./modelapi/user";
-import {NewUser} from "./modelapi/user"
 
 const constraints = {
     video: true
@@ -18,7 +16,6 @@ function App() {
     const [btnText, setBtnText] = useState<string>("Enable webcam")
     const [error, setError] = useState<string | undefined>()
     const [ai, setAi] = useState<any>()
-    const [users, setUsers] = useState<NewUser[]>()
 
     useEffect(() => {
         if (canvasRef !== null) {
@@ -41,16 +38,6 @@ function App() {
         }
     }, [error]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const test = await getAllUsers()
-            setUsers(test)
-        }
-        
-        fetchData()
-    }, [])
-
-
     return (
         <>
             <div style={{position: "relative"}}>
@@ -70,11 +57,6 @@ function App() {
                 gestureData.map((item) => (
                     <p>{item.category} {item.confidence.toFixed(2)} {item.hand}</p>
                 ))
-            }
-
-            {users.map((user) => (
-                <p>{user.firstName}</p>
-            ))
             }
         </>
     );
