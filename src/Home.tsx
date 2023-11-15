@@ -23,6 +23,9 @@ function Home() {
     const [ai, setAi] = useState<any>()
     const [sources, setSources] = useState<Electron.DesktopCapturerSource[]>([]);
 
+    let mediaRecorder: MediaRecorder | null = null;
+
+
     useEffect(() => {
         if (canvasRef !== null) {
             setAi(Ai(webCamRef.current, canvasRef.current, setGestureData, setError))
@@ -88,7 +91,7 @@ function Home() {
                   },
                 })
                 .then((stream: MediaStream) => {
-                    handleStream(stream, videoRef.current!);                    
+                    handleStream(stream, videoRef.current!);
                 });
             } catch (e) {
               handleError(e);
@@ -126,6 +129,44 @@ function Home() {
             handleStream(stream, videoRef.current!);
           });
       };
+
+const startRecording = () => {
+  if (videoRef.current && videoRef.current.srcObject instanceof MediaStream) {
+      const stream = videoRef.current.srcObject as MediaStream;
+
+      const options = {
+          mimeType: "video/webm; codecs=vp9",
+      };
+
+      mediaRecorder = new MediaRecorder(stream, options);
+
+      mediaRecorder.ondataavailable = handleStreamDataAvailable;
+      mediaRecorder.onstop = handleStreamEnded;
+
+      mediaRecorder.start();
+  }
+};
+
+
+const stopRecording = () => {
+  if (mediaRecorder && mediaRecorder.state !== "inactive") {
+      mediaRecorder.stop();
+      console.log("Works");
+  }
+};
+
+const handleStreamDataAvailable = async (e: BlobEvent) => {
+  const data = await e.data.arrayBuffer();
+  // Send the chunk data to the main process
+  ipcRenderer.send("stream-chunk-received", new Uint8Array(data));
+};
+
+const handleStreamEnded = async () => {
+  // Notify the main process that the recording has stopped
+  ipcRenderer.send("recording-stopped");
+  // Perform any additional tasks after recording stops
+  // For example, showing file selection or handling data
+};
 
     return (
         <Container>
@@ -167,11 +208,17 @@ function Home() {
                 </Col>
                 <Col>
       <video ref={videoRef} autoPlay style={{width: "100%", objectFit: "cover", borderRadius: 5}}/>
-      <DropdownButton title="Select Desktop Source" id="dropdown-basic-button">
+      <Col>
+      <DropdownButton style={{marginRight: 0}} title="Select Desktop Source" id="dropdown-basic-button">
           {sources.map((source, index) => (
             <Dropdown.Item key={index} onClick={() => changeSource(source)}>{source.name}</Dropdown.Item>
-          ))}
+            ))}
         </DropdownButton>
+        <Col style={{marginTop: 16}}>
+        <Button variant="success" size="sm" style={{marginRight: 16}} onClick={startRecording}>Start Recording</Button>
+        <Button variant="danger" size="sm" onClick={stopRecording}>Stop Recording</Button>
+        </Col>
+            </Col>
                 </Col>
             </Row>
         </Container>
