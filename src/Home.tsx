@@ -15,6 +15,8 @@ import { GestureData } from "./types/GestureData";
 import Ai from "./Ai";
 import { Link } from "react-router-dom";
 import { ipcRenderer } from "electron";
+import os from 'os';
+
 
 const constraints = {
   video: true,
@@ -34,6 +36,7 @@ function Home() {
   const [recording, setRecording] = useState(false);
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const isMac = os.platform() === 'darwin';
 
   useEffect(() => {
     if (canvasRef !== null) {
@@ -90,19 +93,23 @@ function Home() {
         console.log(event);
         try {
           (navigator.mediaDevices as any)
-            .getUserMedia({
-              audio: false,
-              video: {
-                mandatory: {
-                  chromeMediaSource: "desktop",
-                  chromeMediaSourceId: sourceId,
-                  minWidth: 1920,
-                  maxWidth: 1920,
-                  minHeight: 1080,
-                  maxHeight: 1080,
-                },
-              },
-            })
+      .getUserMedia({
+        audio: isMac ? false : {
+          mandatory: {
+            chromeMediaSource: 'desktop'
+          }
+        },
+        video: {
+          mandatory: {
+            chromeMediaSource: "desktop",
+            chromeMediaSourceId: sourceId,
+            minWidth: 1920,
+            maxWidth: 1920,
+            minHeight: 1080,
+            maxHeight: 1080,
+          },
+        },
+      })
             .then((stream: MediaStream) => {
               handleStream(stream, videoRef.current!);
             });
@@ -121,6 +128,7 @@ function Home() {
 
   function handleStream(stream: MediaStream, video: HTMLVideoElement) {
     video.srcObject = stream;
+    video.muted = true;
     video.onloadedmetadata = (e) => video.play();
   }
 
@@ -132,15 +140,19 @@ function Home() {
     console.log("Selected source:", source);
     (navigator.mediaDevices as any)
       .getUserMedia({
-        audio: false,
+        audio: isMac ? false : {
+          mandatory: {
+            chromeMediaSource: 'desktop'
+          }
+        },
         video: {
           mandatory: {
             chromeMediaSource: "desktop",
             chromeMediaSourceId: source.id,
-            minWidth: 1280,
-            maxWidth: 1280,
-            minHeight: 720,
-            maxHeight: 720,
+            minWidth: 1920,
+            maxWidth: 1920,
+            minHeight: 1080,
+            maxHeight: 1080,
           },
         },
       })
@@ -164,25 +176,68 @@ function Home() {
 
   const startRecording = () => {
     if (videoRef.current && videoRef.current.srcObject instanceof MediaStream) {
-      const stream = videoRef.current.srcObject as MediaStream;
-
-      const options = {
-        mimeType: "video/webm; codecs=vp9",
+  
+      const audioCtx = new AudioContext();
+      const constraints = {
+        audio: isMac ? false : {
+          mandatory: {
+            chromeMediaSource: 'desktop'
+          }
+        },
+        video: {
+          mandatory: {
+            chromeMediaSource: 'desktop',
+            minWidth: 1920,
+            maxWidth: 1920,
+            minHeight: 1080,
+            maxHeight: 1080,
+          },
+        },
       };
+  
+      const getMicStream = () =>
+        navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+  
+      const getWindowStream = () =>
+        navigator.mediaDevices.getUserMedia(constraints);
+  
+      Promise.allSettled([getWindowStream(), getMicStream()])
+        .then(([windowResult, micResult]) => {
+          if (windowResult.status === "fulfilled" && micResult.status === "fulfilled") {
+            const windowStream = windowResult.value;
+            const micStream = micResult.value;
 
-      console.log("stream", stream);
-
-      mediaRecorderRef.current = new MediaRecorder(stream, options);
-      mediaRecorderRef.current.ondataavailable = handleStreamDataAvailable;
-      mediaRecorderRef.current.onstop = handleStreamEnded;
-
-      mediaRecorderRef.current.start();
-      console.log("Started recording");
-      mediaRecorderRef.current.onerror = (event) => {
-        console.log("Error: ", event);
-      };
+            console.log("micstream", micStream.getAudioTracks());
+            
+            
+            const combinedStream = new MediaStream();
+            windowStream.getTracks().forEach((track) => combinedStream.addTrack(track));
+            micStream.getAudioTracks().forEach((track) => combinedStream.addTrack(track));
+    
+            const options = {
+              mimeType: "video/webm; codecs=vp9",
+            };
+    
+            mediaRecorderRef.current = new MediaRecorder(combinedStream, options);
+            mediaRecorderRef.current.ondataavailable = handleStreamDataAvailable;
+            mediaRecorderRef.current.onstop = handleStreamEnded;
+    
+            mediaRecorderRef.current.start();
+            console.log("Started recording");
+            mediaRecorderRef.current.onerror = (event) => {
+              console.log("Error: ", event);
+            };
+          } else {
+            console.log("Error: ", windowResult.reason || micResult.reason);
+            
+          }
+        })
+        .catch((error) => {
+          console.error("Error getting streams:", error);
+        });
     }
   };
+  
 
   const stopRecording = () => {
     if (mediaRecorderRef && mediaRecorderRef.state !== "inactive") {
