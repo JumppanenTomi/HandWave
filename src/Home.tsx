@@ -35,7 +35,7 @@ function Home() {
   const [error, setError] = useState<string | undefined>();
   const [ai, setAi] = useState<any>();
   const [sources, setSources] = useState<Electron.DesktopCapturerSource[]>([]);
-  const [recording, setRecording] = useState(false);
+  const [sourceId, setSourceId] = useState<string>(localStorage.getItem('sourceId') || "");  const [recording, setRecording] = useState(false);
 
   const isMac = os.platform() === 'darwin';
 
@@ -79,11 +79,13 @@ function Home() {
     ipcRenderer.send("REQUEST_SOURCES");
     ipcRenderer.on("GET_SOURCES", (e, content) => {
       setSources(content);
-      // Check if there are available sources
-      if (content.length > 0) {
+      // Check if there are available sources      
+      if (sourceId === "") {
         // Set the first source to the video element
         const firstSource = content[0];
-        changeSource(firstSource);
+        changeSource(firstSource.id);
+      } else {
+        changeSource(sourceId);
       }
     });
     ipcRenderer.on("refresh-sources", () => {
@@ -92,6 +94,8 @@ function Home() {
     if (videoRef.current) {
       ipcRenderer.on("SET_SOURCE", async (event, sourceId) => {
         console.log(event);
+        setSourceId(sourceId);
+        localStorage.setItem('sourceId', sourceId);
         try {
           (navigator.mediaDevices as any)
       .getUserMedia({
@@ -137,8 +141,9 @@ function Home() {
     console.log(e);
   }
 
-  const changeSource = (source: Electron.DesktopCapturerSource) => {
-    console.log("Selected source:", source);
+  const changeSource = (sourceId: string) => {
+    setSourceId(sourceId);
+    localStorage.setItem('sourceId', sourceId);
     (navigator.mediaDevices as any)
       .getUserMedia({
         audio: isMac ? false : {
@@ -149,7 +154,7 @@ function Home() {
         video: {
           mandatory: {
             chromeMediaSource: "desktop",
-            chromeMediaSourceId: source.id,
+            chromeMediaSourceId: sourceId,
             minWidth: 1920,
             maxWidth: 1920,
             minHeight: 1080,
@@ -168,14 +173,14 @@ function Home() {
       stopRecording();
     } else {
       // Start the recording
-      startRecording();
+      startRecording(sourceId);
     }
 
     // Toggle the recording state
     setRecording(!recording);
   };
 
-  const startRecording = () => {
+  const startRecording = (sourceId: string) => {
     stopAndClearMediaRecorder();
     if (videoRef.current && videoRef.current.srcObject instanceof MediaStream) {
         
@@ -188,6 +193,7 @@ function Home() {
         video: {
           mandatory: {
             chromeMediaSource: 'desktop',
+            chromeMediaSourceId: sourceId,
             minWidth: 1920,
             maxWidth: 1920,
             minHeight: 1080,
@@ -329,7 +335,7 @@ function Home() {
               id="dropdown-basic-button"
             >
               {sources.map((source, index) => (
-                <Dropdown.Item key={index} onClick={() => changeSource(source)}>
+                <Dropdown.Item key={index} onClick={() => changeSource(source.id)}>
                   {source.name}
                 </Dropdown.Item>
               ))}
