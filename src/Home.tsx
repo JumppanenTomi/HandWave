@@ -175,9 +175,9 @@ function Home() {
   };
 
   const startRecording = () => {
+    stopAndClearMediaRecorder();
     if (videoRef.current && videoRef.current.srcObject instanceof MediaStream) {
-  
-      const audioCtx = new AudioContext();
+        
       const constraints = {
         audio: isMac ? false : {
           mandatory: {
@@ -209,7 +209,6 @@ function Home() {
 
             console.log("micstream", micStream.getAudioTracks());
             
-            
             const combinedStream = new MediaStream();
             windowStream.getTracks().forEach((track) => combinedStream.addTrack(track));
             micStream.getAudioTracks().forEach((track) => combinedStream.addTrack(track));
@@ -237,14 +236,19 @@ function Home() {
         });
     }
   };
-  
 
   const stopRecording = () => {
-    if (mediaRecorderRef && mediaRecorderRef.state !== "inactive") {
+    stopAndClearMediaRecorder();
+    console.log("Stopped recording");
+  };
+
+  const stopAndClearMediaRecorder = () => {
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
       mediaRecorderRef.current.stop();
-      console.log("Stopped recording");
+      mediaRecorderRef.current = null;
     }
   };
+  
 
   const handleStreamDataAvailable = async (e: BlobEvent) => {
     try {
