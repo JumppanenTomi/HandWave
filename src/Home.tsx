@@ -29,13 +29,14 @@ function Home() {
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  
   const [gestureData, setGestureData] = useState<GestureData[]>();
   const [error, setError] = useState<string | undefined>();
   const [ai, setAi] = useState<any>();
   const [sources, setSources] = useState<Electron.DesktopCapturerSource[]>([]);
   const [recording, setRecording] = useState(false);
 
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const isMac = os.platform() === 'darwin';
 
   useEffect(() => {
@@ -249,7 +250,6 @@ function Home() {
     }
   };
   
-
   const handleStreamDataAvailable = async (e: BlobEvent) => {
     try {
       const data = await e.data.arrayBuffer();
