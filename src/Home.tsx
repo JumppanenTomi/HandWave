@@ -78,9 +78,18 @@ function Home() {
   useEffect(() => {
     if (
       (indexFinger && gestureData && gestureData[0].category === "one") ||
-      "mute"
+      (gestureData && gestureData[0].category === "mute")
     ) {
-      ipcRenderer.invoke("moveMouse", indexFinger, currentFingerPosition);
+      console.log("Moving mouse...");
+      const absoluteX = indexFinger[0].x * 1280;
+      const absoluteY = indexFinger[0].y * 720;
+
+      setCurrentIndexPosition(indexFinger);
+      ipcRenderer.invoke(
+        "moveMouse",
+        { x: absoluteX, y: absoluteY },
+        currentFingerPosition
+      );
       setCurrentIndexPosition(indexFinger);
     }
   }, [gestureData]);

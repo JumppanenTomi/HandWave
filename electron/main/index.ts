@@ -159,17 +159,9 @@ ipcMain.handle("releaseKey", async (event, data) => {
 });
 
 ipcMain.handle("moveMouse", async (event, data, currentPosition) => {
-  if (data[0].x < currentPosition[0].x) {
-    await mouse.move(right(10));
-  } else if (data[0].x > currentPosition[0].x) {
-    await mouse.move(left(10));
-  }
+  console.log("data: ", data);
 
-  if (data[0].y < currentPosition[0].y) {
-    await mouse.move(up(10));
-  } else if (data[0].y > currentPosition[0].y) {
-    await mouse.move(down(10));
-  }
+  await mouse.setPosition(data);
 });
 
 ipcMain.on("REQUEST_SOURCES", () => {
