@@ -15,8 +15,7 @@ import { GestureData } from "./types/GestureData";
 import Ai from "./Ai";
 import { Link } from "react-router-dom";
 import { ipcRenderer } from "electron";
-import os from 'os';
-
+import os from "os";
 
 const constraints = {
   video: true,
@@ -30,14 +29,17 @@ function Home() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  
+
   const [gestureData, setGestureData] = useState<GestureData[]>();
   const [error, setError] = useState<string | undefined>();
   const [ai, setAi] = useState<any>();
   const [sources, setSources] = useState<Electron.DesktopCapturerSource[]>([]);
-  const [sourceId, setSourceId] = useState<string>(localStorage.getItem('sourceId') || "");  const [recording, setRecording] = useState(false);
+  const [sourceId, setSourceId] = useState<string>(
+    localStorage.getItem("sourceId") || ""
+  );
+  const [recording, setRecording] = useState(false);
 
-  const isMac = os.platform() === 'darwin';
+  const isMac = os.platform() === "darwin";
 
   useEffect(() => {
     if (canvasRef !== null) {
@@ -79,7 +81,7 @@ function Home() {
     ipcRenderer.send("REQUEST_SOURCES");
     ipcRenderer.on("GET_SOURCES", (e, content) => {
       setSources(content);
-      // Check if there are available sources      
+      // Check if there are available sources
       if (sourceId === "") {
         // Set the first source to the video element
         const firstSource = content[0];
@@ -95,26 +97,28 @@ function Home() {
       ipcRenderer.on("SET_SOURCE", async (event, sourceId) => {
         console.log(event);
         setSourceId(sourceId);
-        localStorage.setItem('sourceId', sourceId);
+        localStorage.setItem("sourceId", sourceId);
         try {
           (navigator.mediaDevices as any)
-      .getUserMedia({
-        audio: isMac ? false : {
-          mandatory: {
-            chromeMediaSource: 'desktop'
-          }
-        },
-        video: {
-          mandatory: {
-            chromeMediaSource: "desktop",
-            chromeMediaSourceId: sourceId,
-            minWidth: 1920,
-            maxWidth: 1920,
-            minHeight: 1080,
-            maxHeight: 1080,
-          },
-        },
-      })
+            .getUserMedia({
+              audio: isMac
+                ? false
+                : {
+                    mandatory: {
+                      chromeMediaSource: "desktop",
+                    },
+                  },
+              video: {
+                mandatory: {
+                  chromeMediaSource: "desktop",
+                  chromeMediaSourceId: sourceId,
+                  minWidth: 1920,
+                  maxWidth: 1920,
+                  minHeight: 1080,
+                  maxHeight: 1080,
+                },
+              },
+            })
             .then((stream: MediaStream) => {
               handleStream(stream, videoRef.current!);
             });
@@ -143,14 +147,16 @@ function Home() {
 
   const changeSource = (sourceId: string) => {
     setSourceId(sourceId);
-    localStorage.setItem('sourceId', sourceId);
+    localStorage.setItem("sourceId", sourceId);
     (navigator.mediaDevices as any)
       .getUserMedia({
-        audio: isMac ? false : {
-          mandatory: {
-            chromeMediaSource: 'desktop'
-          }
-        },
+        audio: isMac
+          ? false
+          : {
+              mandatory: {
+                chromeMediaSource: "desktop",
+              },
+            },
         video: {
           mandatory: {
             chromeMediaSource: "desktop",
@@ -183,16 +189,17 @@ function Home() {
   const startRecording = (sourceId: string) => {
     stopAndClearMediaRecorder();
     if (videoRef.current && videoRef.current.srcObject instanceof MediaStream) {
-        
       const constraints = {
-        audio: isMac ? false : {
-          mandatory: {
-            chromeMediaSource: 'desktop'
-          }
-        },
+        audio: isMac
+          ? false
+          : {
+              mandatory: {
+                chromeMediaSource: "desktop",
+              },
+            },
         video: {
           mandatory: {
-            chromeMediaSource: 'desktop',
+            chromeMediaSource: "desktop",
             chromeMediaSourceId: sourceId,
             minWidth: 1920,
             maxWidth: 1920,
@@ -201,33 +208,44 @@ function Home() {
           },
         },
       };
-  
+
       const getMicStream = () =>
         navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-  
+
       const getWindowStream = () =>
         navigator.mediaDevices.getUserMedia(constraints);
-  
+
       Promise.allSettled([getWindowStream(), getMicStream()])
         .then(([windowResult, micResult]) => {
-          if (windowResult.status === "fulfilled" && micResult.status === "fulfilled") {
+          if (
+            windowResult.status === "fulfilled" &&
+            micResult.status === "fulfilled"
+          ) {
             const windowStream = windowResult.value;
             const micStream = micResult.value;
 
             console.log("micstream", micStream.getAudioTracks());
-            
+
             const combinedStream = new MediaStream();
-            windowStream.getTracks().forEach((track) => combinedStream.addTrack(track));
-            micStream.getAudioTracks().forEach((track) => combinedStream.addTrack(track));
-    
+            windowStream
+              .getTracks()
+              .forEach((track) => combinedStream.addTrack(track));
+            micStream
+              .getAudioTracks()
+              .forEach((track) => combinedStream.addTrack(track));
+
             const options = {
               mimeType: "video/webm; codecs=vp9",
             };
-    
-            mediaRecorderRef.current = new MediaRecorder(combinedStream, options);
-            mediaRecorderRef.current.ondataavailable = handleStreamDataAvailable;
+
+            mediaRecorderRef.current = new MediaRecorder(
+              combinedStream,
+              options
+            );
+            mediaRecorderRef.current.ondataavailable =
+              handleStreamDataAvailable;
             mediaRecorderRef.current.onstop = handleStreamEnded;
-    
+
             mediaRecorderRef.current.start();
             console.log("Started recording");
             mediaRecorderRef.current.onerror = (event) => {
@@ -235,7 +253,6 @@ function Home() {
             };
           } else {
             console.log("Error: ", windowResult.reason || micResult.reason);
-            
           }
         })
         .catch((error) => {
@@ -250,12 +267,15 @@ function Home() {
   };
 
   const stopAndClearMediaRecorder = () => {
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+    if (
+      mediaRecorderRef.current &&
+      mediaRecorderRef.current.state !== "inactive"
+    ) {
       mediaRecorderRef.current.stop();
       mediaRecorderRef.current = null;
     }
   };
-  
+
   const handleStreamDataAvailable = async (e: BlobEvent) => {
     try {
       const data = await e.data.arrayBuffer();
@@ -335,7 +355,10 @@ function Home() {
               id="dropdown-basic-button"
             >
               {sources.map((source, index) => (
-                <Dropdown.Item key={index} onClick={() => changeSource(source.id)}>
+                <Dropdown.Item
+                  key={index}
+                  onClick={() => changeSource(source.id)}
+                >
                   {source.name}
                 </Dropdown.Item>
               ))}
