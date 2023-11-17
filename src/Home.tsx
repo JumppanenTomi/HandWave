@@ -31,8 +31,7 @@ function Home() {
 
   const [gestureData, setGestureData] = useState<GestureData[]>();
   const [indexFinger, setIndexFinger] = useState<IndexFinger[]>();
-  const [currentFingerPosition, setCurrentIndexPosition] =
-    useState<IndexFinger[]>();
+  useState<IndexFinger[]>();
   const [error, setError] = useState<string | undefined>();
   const [ai, setAi] = useState<any>();
   const [sources, setSources] = useState<Electron.DesktopCapturerSource[]>([]);
@@ -78,19 +77,11 @@ function Home() {
   useEffect(() => {
     if (
       (indexFinger && gestureData && gestureData[0].category === "one") ||
-      (gestureData && gestureData[0].category === "mute")
+      (indexFinger && gestureData && gestureData[0].category === "mute")
     ) {
-      console.log("Moving mouse...");
       const absoluteX = indexFinger[0].x * 1280;
       const absoluteY = indexFinger[0].y * 720;
-
-      setCurrentIndexPosition(indexFinger);
-      ipcRenderer.invoke(
-        "moveMouse",
-        { x: absoluteX, y: absoluteY },
-        currentFingerPosition
-      );
-      setCurrentIndexPosition(indexFinger);
+      ipcRenderer.invoke("moveMouse", { x: absoluteX, y: absoluteY });
     }
   }, [gestureData]);
 

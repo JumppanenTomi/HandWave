@@ -159,8 +159,6 @@ ipcMain.handle("releaseKey", async (event, data) => {
 });
 
 ipcMain.handle("moveMouse", async (event, data, currentPosition) => {
-  console.log("data: ", data);
-
   await mouse.setPosition(data);
 });
 
