@@ -13,7 +13,7 @@ export type SelectInputType = {
 
 export default function useSelectInput(title: string, key: string, items: SelectInputType[], props?: InputProps) {
   const [isValid, setIsValid] = useState<boolean>(true);
-  const [value, setValue] = useState<string>();
+  const [value, setValue] = useState<string>(props?.initial || "");
 
   const validate = (v: string) => {
     const isValidSelection = v !== ""; // Customize validation logic as needed

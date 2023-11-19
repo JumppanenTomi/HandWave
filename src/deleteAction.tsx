@@ -1,9 +1,12 @@
-import {useState} from "react";
+import {useState, useContext} from "react";
 import {Button, ButtonGroup, Modal} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
+import {ActionsDataContext} from "./App";
+import { deleteGesture } from "./modelApi/gesture";
 
 export default function DeleteAction({action_id}: { action_id: number }) {
+    const {forceRender} = useContext(ActionsDataContext);
     const [show, setShow] = useState<boolean>(false)
 
     const open = () => {
@@ -13,8 +16,9 @@ export default function DeleteAction({action_id}: { action_id: number }) {
         setShow(false)
     }
 
-    const confirm = () => {
-        //TODO: add logic
+    const confirm = async () => {
+        await deleteGesture(action_id);
+        forceRender();
         close()
     }
 

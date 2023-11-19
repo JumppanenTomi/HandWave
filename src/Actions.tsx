@@ -5,7 +5,7 @@ import {ActionsDataContext} from "./App";
 import EditAction from "./editAction";
 
 export default function Actions() {
-    const {actionData, setActionData} = useContext(ActionsDataContext)
+    const {gestureData, setGestureData} = useContext(ActionsDataContext)
 
     return (
         <Container>
@@ -14,7 +14,7 @@ export default function Actions() {
                     <h2>Actions</h2>
                 </Col>
                 <Col xs={"auto"}>
-                    <EditAction button setToArray={setActionData} actionToModify={null}/>
+                    <EditAction button actionToModify={null}/>
                 </Col>
             </Row>
             <Table>
@@ -27,13 +27,13 @@ export default function Actions() {
                 </tr>
                 </thead>
                 <tbody>
-                {actionData && actionData.map((e, i) => (
+                {gestureData && gestureData.map((e, i) => (
                     <tr key={i}>
                         <td>{e.name}</td>
                         <td>{e.trigger}</td>
                         <td>
-                            <DeleteAction action_id={1}/>
-                            <EditAction button={false} setToArray={setActionData} actionToModify={e}/>
+                            <DeleteAction action_id={e.id}/>
+                            <EditAction button={false} actionToModify={e}/>
                         </td>
                     </tr>
                 ))}
