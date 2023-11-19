@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell, ipcMain } from 'electron'
+import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron'
 import { release } from 'node:os'
 import { join } from 'node:path'
 import { update } from './update'
@@ -160,3 +160,44 @@ ipcMain.on('REQUEST_SOURCES', () => {
   getSource(win);
 });
 
+const chunks: Buffer[] = [];
+
+ipcMain.on("stream-chunk-received", (event, chunk) => {
+  const bufferData = Buffer.from(chunk);
+  chunks.push(bufferData);
+});
+
+ipcMain.on("recording-stopped", async (event) => {
+  const fs = require("fs");
+  const { dialog, BrowserWindow } = require('electron');
+  const win = BrowserWindow.getFocusedWindow();
+
+  try {
+    const result = await dialog.showSaveDialog(win, {
+      title: "Save Recorded File",
+      defaultPath: `recording-${Date.now()}.webm`,
+      buttonLabel: "Save",
+      filters: [{ name: "WebM Files", extensions: ["webm"] }],
+    });
+
+    if (!result.canceled && result.filePath) {
+      const filePath = result.filePath;
+      const bufferData = Buffer.concat(chunks);
+
+      fs.writeFile(filePath, bufferData, (err) => {
+        if (err) {
+          console.error("Error saving recording:", err);
+          event.sender.send("file-selection-error", err.message || "An error occurred during file selection.");
+        } else {
+          console.log("Recording saved successfully");
+          event.sender.send("file-selection-success", filePath);
+        }
+      });
+    } else {
+      event.sender.send("file-selection-cancelled");
+    }
+  } catch (error) {
+    console.error("Error during file selection:", error);
+    event.sender.send("file-selection-error", error.message || "An error occurred during file selection.");
+  }
+});
