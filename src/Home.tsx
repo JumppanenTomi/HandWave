@@ -29,11 +29,11 @@ function Home() {
   const canvasRef: MutableRefObject<HTMLCanvasElement | null> = useRef(null);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
-
-    const [lastExecutionTime, setLastExecutionTime] = useState<number | null>(null);
-    const {actionData, setActionData} = useContext(ActionsDataContext)
+  
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 
+  const [lastExecutionTime, setLastExecutionTime] = useState<number | null>(null);
+  const {gestureData: actionData} = useContext(ActionsDataContext)
   const [gestureData, setGestureData] = useState<GestureData[]>();
   const [error, setError] = useState<string | undefined>();
   const [ai, setAi] = useState<any>();
