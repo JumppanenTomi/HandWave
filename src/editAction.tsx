@@ -20,13 +20,13 @@ import arrayIndexAsValue from "./sharedUtilities/arrayIndexAsValue";
 import {ActionsDataContext} from "./App";
 import {ipcRenderer} from "electron";
 import useNumberInput from "@/useInputs/useNumberInput";
+import { createGesture, updateGesture } from "./modelApi/gesture";
 
-export default function EditAction({button, setToArray, actionToModify}: {
+export default function EditAction({button, actionToModify}: {
     button: boolean,
-    setToArray: React.SetStateAction<any>,
-    actionToModify: TriggerData | null
+    actionToModify: any | null
 }) {
-    const {actionData, setActionData} = useContext(ActionsDataContext);
+    const {forceRender} = useContext(ActionsDataContext);
     const [show, setShow] = useState(false);
     const [keys, setKeys] = useState<any>([{name: "undefined", value: 0}]);
 
@@ -38,21 +38,21 @@ export default function EditAction({button, setToArray, actionToModify}: {
         fetchData();
     }, [show]);
 
-    const initialData: TriggerData = {
-        id: actionData ? actionData.length + 1 : 1,
+    const initialData = {
         name: "",
         trigger: "",
         actions: [],
     };
 
-    const [newAction, setNewAction] = useState<TriggerData>(actionToModify ? actionToModify : initialData);
+    const [newAction, setNewAction] = useState(actionToModify ? actionToModify : initialData);
 
     const mainInputs = [
         useStringInput("Action name", "name", {
             required: true,
             placeholder: "For example, Change slide",
+            initial: newAction.name
         }),
-        useSelectInput("Triggering gesture", "trigger", gestureData),
+        useSelectInput("Triggering gesture", "trigger", gestureData, {initial: newAction.trigger}),
     ];
 
     const actionTypeInput = useSelectInput("Action type", "type", [
@@ -103,7 +103,7 @@ export default function EditAction({button, setToArray, actionToModify}: {
         const actionsJson = InputsToJson(actionTypeInput.value === "keyboard" ? keyboardInputs : delayInputs) as unknown as ActionType;
         actionsJson.type = actionTypeInput.value as "keyboard" | "delay"
 
-        setNewAction((prevState) => ({
+        setNewAction((prevState: { actions: any; }) => ({
             ...prevState,
             ...parentJson,
             actions: [...prevState.actions, actionsJson],
@@ -116,24 +116,31 @@ export default function EditAction({button, setToArray, actionToModify}: {
     };
     const open = () => setShow(true);
 
-    const save = () => {
+    const save = async () => {
         if (!validateInputs()) {
             // Validation failed, prevent saving
             return;
         }
         const parentJson = InputsToJson(mainInputs) as unknown as TriggerData;
-        setNewAction((prevState) => ({
+        setNewAction((prevState: any) => ({
             ...prevState,
             ...parentJson
         }));
-        setToArray((prevArray: any) => {
-            if (prevArray) {
-                return [...prevArray, newAction];
-            } else {
-                return [newAction];
-            }
-        });
-        console.log(newAction)
+
+        if (!newAction.id) {
+            await createGesture({
+                name: newAction.name, 
+                trigger: newAction.trigger,
+            }, newAction.actions)
+    
+        } else {
+            await updateGesture(newAction.id, {
+                name: newAction.name, 
+                trigger: newAction.trigger,
+            }, newAction.actions)
+        }
+
+        forceRender();
         close();
     };
 
@@ -157,7 +164,7 @@ export default function EditAction({button, setToArray, actionToModify}: {
                         ))}
                     </Container>
                     <Accordion>
-                        {newAction.actions.map((e, i) => (
+                        {newAction.actions.map((e: { type: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; delay: any; key: any; press: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }, i: React.Key | null | undefined) => (
                             <Accordion.Item key={i} eventKey={String(i)}>
                                 <Accordion.Header>
                                     <div className={"alignCenter"}>

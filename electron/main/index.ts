@@ -3,6 +3,7 @@ import { release } from 'node:os'
 import { join } from 'node:path'
 import { update } from './update'
 const { Key, keyboard } = require("@nut-tree/nut-js");
+import { sequelize } from "../../src/getdb";
 
 // The built directory structure
 //
@@ -98,6 +99,9 @@ async function createWindow() {
   // Apply electron-updater
   update(win)
 }
+
+sequelize.authenticate().then(() => console.log("connected")
+).catch((err: any) => console.log(err))
 
 app.whenReady().then(createWindow)
 
