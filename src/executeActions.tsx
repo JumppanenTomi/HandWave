@@ -19,20 +19,25 @@ export default async function ExecuteActions(gestureData: any[], actionData: any
     }
 
     for (const action of foundAction.actions) {
-        switch (action.type) {
+        //@ts-ignore
+        switch (action.dataValues.type) {
             case "keyboard":
                 console.log("keyboard");
-                if (action.press === "true") {
+                // @ts-ignore
+                if (action.dataValues.press === "true") {
                     console.log("press");
-                    await pressKey(action.key && parseInt(action.key.toString()));
+                    // @ts-ignore
+                    await pressKey(action.key && parseInt(action.dataValues.key.toString()));
                 } else {
                     console.log("release");
-                    await releaseKey(action.key && parseInt(action.key.toString()));
+                    // @ts-ignore
+                    await releaseKey(action.key && parseInt(action.dataValues.key.toString()));
                 }
                 break;
             case "delay":
                 console.log("delay");
-                await new Promise<void>(resolve => setTimeout(resolve, action.delay));
+                // @ts-ignore
+                await new Promise<void>(resolve => setTimeout(resolve, action.dataValues.delay));
                 console.log("time ended");
                 break;
             default:
@@ -44,6 +49,7 @@ export default async function ExecuteActions(gestureData: any[], actionData: any
 async function pressKey(data: any) {
     try {
         const response = await ipcRenderer.invoke('pressKey', data);
+        console.log(response)
     } catch (error) {
         console.error(error);
     }
@@ -52,6 +58,7 @@ async function pressKey(data: any) {
 async function releaseKey(data: any) {
     try {
         const response = await ipcRenderer.invoke('releaseKey', data);
+        console.log(response)
     } catch (error) {
         console.error(error);
     }
