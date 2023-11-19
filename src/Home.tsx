@@ -79,7 +79,8 @@ function Home() {
       (indexFinger && gestureData && gestureData[0].category === "one") ||
       (indexFinger && gestureData && gestureData[0].category === "mute")
     ) {
-      const absoluteX = indexFinger[0].x * 1280;
+      const invertedX = 1 - indexFinger[0].x;
+      const absoluteX = invertedX * 1280;
       const absoluteY = indexFinger[0].y * 720;
       ipcRenderer.invoke("moveMouse", { x: absoluteX, y: absoluteY });
     }
