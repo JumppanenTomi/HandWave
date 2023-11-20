@@ -158,8 +158,12 @@ ipcMain.handle("releaseKey", async (event, data) => {
   await keyboard.releaseKey(Key.Space);
 });
 
-ipcMain.handle("moveMouse", async (event, data, currentPosition) => {
+ipcMain.handle("moveMouse", async (event, data) => {
   await mouse.setPosition(data);
+});
+
+ipcMain.handle("mouseClick", async (event, data) => {
+  await mouse.leftClick();
 });
 
 ipcMain.on("REQUEST_SOURCES", () => {

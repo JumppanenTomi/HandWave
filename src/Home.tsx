@@ -76,13 +76,16 @@ function Home() {
   }, [gestureData]);
 
   useEffect(() => {
+    if (indexFinger && gestureData && gestureData[0].category === "two_up") {
+      ipcRenderer.invoke("mouseClick");
+    }
+  }, [gestureData]);
+
+  useEffect(() => {
     let animationFrameId: number;
 
     const handleMouseMove = () => {
-      if (
-        (indexFinger && gestureData && gestureData[0].category === "one") ||
-        (indexFinger && gestureData && gestureData[0].category === "mute")
-      ) {
+      if (indexFinger && gestureData && gestureData[0].category === "peace") {
         const invertedX = 1 - indexFinger[0].x;
         const absoluteX = invertedX * 1280;
         const absoluteY = indexFinger[0].y * 720;
