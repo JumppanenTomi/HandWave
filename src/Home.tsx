@@ -9,7 +9,7 @@ import {
   Dropdown,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGear } from "@fortawesome/free-solid-svg-icons";
+import { faDisplay, faGear } from "@fortawesome/free-solid-svg-icons";
 import React, { MutableRefObject, useContext, useEffect, useRef, useState } from "react";
 import { GestureData } from "./types/GestureData";
 import Ai from "./Ai";
@@ -298,9 +298,12 @@ function Home() {
         <Container>
           <Nav>
             <Navbar.Text>
-              <h1>GesturePresentation</h1>
+              <h1>HandWave</h1>
             </Navbar.Text>
           </Nav>
+            <Button onClick={() => ipcRenderer.send('openAlternativeWindow')}>
+              <FontAwesomeIcon icon={faDisplay} />
+            </Button>
           <Nav.Link>
             <Link to={"/settings"}>
               <Button>

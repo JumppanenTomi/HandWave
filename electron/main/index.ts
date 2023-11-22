@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron'
+import { app, BrowserWindow, shell, ipcMain, dialog, Menu, screen } from 'electron'
 import { release } from 'node:os'
 import { join } from 'node:path'
 import { update } from './update'
@@ -59,7 +59,7 @@ let win: BrowserWindow | null = null
 // Here, you can also use other preload
 const preload = join(__dirname, '../preload/index.js')
 const url = process.env.VITE_DEV_SERVER_URL
-const indexHtml = join(process.env.DIST, 'index.html')
+const indexHtml = join(__dirname, '../../index.html')
 
 async function createWindow() {
   win = new BrowserWindow({
@@ -68,7 +68,7 @@ async function createWindow() {
     webPreferences: {
       preload,
       nodeIntegration: true,
-      contextIsolation: false,
+     contextIsolation: false,
     },
   })
 
@@ -95,15 +95,95 @@ async function createWindow() {
     if (url.startsWith('https:')) shell.openExternal(url)
     return { action: 'deny' }
   })
-
   // Apply electron-updater
   update(win)
+}
+
+var mouse_offset = {
+  x: 0,
+  y: 0
+}
+
+let alternativeWindow: BrowserWindow | null = null
+const alternativeUrl = process.env.VITE_DEV_SERVER_URL_2
+const alternativeHtml = join(__dirname, '../../alternative.html')
+
+function createAlternativeWindow() {
+   // Create the browser window.
+   let active_screen = screen.getPrimaryDisplay();
+   const { width, height } = active_screen.workAreaSize;
+   const x = active_screen.workArea.x;
+   const y = active_screen.workArea.y;
+   mouse_offset.x = active_screen.bounds.x;
+   mouse_offset.y = active_screen.bounds.y;
+ 
+   alternativeWindow = new BrowserWindow({
+    title: 'Alternative window',
+    icon: join(process.env.VITE_PUBLIC, 'favicon.ico'),
+    width: width,
+    height: height,
+    x: x,
+    y: y,
+    hasShadow: false,
+    transparent: true,
+    frame: false,
+    resizable: false,
+    webPreferences: {
+      preload,
+      nodeIntegration: true,
+     contextIsolation: false,
+    },
+  })
+  if (alternativeUrl) { // electron-vite-vue#298
+    alternativeWindow.loadURL(alternativeUrl)
+    // Open devTool if the app is not packaged
+    alternativeWindow.webContents.openDevTools()
+  } else {
+    alternativeWindow.loadFile(alternativeHtml)
+  }
+}
+
+function createMenu() {
+  const menu = Menu.buildFromTemplate([
+    {
+      label: 'Settings',
+      // Add submenu items for each setting...
+    },
+    {
+      label: 'Select Source',
+      // Add submenu items for each source...
+    },
+    {
+      label: 'Record',
+      click: () => {
+        // Start/stop recording...
+      },
+    },
+  ]);
+
+  Menu.setApplicationMenu(menu);
 }
 
 sequelize.authenticate().then(() => console.log("connected")
 ).catch((err: any) => console.log(err))
 
-app.whenReady().then(createWindow)
+var is_enable_mouse = false;
+
+app.whenReady().then(() => {createWindow
+  let menu = Menu.buildFromTemplate(
+    [
+      {
+        label: app.name,
+        submenu: [
+          {
+            role: 'quit',
+            label: `${app.name}`
+          }
+        ]
+      }
+    ]);
+  Menu.setApplicationMenu(menu);
+})
 
 app.on('window-all-closed', () => {
   win = null
@@ -200,4 +280,9 @@ ipcMain.on("recording-stopped", async (event) => {
     console.error("Error during file selection:", error);
     event.sender.send("file-selection-error", error.message || "An error occurred during file selection.");
   }
+});
+
+ipcMain.on('openAlternativeWindow', () => {
+  createAlternativeWindow();
+  win.close();
 });
