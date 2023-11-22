@@ -30,6 +30,10 @@ function Home() {
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 
+  const mediaStreamRef = useRef<MediaStream | null>(null);
+
+  const recordingInterval = useRef<number | null>(null);
+ 
   const [gestureData, setGestureData] = useState<GestureData[]>();
   const [error, setError] = useState<string | undefined>();
   const [ai, setAi] = useState<any>();
@@ -38,6 +42,7 @@ function Home() {
     localStorage.getItem("sourceId") || ""
   );
   const [recording, setRecording] = useState(false);
+  const [recordedTime, setRecordedTime] = useState(0);
 
   const isMac = os.platform() === "darwin";
 
@@ -188,6 +193,12 @@ function Home() {
 
   const startRecording = (sourceId: string) => {
     stopAndClearMediaRecorder();
+    // Start timer
+    setRecordedTime(0);
+    recordingInterval.current = setInterval(() => {
+      setRecordedTime((prevTime) => prevTime + 1);
+    }, 1000);
+    
     if (videoRef.current && videoRef.current.srcObject instanceof MediaStream) {
       const constraints = {
         audio: isMac
@@ -263,6 +274,7 @@ function Home() {
 
   const stopRecording = () => {
     stopAndClearMediaRecorder();
+    clearInterval(recordingInterval.current);
     console.log("Stopped recording");
   };
 
@@ -274,6 +286,12 @@ function Home() {
       mediaRecorderRef.current.stop();
       mediaRecorderRef.current = null;
     }
+  };
+
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
   const handleStreamDataAvailable = async (e: BlobEvent) => {
@@ -365,12 +383,13 @@ function Home() {
             </DropdownButton>
             <Col style={{ marginTop: 8 }}>
               <Button
+              style={{ marginRight: 8 }}
                 variant={recording ? "danger" : "success"}
                 size="sm"
                 onClick={toggleRecording}
               >
-                {recording ? "Stop Recording" : "Start Recording"}
-              </Button>
+                {recording ? `Stop Recording (${formatTime(recordedTime)})` : "Start Recording"}
+              </Button>           
             </Col>
           </Col>
         </Col>
