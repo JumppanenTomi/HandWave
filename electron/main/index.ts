@@ -1,18 +1,10 @@
-import { app, BrowserWindow, shell, ipcMain } from "electron";
+import { app, BrowserWindow, shell, ipcMain, screen } from "electron";
 import { release } from "node:os";
 import { join } from "node:path";
 import { update } from "./update";
 import { useState } from "react";
 import { IndexFinger } from "@/types/IndexFinger";
-const {
-  Key,
-  keyboard,
-  mouse,
-  left,
-  right,
-  up,
-  down,
-} = require("@nut-tree/nut-js");
+const { Key, keyboard, mouse } = require("@nut-tree/nut-js");
 
 // The built directory structure
 //
@@ -68,6 +60,7 @@ let win: BrowserWindow | null = null;
 const preload = join(__dirname, "../preload/index.js");
 const url = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = join(process.env.DIST, "index.html");
+let screenSize = { width: 0, height: 0 };
 
 async function createWindow() {
   win = new BrowserWindow({
@@ -108,8 +101,10 @@ async function createWindow() {
   // Apply electron-updater
   update(win);
 }
-
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  screenSize = screen.getPrimaryDisplay().size;
+  createWindow();
+});
 
 app.on("window-all-closed", () => {
   win = null;
@@ -159,7 +154,10 @@ ipcMain.handle("releaseKey", async (event, data) => {
 });
 
 ipcMain.handle("moveMouse", async (event, data) => {
-  await mouse.setPosition(data);
+  const invertedX = 1 - data.x;
+  const absoluteX = invertedX * screenSize.width;
+  const absoluteY = data.y * screenSize.height;
+  await mouse.setPosition({ x: absoluteX, y: absoluteY });
 });
 
 ipcMain.handle("mouseClick", async (event, data) => {

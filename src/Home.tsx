@@ -31,11 +31,9 @@ function Home() {
 
   const [gestureData, setGestureData] = useState<GestureData[]>();
   const [indexFinger, setIndexFinger] = useState<IndexFinger[]>();
-  useState<IndexFinger[]>();
   const [error, setError] = useState<string | undefined>();
   const [ai, setAi] = useState<any>();
   const [sources, setSources] = useState<Electron.DesktopCapturerSource[]>([]);
-  const [animationFrameId, setAnimationFrameId] = useState(0);
 
   useEffect(() => {
     if (canvasRef !== null) {
@@ -64,7 +62,7 @@ function Home() {
 
   useEffect(() => {
     const handleGestureData = () => {
-      if (gestureData && gestureData[0].category === "paper") {
+      if (gestureData && gestureData[0]?.category === "paper") {
         ipcRenderer
           .invoke("pressKey", "space")
           .then(() => ipcRenderer.invoke("releaseKey", "space"))
@@ -76,28 +74,15 @@ function Home() {
   }, [gestureData]);
 
   useEffect(() => {
-    if (indexFinger && gestureData && gestureData[0].category === "two_up") {
+    if (indexFinger && gestureData && gestureData?.[0]?.category === "two_up") {
       ipcRenderer.invoke("mouseClick");
     }
   }, [gestureData]);
 
   useEffect(() => {
-    let animationFrameId: number;
-
-    const handleMouseMove = () => {
-      if (indexFinger && gestureData && gestureData[0].category === "peace") {
-        const invertedX = 1 - indexFinger[0].x;
-        const absoluteX = invertedX * 1280;
-        const absoluteY = indexFinger[0].y * 720;
-        ipcRenderer.invoke("moveMouse", { x: absoluteX, y: absoluteY });
-      }
-
-      animationFrameId = requestAnimationFrame(handleMouseMove);
-    };
-
-    handleMouseMove();
-
-    return () => cancelAnimationFrame(animationFrameId);
+    if (indexFinger && gestureData && gestureData?.[0]?.category === "peace") {
+      ipcRenderer.invoke("moveMouse", indexFinger[0]);
+    }
   }, [gestureData]);
 
   useEffect(() => {
