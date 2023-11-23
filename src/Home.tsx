@@ -7,10 +7,11 @@ import {
   Nav,
   DropdownButton,
   Dropdown,
+  Spinner,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
-import React, { MutableRefObject, useEffect, useRef, useState } from "react";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { GestureData } from "./types/GestureData";
 import Ai from "./Ai";
 import { Link } from "react-router-dom";
@@ -92,6 +93,7 @@ function Home() {
         const firstSource = content[0];
         changeSource(firstSource.id);
       } else {
+        // Set the source to the previously selected video element if navigated back to the home page
         changeSource(sourceId);
       }
     });
@@ -150,6 +152,7 @@ function Home() {
     console.log(e);
   }
 
+  // Change the source of the video element
   const changeSource = (sourceId: string) => {
     setSourceId(sourceId);
     localStorage.setItem("sourceId", sourceId);
@@ -178,22 +181,21 @@ function Home() {
       });
   };
 
+  // Toggle the recording state
   const toggleRecording = () => {
     if (recording) {
-      // Stop the recording
       stopRecording();
     } else {
-      // Start the recording
       startRecording(sourceId);
     }
-
     // Toggle the recording state
     setRecording(!recording);
   };
 
+  //Start recording the video
   const startRecording = (sourceId: string) => {
     stopAndClearMediaRecorder();
-    // Start timer
+    // Start recorder timer
     setRecordedTime(0);
     recordingInterval.current = setInterval(() => {
       setRecordedTime((prevTime) => prevTime + 1);
@@ -220,9 +222,11 @@ function Home() {
         },
       };
 
+      // Get the audio stream from the microphone
       const getMicStream = () =>
         navigator.mediaDevices.getUserMedia({ audio: true, video: false });
 
+      // Get the video stream from the screen
       const getWindowStream = () =>
         navigator.mediaDevices.getUserMedia(constraints);
 
@@ -236,7 +240,7 @@ function Home() {
             const micStream = micResult.value;
 
             console.log("micstream", micStream.getAudioTracks());
-
+            // Combine the video and mic streams
             const combinedStream = new MediaStream();
             windowStream
               .getTracks()
@@ -272,6 +276,7 @@ function Home() {
     }
   };
 
+  // Stop recording the video
   const stopRecording = () => {
     stopAndClearMediaRecorder();
     clearInterval(recordingInterval.current);
@@ -288,12 +293,14 @@ function Home() {
     }
   };
 
+  // Convert the timer to a time format
   const formatTime = (timeInSeconds) => {
     const minutes = Math.floor(timeInSeconds / 60);
     const seconds = timeInSeconds % 60;
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
+  // Send the recorded video to the main process
   const handleStreamDataAvailable = async (e: BlobEvent) => {
     try {
       const data = await e.data.arrayBuffer();
@@ -304,6 +311,7 @@ function Home() {
     }
   };
 
+  // Save the recorded video to the file system
   const handleStreamEnded = async () => {
     ipcRenderer.send("recording-stopped");
   };
@@ -314,7 +322,7 @@ function Home() {
         <Container>
           <Nav>
             <Navbar.Text>
-              <h1>GesturePresentation</h1>
+            <img src="/src/assets/handwave-logo.svg" alt="logo" style={{ width: '16rem' }}/>
             </Navbar.Text>
           </Nav>
           <Nav.Link>
@@ -364,7 +372,8 @@ function Home() {
           <video
             ref={videoRef}
             autoPlay
-            style={{ width: "100%", objectFit: "cover", borderRadius: 5 }}
+            className={`video ${recording ? 'recording' : ''}`}
+            style={{ width: "100%", objectFit: "cover", borderRadius: 5}}
           />
           <Col>
             <DropdownButton

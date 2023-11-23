@@ -39,6 +39,7 @@ if (!app.requestSingleInstanceLock()) {
 
 const { desktopCapturer } = require("electron");
 
+// Function to get the source for capturing screen/window
 const getSource = (mainWindow: BrowserWindow) => {
   desktopCapturer
     .getSources({ types: ["window", "screen"] })
@@ -60,6 +61,7 @@ const preload = join(__dirname, '../preload/index.js')
 const url = process.env.VITE_DEV_SERVER_URL
 const indexHtml = join(process.env.DIST, 'index.html')
 
+// Function to create the main window
 async function createWindow() {
   win = new BrowserWindow({
     title: 'Main window',
@@ -71,8 +73,9 @@ async function createWindow() {
     },
   })
 
+    // Event handler when main window finishes loading
     win.webContents.on("did-finish-load", () => {
-      getSource(win);
+      getSource(win); // Get sources when window finishes loading
       win?.webContents.send("main-process-message", new Date().toLocaleString());
     });
 
@@ -148,17 +151,20 @@ ipcMain.handle('releaseKey', async (event, data) => {
  await keyboard.releaseKey(Key.Space);
 });
 
+// Request sources
 ipcMain.on('REQUEST_SOURCES', () => {
   getSource(win);
 });
 
 const chunks: Buffer[] = [];
 
+// Receive video stream chunks
 ipcMain.on("stream-chunk-received", (event, chunk) => {
   const bufferData = Buffer.from(chunk);
   chunks.push(bufferData);
 });
 
+// Save recorded video
 ipcMain.on("recording-stopped", async (event) => {
   const fs = require("fs");
   const { dialog, BrowserWindow } = require('electron');
@@ -183,6 +189,7 @@ ipcMain.on("recording-stopped", async (event) => {
         } else {
           console.log("Recording saved successfully");
           event.sender.send("file-selection-success", filePath);
+          chunks.length = 0; // Clear the chunks array
         }
       });
     } else {
