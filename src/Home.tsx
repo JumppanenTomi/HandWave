@@ -42,6 +42,7 @@ function Home() {
   const [sourceId, setSourceId] = useState<string>(
     localStorage.getItem("sourceId") || ""
   );
+  const [selectedSourceHighlighted, setSelectedSourceHighlighted] = useState(null);
   const [recording, setRecording] = useState(false);
   const [recordedTime, setRecordedTime] = useState(0);
 
@@ -384,7 +385,11 @@ function Home() {
               {sources.map((source, index) => (
                 <Dropdown.Item
                   key={index}
-                  onClick={() => changeSource(source.id)}
+                  onClick={() => {
+                    changeSource(source.id)
+                    setSelectedSourceHighlighted(source)
+                  }}
+                  style={source === selectedSourceHighlighted ? { backgroundColor: '#e8e9ea' } : {}}
                 >
                   {source.name}
                 </Dropdown.Item>
