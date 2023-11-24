@@ -1,10 +1,10 @@
-import { app, BrowserWindow, shell, ipcMain, screen } from "electron";
+import { app, BrowserWindow, shell, ipcMain, dialog, screen } from "electron";
 import { release } from "node:os";
 import { join } from "node:path";
 import { update } from "./update";
-import { useState } from "react";
-import { IndexFinger } from "@/types/IndexFinger";
 const { Key, keyboard, mouse } = require("@nut-tree/nut-js");
+import { sequelize } from "../../src/getdb";
+import { IndexFinger } from "@/types/IndexFinger";
 
 // The built directory structure
 //
@@ -101,6 +101,11 @@ async function createWindow() {
   // Apply electron-updater
   update(win);
 }
+sequelize
+  .authenticate()
+  .then(() => console.log("connected"))
+  .catch((err: any) => console.log(err));
+
 app.whenReady().then(() => {
   screenSize = screen.getPrimaryDisplay().size;
   createWindow();
@@ -110,6 +115,11 @@ app.on("window-all-closed", () => {
   win = null;
   if (process.platform !== "darwin") app.quit();
 });
+
+sequelize
+  .authenticate()
+  .then(() => console.log("connected"))
+  .catch((err: any) => console.log(err));
 
 app.on("second-instance", () => {
   if (win) {
@@ -145,6 +155,10 @@ ipcMain.handle("open-win", (_, arg) => {
   }
 });
 
+ipcMain.handle("getKeyboardKeys", async () => {
+  return Key;
+});
+
 ipcMain.handle("pressKey", async (event, data) => {
   await keyboard.pressKey(Key.Space);
 });
@@ -166,4 +180,52 @@ ipcMain.handle("mouseClick", async (event, data) => {
 
 ipcMain.on("REQUEST_SOURCES", () => {
   getSource(win);
+});
+
+const chunks: Buffer[] = [];
+
+ipcMain.on("stream-chunk-received", (event, chunk) => {
+  const bufferData = Buffer.from(chunk);
+  chunks.push(bufferData);
+});
+
+ipcMain.on("recording-stopped", async (event) => {
+  const fs = require("fs");
+  const { dialog, BrowserWindow } = require("electron");
+  const win = BrowserWindow.getFocusedWindow();
+
+  try {
+    const result = await dialog.showSaveDialog(win, {
+      title: "Save Recorded File",
+      defaultPath: `recording-${Date.now()}.webm`,
+      buttonLabel: "Save",
+      filters: [{ name: "WebM Files", extensions: ["webm"] }],
+    });
+
+    if (!result.canceled && result.filePath) {
+      const filePath = result.filePath;
+      const bufferData = Buffer.concat(chunks);
+
+      fs.writeFile(filePath, bufferData, (err) => {
+        if (err) {
+          console.error("Error saving recording:", err);
+          event.sender.send(
+            "file-selection-error",
+            err.message || "An error occurred during file selection."
+          );
+        } else {
+          console.log("Recording saved successfully");
+          event.sender.send("file-selection-success", filePath);
+        }
+      });
+    } else {
+      event.sender.send("file-selection-cancelled");
+    }
+  } catch (error) {
+    console.error("Error during file selection:", error);
+    event.sender.send(
+      "file-selection-error",
+      error.message || "An error occurred during file selection."
+    );
+  }
 });

@@ -42,6 +42,12 @@ ipcMain.handle('releaseKey', async (event, data) => {
   return 'Key press released';
 });
 
+ipcMain.handle('getKeyboardKeys', async (event, data) => {
+  // Perform releaseKey logic here
+  globalShortcut.unregister(data);
+  return 'Key press released';
+});
+
 
 /**
  * https://tobiasahlin.com/spinkit
