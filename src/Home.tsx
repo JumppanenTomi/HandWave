@@ -34,7 +34,7 @@ function Home() {
   const mediaStreamRef = useRef<MediaStream | null>(null);
 
   const recordingInterval = useRef<number | null>(null);
- 
+
   const [gestureData, setGestureData] = useState<GestureData[]>();
   const [error, setError] = useState<string | undefined>();
   const [ai, setAi] = useState<any>();
@@ -42,7 +42,8 @@ function Home() {
   const [sourceId, setSourceId] = useState<string>(
     localStorage.getItem("sourceId") || ""
   );
-  const [selectedSourceHighlighted, setSelectedSourceHighlighted] = useState(null);
+  const [selectedSourceHighlighted, setSelectedSourceHighlighted] =
+    useState(null);
   const [recording, setRecording] = useState(false);
   const [recordedTime, setRecordedTime] = useState(0);
 
@@ -201,7 +202,7 @@ function Home() {
     recordingInterval.current = setInterval(() => {
       setRecordedTime((prevTime) => prevTime + 1);
     }, 1000);
-    
+
     if (videoRef.current && videoRef.current.srcObject instanceof MediaStream) {
       const constraints = {
         audio: isMac
@@ -298,7 +299,9 @@ function Home() {
   const formatTime = (timeInSeconds) => {
     const minutes = Math.floor(timeInSeconds / 60);
     const seconds = timeInSeconds % 60;
-    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    return `${minutes.toString().padStart(2, "0")}:${seconds
+      .toString()
+      .padStart(2, "0")}`;
   };
 
   // Send the recorded video to the main process
@@ -320,10 +323,14 @@ function Home() {
   return (
     <Container>
       <Navbar expand={"lg"}>
-        <Container>
+        <Container style={{padding: 0}}>
           <Nav>
             <Navbar.Text>
-            <img src="/src/assets/handwave-logo.svg" alt="logo" style={{ width: '16rem' }}/>
+              <img
+                src="/src/assets/handwave-logo.svg"
+                alt="logo"
+                style={{ width: "16rem" }}
+              />
             </Navbar.Text>
           </Nav>
           <Nav.Link>
@@ -370,42 +377,63 @@ function Home() {
             ))}
         </Col>
         <Col>
-          <video
-            ref={videoRef}
-            autoPlay
-            className={`video ${recording ? 'recording' : ''}`}
-            style={{ width: "100%", objectFit: "cover", borderRadius: 5}}
-          />
           <Col>
-            <DropdownButton
-              style={{ marginRight: 0 }}
-              title="Select Desktop Source"
-              id="dropdown-basic-button"
+            <div
+              style={{
+                position: "relative",
+                width: "100%",
+                height: "min-content",
+              }}
             >
-              {sources.map((source, index) => (
-                <Dropdown.Item
-                  key={index}
-                  onClick={() => {
-                    changeSource(source.id)
-                    setSelectedSourceHighlighted(source)
-                  }}
-                  style={source === selectedSourceHighlighted ? { backgroundColor: '#e8e9ea' } : {}}
-                >
-                  {source.name}
-                </Dropdown.Item>
-              ))}
-            </DropdownButton>
-            <Col style={{ marginTop: 8 }}>
+              <video
+                ref={videoRef}
+                autoPlay
+                className={`video ${recording ? "recording" : ""}`}
+                style={{ width: "100%", objectFit: "cover", borderRadius: 5, border: "2px solid transparent"
+              }}
+              />
+            </div>
+          </Col>
+          <Row>
+            <Col>
+              <DropdownButton
+                style={{
+                  position: "relative",
+                  display: "inline-block",
+                  height: "min-content",
+                }}
+                title="Select Source"
+                id="dropdown-basic-button"
+              >
+                {sources.map((source, index) => (
+                  <Dropdown.Item
+                    key={index}
+                    onClick={() => {
+                      changeSource(source.id);
+                      setSelectedSourceHighlighted(source);
+                    }}
+                    style={
+                      source === selectedSourceHighlighted
+                        ? { backgroundColor: "#e8e9ea" }
+                        : {}
+                    }
+                  >
+                    {source.name}
+                  </Dropdown.Item>
+                ))}
+              </DropdownButton>
+            </Col>
+            <Col>
               <Button
-              style={{ marginRight: 8 }}
                 variant={recording ? "danger" : "success"}
-                size="sm"
                 onClick={toggleRecording}
               >
-                {recording ? `Stop Recording (${formatTime(recordedTime)})` : "Start Recording"}
-              </Button>           
+                {recording
+                  ? `Stop Recording (${formatTime(recordedTime)})`
+                  : "Start Recording"}
+              </Button>
             </Col>
-          </Col>
+          </Row>
         </Col>
       </Row>
     </Container>
