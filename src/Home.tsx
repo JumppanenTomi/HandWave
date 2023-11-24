@@ -1,30 +1,27 @@
 import {
-  
   Col,
- 
   Container,
- 
   Row,
- 
   Button,
- 
   Navbar,
- 
   Nav,
- 
   DropdownButton,
- 
   Dropdown,
-,
 } from "react-bootstrap";
-import {  FontAwesomeIcon  } from "@fortawesome/react-fontawesome";
-import {  faGear  } from "@fortawesome/free-solid-svg-icons";
-import React, {  MutableRefObject, useContext, useEffect, useRef, useState  } from "react";
-import {  GestureData  } from "./types/GestureData";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGear } from "@fortawesome/free-solid-svg-icons";
+import React, {
+  MutableRefObject,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { GestureData } from "./types/GestureData";
 import Ai from "./Ai";
-import {  Link  } from "react-router-dom";
-import {ipcRenderer} from "electron";
-import {ActionsDataContext} from "@/App";
+import { Link } from "react-router-dom";
+import { ipcRenderer } from "electron";
+import { ActionsDataContext } from "@/App";
 import ExecuteActions from "@/executeActions";
 import os from "os";
 import { GestureRecognizer } from "@mediapipe/tasks-vision";
@@ -40,11 +37,13 @@ function Home() {
   const canvasRef: MutableRefObject<HTMLCanvasElement | null> = useRef(null);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  
+
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 
-  const [lastExecutionTime, setLastExecutionTime] = useState<number | null>(null);
-  const {gestureData: actionData} = useContext(ActionsDataContext)
+  const [lastExecutionTime, setLastExecutionTime] = useState<number | null>(
+    null
+  );
+  const { gestureData: actionData } = useContext(ActionsDataContext);
   const [gestureData, setGestureData] = useState<GestureData[]>();
   const [error, setError] = useState<string | undefined>();
   const [ai, setAi] = useState<any>();
@@ -58,7 +57,11 @@ function Home() {
   const isMac = os.platform() === "darwin";
 
   useEffect(() => {
-    if (canvasRef !== null && webCamRef.current != null && canvasRef.current != null) {
+    if (
+      canvasRef !== null &&
+      webCamRef.current != null &&
+      canvasRef.current != null
+    ) {
       setAi(
         Ai(
           webCamRef.current,
@@ -76,22 +79,26 @@ function Home() {
       ai.createGestureRecognizer().then(() => {
         ai.enableCam();
       });
-            if (webCamRef.current !== null) {
-          navigator.mediaDevices.getUserMedia(constraints).then(() => {
-            webCamRef.current.addEventListener("loadeddata", ai.predictWebcam);
-          });
-            }
+      if (webCamRef.current !== null) {
+        navigator.mediaDevices.getUserMedia(constraints).then(() => {
+          webCamRef.current.addEventListener("loadeddata", ai.predictWebcam);
+        });
+      }
     }
   }, [ai]);
 
-    useEffect(() => {
-        const currentTime = Date.now();
-        if (gestureData && actionData && (!lastExecutionTime || currentTime - lastExecutionTime >= 3000)) {
-            // Execute the actions only if the last execution was more than 3 seconds ago
-            ExecuteActions(gestureData, actionData);
-            setLastExecutionTime(currentTime);
-        }
-    }, [gestureData, actionData, lastExecutionTime]);
+  useEffect(() => {
+    const currentTime = Date.now();
+    if (
+      gestureData &&
+      actionData &&
+      (!lastExecutionTime || currentTime - lastExecutionTime >= 3000)
+    ) {
+      // Execute the actions only if the last execution was more than 3 seconds ago
+      ExecuteActions(gestureData, actionData);
+      setLastExecutionTime(currentTime);
+    }
+  }, [gestureData, actionData, lastExecutionTime]);
 
   useEffect(() => {
     if (indexFinger && gestureData && gestureData?.[0]?.category === "two_up") {
