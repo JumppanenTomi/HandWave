@@ -7,6 +7,7 @@ import {
   Nav,
   DropdownButton,
   Dropdown,
+  Spinner,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
@@ -44,6 +45,10 @@ function Home() {
     null
   );
   const { gestureData: actionData } = useContext(ActionsDataContext);
+  const mediaStreamRef = useRef<MediaStream | null>(null);
+
+  const recordingInterval = useRef<number | null>(null);
+
   const [gestureData, setGestureData] = useState<GestureData[]>();
   const [error, setError] = useState<string | undefined>();
   const [ai, setAi] = useState<any>();
@@ -51,8 +56,11 @@ function Home() {
   const [sourceId, setSourceId] = useState<string>(
     localStorage.getItem("sourceId") || ""
   );
+  const [selectedSourceHighlighted, setSelectedSourceHighlighted] =
+    useState(null);
   const [recording, setRecording] = useState(false);
   const [indexFinger, setIndexFinger] = useState<IndexFinger[]>();
+  const [recordedTime, setRecordedTime] = useState(0);
 
   const isMac = os.platform() === "darwin";
 
@@ -128,6 +136,7 @@ function Home() {
         const firstSource = content[0];
         changeSource(firstSource.id);
       } else {
+        // Set the source to the previously selected video element if navigated back to the home page
         changeSource(sourceId);
       }
     });
@@ -186,6 +195,7 @@ function Home() {
     console.log(e);
   }
 
+  // Change the source of the video element
   const changeSource = (sourceId: string) => {
     setSourceId(sourceId);
     localStorage.setItem("sourceId", sourceId);
@@ -214,21 +224,26 @@ function Home() {
       });
   };
 
+  // Toggle the recording state
   const toggleRecording = () => {
     if (recording) {
-      // Stop the recording
       stopRecording();
     } else {
-      // Start the recording
       startRecording(sourceId);
     }
-
     // Toggle the recording state
     setRecording(!recording);
   };
 
+  //Start recording the video
   const startRecording = (sourceId: string) => {
     stopAndClearMediaRecorder();
+    // Start recorder timer
+    setRecordedTime(0);
+    recordingInterval.current = setInterval(() => {
+      setRecordedTime((prevTime) => prevTime + 1);
+    }, 1000);
+
     if (videoRef.current && videoRef.current.srcObject instanceof MediaStream) {
       const constraints = {
         audio: isMac
@@ -250,9 +265,11 @@ function Home() {
         },
       };
 
+      // Get the audio stream from the microphone
       const getMicStream = () =>
         navigator.mediaDevices.getUserMedia({ audio: true, video: false });
 
+      // Get the video stream from the screen
       const getWindowStream = () =>
         navigator.mediaDevices.getUserMedia(constraints);
 
@@ -266,7 +283,7 @@ function Home() {
             const micStream = micResult.value;
 
             console.log("micstream", micStream.getAudioTracks());
-
+            // Combine the video and mic streams
             const combinedStream = new MediaStream();
             windowStream
               .getTracks()
@@ -302,8 +319,10 @@ function Home() {
     }
   };
 
+  // Stop recording the video
   const stopRecording = () => {
     stopAndClearMediaRecorder();
+    clearInterval(recordingInterval.current);
     console.log("Stopped recording");
   };
 
@@ -317,6 +336,16 @@ function Home() {
     }
   };
 
+  // Convert the timer to a time format
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds % 60;
+    return `${minutes.toString().padStart(2, "0")}:${seconds
+      .toString()
+      .padStart(2, "0")}`;
+  };
+
+  // Send the recorded video to the main process
   const handleStreamDataAvailable = async (e: BlobEvent) => {
     try {
       const data = await e.data.arrayBuffer();
@@ -327,6 +356,7 @@ function Home() {
     }
   };
 
+  // Save the recorded video to the file system
   const handleStreamEnded = async () => {
     ipcRenderer.send("recording-stopped");
   };
@@ -334,10 +364,14 @@ function Home() {
   return (
     <Container>
       <Navbar expand={"lg"}>
-        <Container>
+        <Container style={{padding: 0}}>
           <Nav>
             <Navbar.Text>
-              <h1>GesturePresentation</h1>
+              <img
+                src="/src/assets/handwave-logo.svg"
+                alt="logo"
+                style={{ width: "16rem" }}
+              />
             </Navbar.Text>
           </Nav>
           <Nav.Link>
@@ -384,36 +418,63 @@ function Home() {
             ))}
         </Col>
         <Col>
-          <video
-            ref={videoRef}
-            autoPlay
-            style={{ width: "100%", objectFit: "cover", borderRadius: 5 }}
-          />
           <Col>
-            <DropdownButton
-              style={{ marginRight: 0 }}
-              title="Select Desktop Source"
-              id="dropdown-basic-button"
+            <div
+              style={{
+                position: "relative",
+                width: "100%",
+                height: "min-content",
+              }}
             >
-              {sources.map((source, index) => (
-                <Dropdown.Item
-                  key={index}
-                  onClick={() => changeSource(source.id)}
-                >
-                  {source.name}
-                </Dropdown.Item>
-              ))}
-            </DropdownButton>
-            <Col style={{ marginTop: 8 }}>
+              <video
+                ref={videoRef}
+                autoPlay
+                className={`video ${recording ? "recording" : ""}`}
+                style={{ width: "100%", objectFit: "cover", borderRadius: 5, border: "2px solid transparent"
+              }}
+              />
+            </div>
+          </Col>
+          <Row>
+            <Col>
+              <DropdownButton
+                style={{
+                  position: "relative",
+                  display: "inline-block",
+                  height: "min-content",
+                }}
+                title="Select Source"
+                id="dropdown-basic-button"
+              >
+                {sources.map((source, index) => (
+                  <Dropdown.Item
+                    key={index}
+                    onClick={() => {
+                      changeSource(source.id);
+                      setSelectedSourceHighlighted(source);
+                    }}
+                    style={
+                      source === selectedSourceHighlighted
+                        ? { backgroundColor: "#e8e9ea" }
+                        : {}
+                    }
+                  >
+                    {source.name}
+                  </Dropdown.Item>
+                ))}
+              </DropdownButton>
+            </Col>
+            <Col>
               <Button
                 variant={recording ? "danger" : "success"}
-                size="sm"
                 onClick={toggleRecording}
               >
-                {recording ? "Stop Recording" : "Start Recording"}
+                {recording
+                  ? `Stop Recording (${formatTime(recordedTime)})`
+                  : "Start Recording"}
               </Button>
             </Col>
-          </Col>
+          </Row>
         </Col>
       </Row>
     </Container>

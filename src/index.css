@@ -30,3 +30,19 @@
 .iconLink:hover{
   scale: 1.15;
 }
+
+.video.recording {
+  animation: border-change 3s infinite;
+}
+
+@keyframes border-change {
+  0% {
+    border: 2px solid transparent;
+  }
+  25% {
+    border: 2px solid red;
+  }
+  100% {
+    border: 2px solid transparent;
+  }
+}
