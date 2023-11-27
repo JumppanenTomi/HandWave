@@ -402,11 +402,18 @@ function Home() {
           </Button>
           <Nav.Link>
             <Link to={"/settings"}>
-              <Button className="no-drag">
+              <Button className="no-drag" onClick={() => {
+                if (hideElements) {
+                  ipcRenderer.send('toggle-elements', !hideElements)
+                }
+              }}>
                 <FontAwesomeIcon icon={faGear} />
               </Button>
             </Link>
           </Nav.Link>
+          {hideElements && (
+            <div className={`video ${recording ? "recording minimized" : ""}`} style={{width: 12, height: 12, margin: 4, objectFit: "cover", borderRadius: "50%"}} />
+            )}
         </Container>
       </Navbar>
       <Row style={{padding: 8}}>

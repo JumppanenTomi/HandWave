@@ -189,21 +189,24 @@ ipcMain.handle("moveMouse", async (event, data) => {
 });
  
 ipcMain.handle("mouseClick", async (event, data) => {
-  await mouse.leftClick();
+  await mouse.leftClick(); 
 });
 
 ipcMain.on('toggle-elements', (event, hideElements) => {
   if (hideElements) {  
-    win.setSize(screenSize.width / 4, 80);
-    win?.setPosition(screenSize.width / 3, 0);
+    win?.setSize(400, 75);
+    win?.setPosition(screenSize.width / 4, 0);
+    win?.setResizable(false);
   } else {
-    win.setSize(800, 600);
+    win?.setSize(800, 600);
+    win?.setPosition(screenSize.width / 4, 0);
+    win?.setResizable(true);
   }
 }); 
 
 // Request sources
 ipcMain.on('REQUEST_SOURCES', () => {
-  getSource(win);
+  getSource(win!);
 });
 
 const chunks: Buffer[] = [];

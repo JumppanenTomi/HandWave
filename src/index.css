@@ -47,6 +47,22 @@
   }
 }
 
+.video.recording.minimized {
+  animation: background-change 3s infinite;
+}
+
+@keyframes background-change {
+  0% {
+    background-color: transparent;
+  }
+  25% {
+    background-color: red;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
 .drag {
   -webkit-app-region: drag;
 }
