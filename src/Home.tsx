@@ -30,14 +30,13 @@ function Home() {
         null
     );
     const {gestureData: actionData} = useContext(ActionsDataContext);
-    const mediaStreamRef = useRef<MediaStream | null>(null);
 
     const recordingInterval = useRef<number | null>(null);
 
     const [gestureData, setGestureData] = useState<GestureData[]>();
-    const [error, setError] = useState<string | undefined>();
     const [gestureAi, setGestureAi] = useState<any>();
     const [gazeAi, setGazeAi] = useState<any>();
+    const [gazeState, setGazeState] = useState<boolean>(false)
     const [sources, setSources] = useState<Electron.DesktopCapturerSource[]>([]);
     const [sourceId, setSourceId] = useState<string>(
         localStorage.getItem("sourceId") || ""
@@ -68,7 +67,8 @@ function Home() {
             setGazeAi(
                 FaceDetection(
                     webCamRef.current,
-                    canvasRef.current
+                    canvasRef.current,
+                    setGazeState
                 )
             );
         }
@@ -103,6 +103,7 @@ function Home() {
         if (
             gestureData &&
             actionData &&
+            gazeState &&
             (!lastExecutionTime || currentTime - lastExecutionTime >= 3000)
         ) {
             // Execute the actions only if the last execution was more than 3 seconds ago
@@ -122,12 +123,6 @@ function Home() {
             ipcRenderer.invoke("moveMouse", indexFinger[0]);
         }
     }, [gestureData]);
-
-    useEffect(() => {
-        if (error) {
-            alert(error);
-        }
-    }, [error]);
 
     useEffect(() => {
         ipcRenderer.send("REQUEST_SOURCES");
@@ -191,7 +186,7 @@ function Home() {
     function handleStream(stream: MediaStream, video: HTMLVideoElement) {
         video.srcObject = stream;
         video.muted = true;
-        video.onloadedmetadata = (e) => video.play();
+        video.onloadedmetadata = () => video.play();
     }
 
     function handleError(e: any) {
@@ -418,6 +413,8 @@ function Home() {
                             }}
                         />
                     </div>
+                    <p style={{backgroundColor: gazeState ? "#00ff00" : "#ff0000"}}>User is looking
+                        camera: {gazeState}</p>
                     {gestureData &&
                         gestureData.map((item, index) => item && (
                             <p key={index}>
