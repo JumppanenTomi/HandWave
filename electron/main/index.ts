@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell, ipcMain, dialog, screen } from "electron";
+import { app, BrowserWindow, shell, ipcMain, screen } from "electron";
 import { release } from "node:os";
 import { join } from "node:path";
 import { update } from "./update";
@@ -68,6 +68,9 @@ async function createWindow() {
   win = new BrowserWindow({
     title: "Main window",
     icon: join(process.env.VITE_PUBLIC, "favicon.ico"),
+    alwaysOnTop: true,
+    frame: false,
+    autoHideMenuBar: true,
     webPreferences: {
       preload,
       nodeIntegration: true,
@@ -85,7 +88,7 @@ async function createWindow() {
     // electron-vite-vue#298
     win.loadURL(url);
     // Open devTool if the app is not packaged
-    win.webContents.openDevTools();
+    // win.webContents.openDevTools();
   } else {
     win.loadFile(indexHtml);
   }
@@ -158,6 +161,14 @@ ipcMain.handle("open-win", (_, arg) => {
   }
 });
 
+ipcMain.on('minimize-window', () => {
+  win.minimize();
+});
+
+ipcMain.on('close-window', () => {
+  win.close();
+});
+
 ipcMain.handle("getKeyboardKeys", async () => {
   return Key;
 });
@@ -176,10 +187,19 @@ ipcMain.handle("moveMouse", async (event, data) => {
   const absoluteY = data.y * screenSize.height;
   await mouse.setPosition({ x: absoluteX, y: absoluteY });
 });
-
+ 
 ipcMain.handle("mouseClick", async (event, data) => {
   await mouse.leftClick();
 });
+
+ipcMain.on('toggle-elements', (event, hideElements) => {
+  if (hideElements) {  
+    win.setSize(screenSize.width / 4, 80);
+    win?.setPosition(screenSize.width / 3, 0);
+  } else {
+    win.setSize(800, 600);
+  }
+}); 
 
 // Request sources
 ipcMain.on('REQUEST_SOURCES', () => {

@@ -7,10 +7,9 @@ import {
   Nav,
   DropdownButton,
   Dropdown,
-  Spinner,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGear } from "@fortawesome/free-solid-svg-icons";
+import { faDisplay, faGear, faWindowClose, faWindowMinimize } from "@fortawesome/free-solid-svg-icons";
 import React, {
   MutableRefObject,
   useContext,
@@ -61,6 +60,7 @@ function Home() {
   const [recording, setRecording] = useState(false);
   const [indexFinger, setIndexFinger] = useState<IndexFinger[]>();
   const [recordedTime, setRecordedTime] = useState(0);
+  const [hideElements, setHideElements] = useState(false);
 
   const isMac = os.platform() === "darwin";
 
@@ -361,10 +361,32 @@ function Home() {
     ipcRenderer.send("recording-stopped");
   };
 
+  const minimizeWindow = () => {
+    ipcRenderer.send('minimize-window');
+  };
+  
+  const closeWindow = () => {
+    ipcRenderer.send('close-window');
+  };
+
   return (
-    <Container>
-      <Navbar expand={"lg"}>
-        <Container style={{padding: 0}}>
+    <div style={{padding: 0}}>
+    {!hideElements && (
+    <Container className="drag" fluid style={{padding: 0}} onMouseDown={() => ipcRenderer.send('start-drag')}>
+      <Row className="window-top-bar justify-content-end" style={{display: "grid"}}>
+        <Col className="text-right no-drag">
+          <Button variant="link" onClick={minimizeWindow}>
+            <FontAwesomeIcon icon={faWindowMinimize} />
+          </Button>
+          <Button variant="link" onClick={closeWindow}>
+            <FontAwesomeIcon icon={faWindowClose} />
+          </Button>
+        </Col>
+      </Row>
+    </Container>
+    )}
+      <Navbar expand={"lg"} className="drag">
+        <Container>
           <Nav>
             <Navbar.Text>
               <img
@@ -374,29 +396,33 @@ function Home() {
               />
             </Navbar.Text>
           </Nav>
+          <Button className="no-drag" onClick={() => {setHideElements(!hideElements)
+          ipcRenderer.send('toggle-elements', !hideElements)}}>
+                <FontAwesomeIcon icon={faDisplay} />
+          </Button>
           <Nav.Link>
             <Link to={"/settings"}>
-              <Button>
+              <Button className="no-drag">
                 <FontAwesomeIcon icon={faGear} />
               </Button>
             </Link>
           </Nav.Link>
         </Container>
       </Navbar>
-      <Row>
+      <Row style={{padding: 8}}>
         <Col xs={6}>
           <div
             style={{
               position: "relative",
-              width: "100%",
-              height: "min-content",
+              width: hideElements ? '0' : '100%',
+              height: hideElements ? '0' : 'min-content',
             }}
           >
             <video
               autoPlay
               playsInline
               ref={webCamRef}
-              style={{ width: "100%", objectFit: "cover", borderRadius: 5 }}
+              style={{ width: hideElements ? '0' : '100%', objectFit: "cover", borderRadius: 5 }}
             />
             <canvas
               ref={canvasRef}
@@ -404,7 +430,7 @@ function Home() {
                 position: "absolute",
                 top: 0,
                 left: 0,
-                width: "100%",
+                width: hideElements ? '0' : '100%',
                 height: "100%",
                 zIndex: 1,
               }}
@@ -430,11 +456,12 @@ function Home() {
                 ref={videoRef}
                 autoPlay
                 className={`video ${recording ? "recording" : ""}`}
-                style={{ width: "100%", objectFit: "cover", borderRadius: 5, border: "2px solid transparent"
+                style={{ width: hideElements ? '0' : '100%', objectFit: "cover", borderRadius: 5, border: "2px solid transparent"
               }}
               />
             </div>
           </Col>
+          {!hideElements && (
           <Row>
             <Col>
               <DropdownButton
@@ -475,9 +502,10 @@ function Home() {
               </Button>
             </Col>
           </Row>
+        )}
         </Col>
       </Row>
-    </Container>
+    </div>
   );
 }
 
