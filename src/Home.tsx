@@ -9,7 +9,7 @@ import {
   Dropdown,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDisplay, faGear, faWindowClose, faWindowMinimize } from "@fortawesome/free-solid-svg-icons";
+import { faDisplay, faGear, faWindowClose, faWindowMinimize, faXmark } from "@fortawesome/free-solid-svg-icons";
 import React, {
   MutableRefObject,
   useContext,
@@ -379,7 +379,7 @@ function Home() {
             <FontAwesomeIcon icon={faWindowMinimize} />
           </Button>
           <Button variant="link" onClick={closeWindow}>
-            <FontAwesomeIcon icon={faWindowClose} />
+            <FontAwesomeIcon icon={faXmark} size="lg"/>
           </Button>
         </Col>
       </Row>
@@ -456,7 +456,7 @@ function Home() {
               <video
                 ref={videoRef}
                 autoPlay
-                className={`video ${recording ? "recording" : ""}`}
+                className={ !hideElements ? `video ${recording ? "recording" : ""}` : ""}
                 style={{ width: hideElements ? '0' : '100%', objectFit: "cover", borderRadius: 5, border: "2px solid transparent"
               }}
               />
