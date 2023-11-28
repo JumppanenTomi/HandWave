@@ -416,8 +416,8 @@ function Home() {
             )}
         </Container>
       </Navbar>
-      <Row style={{padding: 8}}>
-        <Col xs={6}>
+      <Row style={{padding: hideElements ? 0 : 8, height: hideElements ? 0 : 8}}>
+        <Col xs={6} style={{padding: hideElements ? 0 : 8, height: hideElements ? 0 : 8}}>
           <div
             style={{
               position: "relative",
@@ -443,20 +443,14 @@ function Home() {
               }}
             />
           </div>
-          {gestureData &&
-            gestureData.map((item, index) => (
-              <p key={index}>
-                {item.category} {item.confidence.toFixed(2)} {item.hand}
-              </p>
-            ))}
         </Col>
-        <Col>
+        <Col style={{padding: hideElements ? 0 : 8, height: hideElements ? 0 : 8}}>
           <Col>
             <div
               style={{
                 position: "relative",
                 width: "100%",
-                height: "min-content",
+                height: hideElements ? 0 : "min-content",
               }}
             >
               <video
