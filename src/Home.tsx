@@ -1,15 +1,17 @@
 import {Button, Col, Container, Dropdown, DropdownButton, Nav, Navbar, Row,} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faGear} from "@fortawesome/free-solid-svg-icons";
+import {faDisplay, faGear, faWindowMinimize, faXmark} from "@fortawesome/free-solid-svg-icons";
 import React, {MutableRefObject, useContext, useEffect, useRef, useState,} from "react";
 import {GestureData} from "./types/GestureData";
-import Ai from "./Ai";
 import {Link} from "react-router-dom";
 import {ipcRenderer} from "electron";
 import {ActionsDataContext} from "@/App";
 import ExecuteActions from "@/executeActions";
 import os from "os";
 import {IndexFinger} from "./types/IndexFinger";
+import HandVision from "@/AI/HandVision";
+import EnableWebcam from "@/AI/EnableWebcam";
+import FaceDetection from "@/AI/FaceVision";
 
 const constraints = {
     video: true,
@@ -28,21 +30,18 @@ function Home() {
         null
     );
     const {gestureData: actionData} = useContext(ActionsDataContext);
-    const mediaStreamRef = useRef<MediaStream | null>(null);
 
     const recordingInterval = useRef<number | null>(null);
 
     const [gestureData, setGestureData] = useState<GestureData[]>();
     const [gestureAi, setGestureAi] = useState<any>();
-      const [error, setError] = useState<string | undefined>();
     const [gazeAi, setGazeAi] = useState<any>();
     const [gazeState, setGazeState] = useState<boolean>(false)
     const [sources, setSources] = useState<Electron.DesktopCapturerSource[]>([]);
     const [sourceId, setSourceId] = useState<string>(
         localStorage.getItem("sourceId") || ""
     );
-    const [selectedSourceHighlighted, setSelectedSourceHighlighted] =
-        useState(null);
+    const [selectedSourceHighlighted, setSelectedSourceHighlighted] = useState<Electron.DesktopCapturerSource | null>(null);
     const [recording, setRecording] = useState(false);
     const [indexFinger, setIndexFinger] = useState<IndexFinger[] | undefined>();
     const [recordedTime, setRecordedTime] = useState(0);
@@ -108,7 +107,7 @@ function Home() {
             (!lastExecutionTime || currentTime - lastExecutionTime >= 3000)
         ) {
             // Execute the actions only if the last execution was more than 3 seconds ago
-            ExecuteActions(gestureData, actionData);
+            ExecuteActions(gestureData, actionData).then(() => console.log("Actions executed"));
             setLastExecutionTime(currentTime);
         }
     }, [gestureData, actionData, lastExecutionTime]);
@@ -239,6 +238,7 @@ function Home() {
         stopAndClearMediaRecorder();
         // Start recorder timer
         setRecordedTime(0);
+        //@ts-ignore
         recordingInterval.current = setInterval(() => {
             setRecordedTime((prevTime) => prevTime + 1);
         }, 1000);
@@ -326,6 +326,7 @@ function Home() {
     // Stop recording the video
     const stopRecording = () => {
         stopAndClearMediaRecorder();
+        //@ts-ignore
         clearInterval(recordingInterval.current);
         console.log("Stopped recording");
     };
