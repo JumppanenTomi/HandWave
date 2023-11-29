@@ -190,6 +190,15 @@ ipcMain.handle("moveMouse", async (event, indexFinger, thumb) => {
   await mouse.setPosition({ x: absoluteX, y: absoluteY });
 });
 
+ipcMain.handle("dragMouse", async (event, indexFinger, thumb) => {
+  const midpointX = 1 - (indexFinger.x + thumb.x) / 2;
+  const midpointY = (indexFinger.y + thumb.y) / 2;
+
+  const absoluteX = midpointX * screenSize.width;
+  const absoluteY = midpointY * screenSize.height;
+  await mouse.drag({ x: absoluteX, y: absoluteY });
+});
+
 ipcMain.handle("mouseClick", async (event, data) => {
   await mouse.leftClick();
 });

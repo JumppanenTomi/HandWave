@@ -173,6 +173,18 @@ function Home() {
   }, [gestureData]);
 
   useEffect(() => {
+    if (
+      indexFinger &&
+      thumb &&
+      gestureData &&
+      gestureData?.[0]?.category === "ok"
+    ) {
+      ipcRenderer.invoke("dragMouse", indexFinger[0], thumb[0]);
+    }
+    console.log(gestureData?.[0]?.category);
+  }, [gestureData]);
+
+  useEffect(() => {
     ipcRenderer.send("REQUEST_SOURCES");
     ipcRenderer.on("GET_SOURCES", (e, content) => {
       setSources(content);
