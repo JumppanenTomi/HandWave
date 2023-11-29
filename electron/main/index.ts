@@ -78,11 +78,11 @@ async function createWindow() {
     },
   });
 
-    // Event handler when main window finishes loading
-    win.webContents.on("did-finish-load", () => {
-      getSource(win); // Get sources when window finishes loading
-      win?.webContents.send("main-process-message", new Date().toLocaleString());
-    });
+  // Event handler when main window finishes loading
+  win.webContents.on("did-finish-load", () => {
+    getSource(win); // Get sources when window finishes loading
+    win?.webContents.send("main-process-message", new Date().toLocaleString());
+  });
 
   if (url) {
     // electron-vite-vue#298
@@ -161,11 +161,11 @@ ipcMain.handle("open-win", (_, arg) => {
   }
 });
 
-ipcMain.on('minimize-window', () => {
+ipcMain.on("minimize-window", () => {
   win.minimize();
 });
 
-ipcMain.on('close-window', () => {
+ipcMain.on("close-window", () => {
   win.close();
 });
 
@@ -181,19 +181,21 @@ ipcMain.handle("releaseKey", async (event, data) => {
   await keyboard.releaseKey(Key.Space);
 });
 
-ipcMain.handle("moveMouse", async (event, data) => {
-  const invertedX = 1 - data.x;
-  const absoluteX = invertedX * screenSize.width;
-  const absoluteY = data.y * screenSize.height;
+ipcMain.handle("moveMouse", async (event, indexFinger, thumb) => {
+  const midpointX = 1 - (indexFinger.x + thumb.x) / 2;
+  const midpointY = (indexFinger.y + thumb.y) / 2;
+
+  const absoluteX = midpointX * screenSize.width;
+  const absoluteY = midpointY * screenSize.height;
   await mouse.setPosition({ x: absoluteX, y: absoluteY });
 });
- 
+
 ipcMain.handle("mouseClick", async (event, data) => {
-  await mouse.leftClick(); 
+  await mouse.leftClick();
 });
 
-ipcMain.on('toggle-elements', (event, hideElements) => {
-  if (hideElements) {  
+ipcMain.on("toggle-elements", (event, hideElements) => {
+  if (hideElements) {
     win?.setSize(400, 75);
     win?.setPosition(screenSize.width / 4, 0);
     win?.setResizable(false);
@@ -202,10 +204,10 @@ ipcMain.on('toggle-elements', (event, hideElements) => {
     win?.setPosition(screenSize.width / 4, 0);
     win?.setResizable(true);
   }
-}); 
+});
 
 // Request sources
-ipcMain.on('REQUEST_SOURCES', () => {
+ipcMain.on("REQUEST_SOURCES", () => {
   getSource(win!);
 });
 
