@@ -2,7 +2,7 @@ import { app, BrowserWindow, shell, ipcMain, screen } from "electron";
 import { release } from "node:os";
 import { join } from "node:path";
 import { update } from "./update";
-const { Key, keyboard, mouse } = require("@nut-tree/nut-js");
+const { Key, keyboard, mouse, Button } = require("@nut-tree/nut-js");
 import { sequelize } from "../../src/getdb";
 import { IndexFinger } from "@/types/IndexFinger";
 
@@ -45,7 +45,7 @@ const getSource = (mainWindow: BrowserWindow) => {
   desktopCapturer
     .getSources({ types: ["window", "screen"] })
     .then(async (sources) => {
-      console.log(sources);
+      //console.log(sources);
       mainWindow.webContents.send("GET_SOURCES", sources);
       for (const source of sources) {
         if (source.name === "Screen 1") {
@@ -198,9 +198,13 @@ ipcMain.handle("dragMouse", async (event, indexFinger, thumb) => {
   const absoluteY = midpointY * screenSize.height;
   await mouse.drag({ x: absoluteX, y: absoluteY });
 });
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 ipcMain.handle("mouseClick", async (event, data) => {
-  await mouse.leftClick();
+  // Assuming mouse.leftClick() returns a Promise
+  await mouse.pressButton(Button.LEFT);
+  await sleep(50);
+  mouse.releaseButton(Button.LEFT);
 });
 
 ipcMain.on("toggle-elements", (event, hideElements) => {

@@ -134,30 +134,15 @@ function Home() {
     }
   }, [gestureData, actionData, lastExecutionTime]);
 
-  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
   useEffect(() => {
-    let clickInitiated = false;
-
-    const handleClick = async () => {
-      if (
-        indexFinger &&
-        thumb &&
-        gestureData &&
-        gestureData?.[0]?.category === "one" &&
-        !clickInitiated
-      ) {
-        clickInitiated = true; // Set the flag
-
-        ipcRenderer.invoke("mouseClick");
-        console.log("click");
-
-        await sleep(3000);
-
-        clickInitiated = false; // Reset the flag after the sleep duration
-      }
-    };
-
-    handleClick();
+    if (
+      indexFinger &&
+      thumb &&
+      gestureData &&
+      gestureData?.[0]?.category === "one"
+    ) {
+      ipcRenderer.invoke("mouseClick");
+    }
   }, [gestureData]);
 
   useEffect(() => {
