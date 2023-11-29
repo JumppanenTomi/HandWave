@@ -28,8 +28,10 @@ export default function App() {
 
     useEffect(() => {
         const fetchGestureData = async () => {
-            const data = await getAllGestures();
-            setGestureData(data.map(it => it.dataValues));
+            let data: any = await getAllGestures();
+            data = JSON.stringify(data);
+            data = JSON.parse(data);
+            setGestureData(data);
         }
 
         fetchGestureData();

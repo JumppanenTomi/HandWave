@@ -50,10 +50,10 @@ const getAction = async (id: number) => {
 const createAction = async (action: ActionCreationAttributes) => {
     const retData = await Action.create(action)
     const addedAction: ActionAttributes = {
-        press: retData.dataValues.press,
-        key: retData.dataValues.key,
-        type: retData.dataValues.type,
-        delay: retData.dataValues.delay,
+        press: retData.press,
+        key: retData.key,
+        type: retData.type,
+        delay: retData.delay,
         id: retData.id
     }
     return addedAction
@@ -67,12 +67,16 @@ const createAction = async (action: ActionCreationAttributes) => {
  * @returns {NewAction} the updated Action Object
 */
 const updateAction = async (id: number, action: ActionCreationAttributes) => {
-    const updatedAction = await Action.update(action, {
-        where: {
-            id: id
-        }
-    })
-    return updatedAction
+    const a = await Action.findOne({where: {id: id}});
+    if (a) {
+        a.set({
+            press: action.press,
+            key: action.key,
+            delay: action.delay,
+            type: action.type
+        })
+        await a.save();
+    }
 }
 
 /** 

@@ -3,7 +3,7 @@
 import { Optional } from "sequelize";
 import { Gesture } from "../getdb"
 import { Action } from "../getdb";
-import { createAction } from "./action";
+import { createAction, updateAction } from "./action";
 import { ActionAttributes, ActionCreationAttributes } from "./action";
 import { ActionType } from "@/types/ActionType";
 
@@ -76,20 +76,26 @@ const createGesture = async (gesture: GestureCreationAttributes, actions: Action
  * @returns {NewGesture} the updated Gesture Object
 */
 const updateGesture = async (id: number, gesture: GestureCreationAttributes, actions: ActionType[]) => {
-    const updatedGesture = await Gesture.update(gesture, {
-        where: {
-            id: id
-        }
-    })
+    const g = await Gesture.findOne({where: {id: id}});
+    if (g) {
+        g.set({
+            name: gesture.name,
+            trigger: gesture.trigger
+        })
+        await g.save();
+    }
 
     if (actions) {
         for (const action of actions) {
-            const value = await createAction({
-                ...action,
-                key: String(action.key),
-                delay: Number(action.delay) || null,
-                gestureId: id
-            })
+            if (!action.id) {
+                await createAction({
+                    press: action.press,
+                    type: action.type,
+                    key: action.key ? String(action.key) : null,
+                    delay: Number(action.delay) || null,
+                    gestureId: id
+                })    
+            }
         }
     }
 }
@@ -101,6 +107,12 @@ const updateGesture = async (id: number, gesture: GestureCreationAttributes, act
  * @returns {void} 
 */
 const deleteGesture = async (id: number) => {
+    await Action.destroy({
+        where: {
+            gestureId: id
+        },
+    })
+
     await Gesture.destroy({
         where: {
             id: id
