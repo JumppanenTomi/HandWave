@@ -194,7 +194,7 @@ ipcMain.handle("mouseClick", async (event, data) => {
 
 ipcMain.on('toggle-elements', (event, hideElements) => {
   if (hideElements) {  
-    win?.setSize(400, 75);
+    win?.setSize(200, 96);
     win?.setPosition(screenSize.width / 4, 0);
     win?.setResizable(false);
   } else {
