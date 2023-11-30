@@ -20,24 +20,24 @@ export default async function ExecuteActions(gestureData: any[], actionData: any
 
     for (const action of foundAction.actions) {
         //@ts-ignore
-        switch (action.dataValues.type) {
+        switch (action.type) {
             case "keyboard":
                 console.log("keyboard");
                 // @ts-ignore
-                if (action.dataValues.press === "true") {
+                if (action.press === "true") {
                     console.log("press");
                     // @ts-ignore
-                    await pressKey(action.key && parseInt(action.dataValues.key.toString()));
+                    await pressKey(action.key && parseInt(action.key.toString()));
                 } else {
                     console.log("release");
                     // @ts-ignore
-                    await releaseKey(action.key && parseInt(action.dataValues.key.toString()));
+                    await releaseKey(action.key && parseInt(action.key.toString()));
                 }
                 break;
             case "delay":
                 console.log("delay");
                 // @ts-ignore
-                await new Promise<void>(resolve => setTimeout(resolve, action.dataValues.delay));
+                await new Promise<void>(resolve => setTimeout(resolve, action.delay));
                 console.log("time ended");
                 break;
             default:

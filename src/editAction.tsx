@@ -21,6 +21,7 @@ import {ActionsDataContext} from "./App";
 import {ipcRenderer} from "electron";
 import useNumberInput from "@/useInputs/useNumberInput";
 import { createGesture, updateGesture } from "./modelApi/gesture";
+import { deleteAction } from "./modelApi/action";
 
 export default function EditAction({button, actionToModify}: {
     button: boolean,
@@ -38,21 +39,15 @@ export default function EditAction({button, actionToModify}: {
         fetchData();
     }, [show]);
 
-    const initialData = {
-        name: "",
-        trigger: "",
-        actions: [],
-    };
-
-    const [newAction, setNewAction] = useState(actionToModify ? actionToModify : initialData);
+    const [actions, setActions] = useState(actionToModify ? actionToModify.actions : []);
 
     const mainInputs = [
         useStringInput("Action name", "name", {
             required: true,
             placeholder: "For example, Change slide",
-            initial: newAction.name
+            initial: actionToModify?.name || ""
         }),
-        useSelectInput("Triggering gesture", "trigger", gestureData, {initial: newAction.trigger}),
+        useSelectInput("Triggering gesture", "trigger", gestureData, {initial: actionToModify?.trigger || ""}),
     ];
 
     const actionTypeInput = useSelectInput("Action type", "type", [
@@ -80,7 +75,7 @@ export default function EditAction({button, actionToModify}: {
         actionTypeInput.clear();
         keyboardInputs.forEach((e) => e.clear());
         delayInputs.forEach((e) => e.clear());
-        setNewAction(actionToModify ? actionToModify : initialData);
+        setActions(actionToModify ? actionToModify.actions : []);
     };
 
     const validateInputs = () => {
@@ -99,15 +94,10 @@ export default function EditAction({button, actionToModify}: {
             return;
         }
 
-        const parentJson = InputsToJson(mainInputs) as unknown as TriggerData;
         const actionsJson = InputsToJson(actionTypeInput.value === "keyboard" ? keyboardInputs : delayInputs) as unknown as ActionType;
         actionsJson.type = actionTypeInput.value as "keyboard" | "delay"
 
-        setNewAction((prevState: { actions: any; }) => ({
-            ...prevState,
-            ...parentJson,
-            actions: [...prevState.actions, actionsJson],
-        }));
+        setActions(actions.concat(actionsJson));
     };
 
     const close = () => {
@@ -122,27 +112,30 @@ export default function EditAction({button, actionToModify}: {
             return;
         }
         const parentJson = InputsToJson(mainInputs) as unknown as TriggerData;
-        setNewAction((prevState: any) => ({
-            ...prevState,
-            ...parentJson
-        }));
 
-        if (!newAction.id) {
+        if (!actionToModify) {
             await createGesture({
-                name: newAction.name, 
-                trigger: newAction.trigger,
-            }, newAction.actions)
+                name: parentJson.name, 
+                trigger: parentJson.trigger,
+            }, actions)
     
         } else {
-            await updateGesture(newAction.id, {
-                name: newAction.name, 
-                trigger: newAction.trigger,
-            }, newAction.actions)
+            await updateGesture(actionToModify.id, {
+                name: parentJson?.name || actionToModify?.name, 
+                trigger: parentJson?.trigger || actionToModify?.trigger,
+            }, actions)
         }
 
         forceRender();
         close();
     };
+
+    const remove = async (actionToRemove: any) => {
+        if (actionToRemove?.id) {
+            await deleteAction(actionToRemove.id);
+        };
+        setActions(actions.filter(a  => a != actionToRemove))
+    }
 
     return (
         <>
@@ -164,7 +157,7 @@ export default function EditAction({button, actionToModify}: {
                         ))}
                     </Container>
                     <Accordion>
-                        {newAction.actions.map((e: { type: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; delay: any; key: any; press: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }, i: React.Key | null | undefined) => (
+                        {actions.map((e: { type: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; delay: any; key: any; press: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }, i: React.Key | null | undefined) => (
                             <Accordion.Item key={i} eventKey={String(i)}>
                                 <Accordion.Header>
                                     <div className={"alignCenter"}>
@@ -174,7 +167,7 @@ export default function EditAction({button, actionToModify}: {
                                 <Accordion.Body>
                                     <Row>
                                         <Col>
-                                            <Button variant={"danger"}>
+                                            <Button variant={"danger"} onClick={() => remove(e)}>
                                                 <FontAwesomeIcon icon={faTrash}/>
                                             </Button>
                                         </Col>
