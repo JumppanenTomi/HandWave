@@ -1,9 +1,9 @@
-import {useState, useContext} from "react";
+import {useContext, useState} from "react";
 import {Button, ButtonGroup, Modal} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
-import {ActionsDataContext} from "./App";
-import { deleteGesture } from "./modelApi/gesture";
+import {deleteGesture} from "@/modelApi/gesture";
+import {ActionsDataContext} from "@/App";
 
 export default function DeleteAction({action_id}: { action_id: number }) {
     const {forceRender} = useContext(ActionsDataContext);

@@ -1,26 +1,18 @@
-import React, {useContext, useEffect, useMemo, useState} from "react";
-import {
-    Accordion,
-    Button,
-    Col,
-    Container,
-    InputGroup,
-    Modal,
-    Row,
-} from "react-bootstrap";
+import React, {useContext, useEffect, useState} from "react";
+import {Accordion, Button, Col, Container, InputGroup, Modal, Row,} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPenSquare, faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
-import {gestureData} from "./staticData/gestureData";
-import InputsToJson from "./sharedUtilities/inputsToJson";
 import useStringInput from "./useInputs/useStringInput";
 import useSelectInput from "./useInputs/useSelectInput";
-import {TriggerData} from "./types/TriggerData";
-import {ActionType} from "./types/ActionType";
-import arrayIndexAsValue from "./sharedUtilities/arrayIndexAsValue";
-import {ActionsDataContext} from "./App";
 import {ipcRenderer} from "electron";
-import useNumberInput from "@/useInputs/useNumberInput";
-import { createGesture, updateGesture } from "./modelApi/gesture";
+import {ActionsDataContext} from "@/App";
+import arrayIndexAsValue from "@/sharedUtilities/arrayIndexAsValue";
+import {gestureData} from "@/staticData/gestureData";
+import useNumberInput from "@/Elements/useInputs/useNumberInput";
+import InputsToJson from "@/sharedUtilities/inputsToJson";
+import {TriggerData} from "@/types/TriggerData";
+import {ActionType} from "@/types/ActionType";
+import {createGesture, updateGesture} from "@/modelApi/gesture";
 
 export default function EditAction({button, actionToModify}: {
     button: boolean,

@@ -1,5 +1,4 @@
 import {ipcRenderer} from "electron";
-import {GestureData} from "@/types/GestureData";
 import {TriggerData} from "@/types/TriggerData";
 
 export default async function ExecuteActions(gestureData: any[], actionData: any[]): Promise<void> {
