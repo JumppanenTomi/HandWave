@@ -197,7 +197,7 @@ ipcMain.handle("dragMouse", async (event, indexFinger, thumb, gestureData) => {
   const absoluteX = midpointX * screenSize.width;
   const absoluteY = midpointY * screenSize.height;
   if (gestureData != "ok") {
-    mouse.releaseButton(Button.LEFT);
+    await mouse.releaseButton(Button.LEFT);
   } else {
     await mouse.pressButton(Button.LEFT);
     await mouse.setPosition({ x: absoluteX, y: absoluteY });
@@ -207,8 +207,10 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 ipcMain.handle("mouseClick", async (event, data) => {
   await mouse.pressButton(Button.LEFT);
-  await sleep(1000);
-  mouse.releaseButton(Button.LEFT);
+  await mouse.releaseButton(Button.LEFT);
+  await sleep(3000);
+
+  console.log("click");
 });
 
 ipcMain.on("toggle-elements", (event, hideElements) => {
