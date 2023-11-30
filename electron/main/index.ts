@@ -190,20 +190,24 @@ ipcMain.handle("moveMouse", async (event, indexFinger, thumb) => {
   await mouse.setPosition({ x: absoluteX, y: absoluteY });
 });
 
-ipcMain.handle("dragMouse", async (event, indexFinger, thumb) => {
+ipcMain.handle("dragMouse", async (event, indexFinger, thumb, gestureData) => {
   const midpointX = 1 - (indexFinger.x + thumb.x) / 2;
   const midpointY = (indexFinger.y + thumb.y) / 2;
 
   const absoluteX = midpointX * screenSize.width;
   const absoluteY = midpointY * screenSize.height;
-  await mouse.drag({ x: absoluteX, y: absoluteY });
+  if (gestureData != "ok") {
+    mouse.releaseButton(Button.LEFT);
+  } else {
+    await mouse.pressButton(Button.LEFT);
+    await mouse.setPosition({ x: absoluteX, y: absoluteY });
+  }
 });
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 ipcMain.handle("mouseClick", async (event, data) => {
-  // Assuming mouse.leftClick() returns a Promise
   await mouse.pressButton(Button.LEFT);
-  await sleep(50);
+  await sleep(1000);
   mouse.releaseButton(Button.LEFT);
 });
 

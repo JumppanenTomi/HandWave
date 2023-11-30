@@ -158,13 +158,13 @@ function Home() {
   }, [gestureData]);
 
   useEffect(() => {
-    if (
-      indexFinger &&
-      thumb &&
-      gestureData &&
-      gestureData?.[0]?.category === "ok"
-    ) {
-      ipcRenderer.invoke("dragMouse", indexFinger[0], thumb[0]);
+    if (indexFinger && thumb && gestureData) {
+      ipcRenderer.invoke(
+        "dragMouse",
+        indexFinger[0],
+        thumb[0],
+        gestureData[0].category
+      );
     }
     console.log(gestureData?.[0]?.category);
   }, [gestureData]);
