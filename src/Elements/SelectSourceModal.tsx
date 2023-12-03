@@ -1,7 +1,8 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import {useEffect, useState} from "react";
-import {Col, Container, Row, Tab, Tabs} from "react-bootstrap";
+import {Container, Row, Tab, Tabs} from "react-bootstrap";
+import SourceItem from "@/Elements/SourceItem";
 
 export default function SelectSourceModal({sources, changeSource}: { sources: Electron.DesktopCapturerSource[], changeSource: (sourceId: string) => void }) {
     const [show, setShow] = useState(false);
@@ -50,58 +51,59 @@ export default function SelectSourceModal({sources, changeSource}: { sources: El
                 Select other source
             </Button>
             <Modal show={show} onHide={handleClose} centered>
-                <Modal.Body>
+                <Modal.Body className={"noDrag"}>
                     <Container>
                         <Tabs defaultActiveKey="apps">
                             <Tab eventKey="apps" title="Apps">
-                                <Row>
-                                    {windows && windows.map((e) => (
-                                        <Col xs={6}
-                                             style={{overflowX: "hidden", display: "flex", alignContent: "center", justifyContent: "center", flexWrap: "wrap"}}
-                                             onClick={() => setSelectedSource(e.id)}>
-                                            <img src={e.thumbnail.toDataURL()} style={{height: 90}}/>
-                                            <p style={{width: "100%", textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden"}}>{e.name}</p>
-                                        </Col>
-                                    ))}
+                                <Row className={"justifyContent"}>
+                                    {(windows && windows?.length > 0) ?
+                                        windows.map((e) => (
+                                            <SourceItem item={e} selectedSource={selectedSource}
+                                                        onClick={() => setSelectedSource(e.id)}/>
+                                        )) : (
+                                            <label>No windows open that can be captured</label>
+                                        )}
                                 </Row>
                             </Tab>
                             <Tab eventKey="screens" title="Screens">
-                                <Row>
-                                    {screens && screens.map((e) => (
-                                        <Col xs={6}
-                                             style={{overflowX: "hidden", display: "flex", alignContent: "center", justifyContent: "center", flexWrap: "wrap"}}
-                                             onClick={() => setSelectedSource(e.id)}>
-                                            <img src={e.thumbnail.toDataURL()} style={{height: 90}}/>
-                                            <p style={{width: "100%", textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden"}}>{e.name}</p>
-                                        </Col>
-                                    ))}
+                                <Row className={"justifyContent"}>
+                                    {(screens && screens?.length > 0) ?
+                                        screens.map((e) => (
+                                            <SourceItem item={e} selectedSource={selectedSource}
+                                                        onClick={() => setSelectedSource(e.id)}/>
+                                        )) : (
+                                            <label>No screens open that can be captured</label>
+                                        )}
                                 </Row>
                             </Tab>
                             <Tab eventKey="other" title="Other">
-                                <Row>
-                                    {others && others.map((e) => (
-                                        <Col xs={6}
-                                             style={{overflowX: "hidden", display: "flex", alignContent: "center", justifyContent: "center", flexWrap: "wrap"}}
-                                             onClick={() => setSelectedSource(e.id)}>
-                                            <img src={e.thumbnail.toDataURL()} style={{height: 90}}/>
-                                            <p style={{width: "100%", textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden"}}>{e.name}</p>
-                                        </Col>
-                                    ))}
+                                <Row className={"justifyContent"}>
+                                    {(others && others?.length > 0) ?
+                                        others.map((e) => (
+                                            <SourceItem item={e} selectedSource={selectedSource}
+                                                        onClick={() => setSelectedSource(e.id)}/>
+                                        )) : (
+                                            <label>No other instances available that can be captured</label>
+                                        )}
                                 </Row>
                             </Tab>
                         </Tabs>
                     </Container>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button variant="link" onClick={handleClose}>
                         Cancel
                     </Button>
-                    <Button variant="primary" disabled={selectedSource === undefined} onClick={submit}>
+                    <Button
+                        variant="primary"
+                        disabled={selectedSource === undefined}
+                        onClick={submit}
+                    >
                         Apply
                     </Button>
                 </Modal.Footer>
             </Modal>
         </>
     );
-}
+};
 

@@ -1,35 +1,45 @@
-.formSection{
+/* Form Styling */
+
+.formSection {
   padding: 8px;
 }
 
-.formContainer{
+.formContainer {
   background-color: #eaeaea;
   padding: 16px;
   border-radius: 5px;
   margin: 8px;
 }
 
-.alignCenter{
+/* Alignment */
+
+.alignCenter {
   align-content: center;
   align-items: center;
   text-align: center;
   vertical-align: center;
 }
 
-.smallMarginHorizontal{
+/* Margin */
+
+.smallMarginHorizontal {
   margin-left: 8px;
   margin-right: 8px;
 }
 
-.iconLink{
+/* Icon Links */
+
+.iconLink {
   cursor: pointer;
   margin: 5px;
-  transition: .3s;
+  transition: 0.3s;
 }
 
-.iconLink:hover{
+.iconLink:hover {
   scale: 1.15;
 }
+
+/* Video Recording Animation */
 
 .video.recording {
   animation: border-change 3s infinite;
@@ -39,9 +49,11 @@
   0% {
     border: 2px solid transparent;
   }
+
   25% {
     border: 2px solid red;
   }
+
   100% {
     border: 2px solid transparent;
   }
@@ -55,13 +67,17 @@
   0% {
     background-color: transparent;
   }
+
   25% {
     background-color: red;
   }
+
   100% {
     background-color: transparent;
   }
 }
+
+/* Drag Behavior */
 
 .drag {
   -webkit-app-region: drag;
@@ -69,4 +85,82 @@
 
 .no-drag {
   -webkit-app-region: no-drag;
+}
+
+.modalBody {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.sourceItem {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  background-color: #d7d7d7;
+  color: #000000;
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 0;
+  padding: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.selectedSourceItem {
+  border-width: 1px;
+  border-color: #009dff;
+}
+
+.sourceItem:hover {
+  transform: scale(1.05);
+}
+
+.sourceItemImage {
+  height: 90px;
+}
+
+.sourceItemName {
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: center;
+}
+
+.tabsContainer {
+  width: 100%;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+}
+
+.tab {
+  margin: 0 10px;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.tabActive {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+.modalFooter {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.modalButton {
+  margin: 0 10px;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
 }
