@@ -25,7 +25,6 @@ function Home() {
     const desktopCapturer = DesktopCapturer()
     const desktopCapturerToolbar = DesktopCapturerToolbar(desktopCapturer.videoRef.current)
 
-    const [lastExecutionTime, setLastExecutionTime] = useState<number | null>(null)
     const {gestureData: actionData} = useContext(ActionsDataContext)
     const [gestureData, setGestureData] = useState<GestureData[]>()
     const [gestureAi, setGestureAi] = useState<any>()
@@ -81,20 +80,12 @@ function Home() {
     }, [gestureAi, gazeAi]);
 
     useEffect(() => {
-        const currentTime = Date.now();
-        if (
-            gestureData &&
-            actionData &&
-            gazeState &&
-            (!lastExecutionTime || currentTime - lastExecutionTime >= 3000)
-        ) {
-            // Execute the actions only if the last execution was more than 3 seconds ago
+        if (gestureData && actionData && gazeState) {
             ExecuteActions(gestureData, actionData).then(() =>
                 console.log("Actions executed")
             );
-            setLastExecutionTime(currentTime);
         }
-    }, [gestureData, actionData, lastExecutionTime]);
+    }, [gestureData, actionData]);
 
     useEffect(() => {
         if (
