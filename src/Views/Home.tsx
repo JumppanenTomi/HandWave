@@ -2,7 +2,6 @@ import {Col, Row} from "react-bootstrap";
 import React, {MutableRefObject, useContext, useEffect, useRef, useState,} from "react";
 import {ipcRenderer} from "electron";
 import {ActionsDataContext} from "@/App";
-import os from "os";
 import HandVision from "@/AI/HandVision";
 import EnableWebcam from "@/AI/EnableWebcam";
 import FaceDetection from "@/AI/FaceVision";
@@ -12,6 +11,7 @@ import ExecuteActions from "@/AI/executeActions";
 import Webcam from "@/Elements/Webcam";
 import DesktopCapturer from "@/Elements/DesktopCapturer";
 import DesktopCapturerToolbar from "@/Elements/DesktopCapturerToolbar";
+import {Thumb} from "@/types/Thumb";
 
 const constraints = {
     video: true,
@@ -31,8 +31,7 @@ function Home() {
     const [gazeAi, setGazeAi] = useState<any>()
     const [gazeState, setGazeState] = useState<boolean>(false)
     const [indexFinger, setIndexFinger] = useState<IndexFinger[] | undefined>()
-
-    const isMac = os.platform() === "darwin"
+    const [thumb, setThumb] = useState<Thumb[] | undefined>();
 
     useEffect(() => {
         if (
@@ -45,42 +44,43 @@ function Home() {
                     webCamRef.current,
                     canvasRef.current,
                     setGestureData,
-                    setIndexFinger
+                    setIndexFinger,
+                    setThumb
                 )
-            )
+            );
 
             setGazeAi(
                 FaceDetection(webCamRef.current, canvasRef.current, setGazeState)
-            )
+            );
         }
     }, [canvasRef]);
 
     useEffect(() => {
         if (webCamRef.current) {
-            EnableWebcam(webCamRef.current)
+            EnableWebcam(webCamRef.current);
         }
         if (gestureAi) {
-            gestureAi.createGestureRecognizer()
+            gestureAi.createGestureRecognizer();
             if (webCamRef.current !== null) {
-                const webcamCurrent = webCamRef.current
+                const webcamCurrent = webCamRef.current;
                 navigator.mediaDevices.getUserMedia(constraints).then(() => {
                     webcamCurrent.addEventListener("loadeddata", gestureAi.predictWebcam);
-                })
+                });
             }
         }
         if (gazeAi) {
-            gazeAi.createFaceMeshRecognizer()
+            gazeAi.createFaceMeshRecognizer();
             if (webCamRef.current !== null) {
-                const webcamCurrent = webCamRef.current
+                const webcamCurrent = webCamRef.current;
                 navigator.mediaDevices.getUserMedia(constraints).then(() => {
-                    webcamCurrent.addEventListener("loadeddata", gazeAi.predictWebcam)
-                })
+                    webcamCurrent.addEventListener("loadeddata", gazeAi.predictWebcam);
+                });
             }
         }
-    }, [gestureAi, gazeAi])
+    }, [gestureAi, gazeAi]);
 
     useEffect(() => {
-        const currentTime = Date.now()
+        const currentTime = Date.now();
         if (
             gestureData &&
             actionData &&
@@ -90,22 +90,45 @@ function Home() {
             // Execute the actions only if the last execution was more than 3 seconds ago
             ExecuteActions(gestureData, actionData).then(() =>
                 console.log("Actions executed")
-            )
-            setLastExecutionTime(currentTime)
+            );
+            setLastExecutionTime(currentTime);
         }
-    }, [gestureData, actionData, lastExecutionTime])
+    }, [gestureData, actionData, lastExecutionTime]);
 
     useEffect(() => {
-        if (indexFinger && gestureData && gestureData?.[0]?.category === "two_up") {
-            ipcRenderer.invoke("mouseClick")
+        if (
+            indexFinger &&
+            thumb &&
+            gestureData &&
+            gestureData?.[0]?.category === "one"
+        ) {
+            ipcRenderer.invoke("mouseClick");
         }
-    }, [gestureData])
+    }, [gestureData]);
 
     useEffect(() => {
-        if (indexFinger && gestureData && gestureData?.[0]?.category === "peace") {
-            ipcRenderer.invoke("moveMouse", indexFinger[0])
+        if (
+            indexFinger &&
+            thumb &&
+            gestureData &&
+            gestureData?.[0]?.category === "three2"
+        ) {
+            ipcRenderer.invoke("moveMouse", indexFinger[0], thumb[0]);
         }
-    }, [gestureData])
+        console.log(gestureData?.[0]?.category);
+    }, [gestureData]);
+
+    useEffect(() => {
+        if (indexFinger && thumb && gestureData && gestureData[0]) {
+            ipcRenderer.invoke(
+                "dragMouse",
+                indexFinger[0],
+                thumb[0],
+                gestureData[0].category
+            );
+        }
+        console.log(gestureData?.[0]?.category);
+    }, [gestureData]);
 
     return (
         <div style={{padding: 0}}>
