@@ -1,8 +1,8 @@
 import {Col, Container, Row, Table} from "react-bootstrap";
-import DeleteAction from "./deleteAction";
 import {useContext} from "react";
 import {ActionsDataContext} from "./App";
-import EditAction from "./editAction";
+import EditAction from "@/Elements/editAction";
+import DeleteAction from "@/Elements/deleteAction";
 
 export default function Actions() {
     const {gestureData, setGestureData} = useContext(ActionsDataContext)

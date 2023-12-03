@@ -2,7 +2,7 @@ import { app, BrowserWindow, shell, ipcMain, screen } from "electron";
 import { release } from "node:os";
 import { join } from "node:path";
 import { update } from "./update";
-const { Key, keyboard, mouse, Button } = require("@nut-tree/nut-js");
+const { Key, keyboard, mouse } = require("@nut-tree/nut-js");
 import { sequelize } from "../../src/getdb";
 import { IndexFinger } from "@/types/IndexFinger";
 
@@ -45,7 +45,7 @@ const getSource = (mainWindow: BrowserWindow) => {
   desktopCapturer
     .getSources({ types: ["window", "screen"] })
     .then(async (sources) => {
-      //console.log(sources);
+      console.log(sources);
       mainWindow.webContents.send("GET_SOURCES", sources);
       for (const source of sources) {
         if (source.name === "Screen 1") {
@@ -78,11 +78,11 @@ async function createWindow() {
     },
   });
 
-  // Event handler when main window finishes loading
-  win.webContents.on("did-finish-load", () => {
-    getSource(win); // Get sources when window finishes loading
-    win?.webContents.send("main-process-message", new Date().toLocaleString());
-  });
+    // Event handler when main window finishes loading
+    win.webContents.on("did-finish-load", () => {
+      getSource(win); // Get sources when window finishes loading
+      win?.webContents.send("main-process-message", new Date().toLocaleString());
+    });
 
   if (url) {
     // electron-vite-vue#298
@@ -161,11 +161,11 @@ ipcMain.handle("open-win", (_, arg) => {
   }
 });
 
-ipcMain.on("minimize-window", () => {
+ipcMain.on('minimize-window', () => {
   win.minimize();
 });
 
-ipcMain.on("close-window", () => {
+ipcMain.on('close-window', () => {
   win.close();
 });
 
@@ -181,41 +181,20 @@ ipcMain.handle("releaseKey", async (event, data) => {
   await keyboard.releaseKey(Key.Space);
 });
 
-ipcMain.handle("moveMouse", async (event, indexFinger, thumb) => {
-  const midpointX = 1 - (indexFinger.x + thumb.x) / 2;
-  const midpointY = (indexFinger.y + thumb.y) / 2;
-
-  const absoluteX = midpointX * screenSize.width;
-  const absoluteY = midpointY * screenSize.height;
+ipcMain.handle("moveMouse", async (event, data) => {
+  const invertedX = 1 - data.x;
+  const absoluteX = invertedX * screenSize.width;
+  const absoluteY = data.y * screenSize.height;
   await mouse.setPosition({ x: absoluteX, y: absoluteY });
 });
-
-ipcMain.handle("dragMouse", async (event, indexFinger, thumb, gestureData) => {
-  const midpointX = 1 - (indexFinger.x + thumb.x) / 2;
-  const midpointY = (indexFinger.y + thumb.y) / 2;
-
-  const absoluteX = midpointX * screenSize.width;
-  const absoluteY = midpointY * screenSize.height;
-  if (gestureData != "ok") {
-    await mouse.releaseButton(Button.LEFT);
-  } else {
-    await mouse.pressButton(Button.LEFT);
-    await mouse.setPosition({ x: absoluteX, y: absoluteY });
-  }
-});
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
+ 
 ipcMain.handle("mouseClick", async (event, data) => {
-  await mouse.pressButton(Button.LEFT);
-  await mouse.releaseButton(Button.LEFT);
-  await sleep(3000);
-
-  console.log("click");
+  await mouse.leftClick(); 
 });
 
-ipcMain.on("toggle-elements", (event, hideElements) => {
-  if (hideElements) {
-    win?.setSize(400, 75);
+ipcMain.on('toggle-elements', (event, hideElements) => {
+  if (hideElements) {  
+    win?.setSize(200, 96);
     win?.setPosition(screenSize.width / 4, 0);
     win?.setResizable(false);
   } else {
@@ -223,10 +202,10 @@ ipcMain.on("toggle-elements", (event, hideElements) => {
     win?.setPosition(screenSize.width / 4, 0);
     win?.setResizable(true);
   }
-});
+}); 
 
 // Request sources
-ipcMain.on("REQUEST_SOURCES", () => {
+ipcMain.on('REQUEST_SOURCES', () => {
   getSource(win!);
 });
 
