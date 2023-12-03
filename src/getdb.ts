@@ -9,13 +9,15 @@ declare const __static: string;
 
 // todo the below is the path to local db under src/data.db
 const isBuild = process.env.NODE_ENV === "production";
-const locDb = path.join(
+const locDb = path.join("data.db");
+//below is implementation that didnt work
+/**const locDb = path.join(
   // eslint-disable-next-line
   __dirname,
   //isBuild ? __dirname : __static,
   //'../../../../../../src/data.db',
   "src/data.db"
-);
+);**/
 
 // setup the connection to make sure it works
 const sequelize = new Sequelize({
