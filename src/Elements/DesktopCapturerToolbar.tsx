@@ -272,9 +272,9 @@ export default function DesktopCapturerToolbar(videoRef: HTMLVideoElement | null
     )
 
     return {
-        element,
         videoRef,
         sources,
+        toggleRecording,
         changeSource,
         recording,
         setRecording

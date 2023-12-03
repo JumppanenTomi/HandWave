@@ -99,8 +99,8 @@
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  background-color: #d7d7d7;
-  color: #000000;
+  background-color: #1e1e1e;
+  color: #ffffff;
   border-radius: 5px;
   border-style: solid;
   border-width: 0;
@@ -130,37 +130,57 @@
   text-align: center;
 }
 
-.tabsContainer {
+/** Maintoolbar **/
+
+.modal-content{
+    background-color: #282828 !important;
+}
+
+.toolbar-container {
+  z-index: 99;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #282828;
+  padding: 0;
+  margin: 0;
+  max-width: unset !important;
+  text-align: center;
+  color: #fff;
+}
+
+.toolbar-container > * {
+  color: #a29a9a;
+}
+
+.toolbar-row {
+  justify-content: space-between;
+  align-items: stretch !important;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.toolbar-item {
+  display: flex;
+  align-items: stretch !important;
+  flex-wrap: wrap;
+  padding: 15px;
+}
+
+.toolbar-item > * {
   width: 100%;
 }
 
-.tabs {
-  display: flex;
-  justify-content: center;
-}
-
-.tab {
-  margin: 0 10px;
-  padding: 5px 10px;
-  border: 1px solid #ccc;
+.toolbar-item > p {
+  padding: 2px;
+  background-color: #000000;
+  margin-top: 5px;
+  margin-bottom: 0;
   border-radius: 5px;
+}
+
+.toolbar-item:hover{
   cursor: pointer;
-}
-
-.tabActive {
-  background-color: #333333;
-  color: #ffffff;
-}
-
-.modalFooter {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.modalButton {
-  margin: 0 10px;
-  padding: 5px 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  cursor: pointer;
+  background-color: #000;
 }

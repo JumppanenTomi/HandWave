@@ -39,8 +39,6 @@ export default function App() {
     const [render, setRender] = useState<object>({})
     const [recording, setRecording] = useState<boolean>(false)
 
-    const [hideElements, setHideElements] = useState(false)
-
     useEffect(() => {
         const fetchGestureData = async () => {
             let data: any = await getAllGestures();
@@ -56,13 +54,6 @@ export default function App() {
 
     return (
         <>
-            {!hideElements && <TopAppBar/>}
-            <NavBar
-                hideElements={hideElements}
-                setHideElements={setHideElements}
-                recording={recording}
-                setRecording={setRecording}
-            />
             <ActionsDataContext.Provider value={{actionData, setActionData, gestureData, setGestureData, forceRender}}>
                 <RecordingContext.Provider value={{recording, setRecording}}>
                     <Routes>

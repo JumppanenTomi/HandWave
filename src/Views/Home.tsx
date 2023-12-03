@@ -13,6 +13,10 @@ import DesktopCapturer from "@/Elements/DesktopCapturer";
 import DesktopCapturerToolbar from "@/Elements/DesktopCapturerToolbar";
 import {Thumb} from "@/types/Thumb";
 import SelectSourceModal from "@/Elements/SelectSourceModal";
+import Maintoolbar from "@/Elements/Maintoolbar";
+import TopAppBar from "@/TopAppBar";
+import NavBar from "@/Elements/NavBar";
+import NotificationManager from "@/components/NotificationManager";
 
 const constraints = {
     video: true,
@@ -24,6 +28,7 @@ function Home() {
 
     const desktopCapturer = DesktopCapturer()
     const desktopCapturerToolbar = DesktopCapturerToolbar(desktopCapturer.videoRef.current)
+    const notificationManager = NotificationManager()
 
     const [lastExecutionTime, setLastExecutionTime] = useState<number | null>(null)
     const {gestureData: actionData} = useContext(ActionsDataContext)
@@ -33,6 +38,7 @@ function Home() {
     const [gazeState, setGazeState] = useState<boolean>(false)
     const [indexFinger, setIndexFinger] = useState<IndexFinger[] | undefined>()
     const [thumb, setThumb] = useState<Thumb[] | undefined>();
+    const [hideElements, setHideElements] = useState(false)
 
     useEffect(() => {
         if (
@@ -132,17 +138,24 @@ function Home() {
     }, [gestureData]);
 
     return (
-        <div style={{padding: 0}}>
+        <div style={{padding: 0, overflow: "hidden"}}>
+            {!hideElements && <TopAppBar/>}
+            <NavBar
+                hideElements={hideElements}
+                setHideElements={setHideElements}
+                recording={desktopCapturerToolbar.recording}
+                setRecording={desktopCapturerToolbar.setRecording!}
+            />
             <Row>
                 <Col>
                     <Webcam canvasRef={canvasRef} webCamRef={webCamRef}/>
                 </Col>
                 <Col>
                     {desktopCapturer.element}
-                    {desktopCapturerToolbar.element}
-                    <SelectSourceModal sources={desktopCapturerToolbar.sources} changeSource={desktopCapturerToolbar.changeSource}/>
                 </Col>
             </Row>
+
+            <Maintoolbar desktopCapturerOptions={desktopCapturerToolbar}/>
         </div>
     )
 }

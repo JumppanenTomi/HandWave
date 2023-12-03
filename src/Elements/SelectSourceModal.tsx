@@ -1,8 +1,10 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import {useEffect, useState} from "react";
-import {Container, Row, Tab, Tabs} from "react-bootstrap";
+import {Col, Container, Row, Tab, Tabs} from "react-bootstrap";
 import SourceItem from "@/Elements/SourceItem";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faDesktop} from "@fortawesome/free-solid-svg-icons/faDesktop";
 
 export default function SelectSourceModal({sources, changeSource}: { sources: Electron.DesktopCapturerSource[], changeSource: (sourceId: string) => void }) {
     const [show, setShow] = useState(false);
@@ -47,9 +49,10 @@ export default function SelectSourceModal({sources, changeSource}: { sources: El
 
     return (
         <>
-            <Button variant="primary" onClick={handleShow}>
-                Select other source
-            </Button>
+            <Col xs={"auto"} onClick={handleShow} className={"toolbar-item"}>
+                <FontAwesomeIcon icon={faDesktop} size={"lg"}/>
+                <p className={"toolbar-item-text"}>Source</p>
+            </Col>
             <Modal show={show} onHide={handleClose} centered>
                 <Modal.Body className={"noDrag"}>
                     <Container>
