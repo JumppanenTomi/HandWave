@@ -12,6 +12,7 @@ import Webcam from "@/Elements/Webcam";
 import DesktopCapturer from "@/Elements/DesktopCapturer";
 import DesktopCapturerToolbar from "@/Elements/DesktopCapturerToolbar";
 import {Thumb} from "@/types/Thumb";
+import SelectSourceModal from "@/Elements/SelectSourceModal";
 
 const constraints = {
     video: true,
@@ -134,15 +135,12 @@ function Home() {
         <div style={{padding: 0}}>
             <Row>
                 <Col>
-                    <Webcam
-                        recording={desktopCapturerToolbar.recording}
-                        canvasRef={canvasRef}
-                        webCamRef={webCamRef}
-                    />
+                    <Webcam canvasRef={canvasRef} webCamRef={webCamRef}/>
                 </Col>
                 <Col>
                     {desktopCapturer.element}
                     {desktopCapturerToolbar.element}
+                    <SelectSourceModal sources={desktopCapturerToolbar.sources} changeSource={desktopCapturerToolbar.changeSource}/>
                 </Col>
             </Row>
         </div>

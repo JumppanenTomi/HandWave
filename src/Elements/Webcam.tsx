@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-function Webcam({webCamRef, canvasRef}: { recording: boolean, webCamRef: React.RefObject<any>, canvasRef: React.RefObject<any> }) {
+function Webcam({webCamRef, canvasRef}: {webCamRef: React.RefObject<any>, canvasRef: React.RefObject<any> }) {
     return (
         <div
             style={{

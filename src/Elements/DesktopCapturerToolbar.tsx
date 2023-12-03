@@ -259,34 +259,6 @@ export default function DesktopCapturerToolbar(videoRef: HTMLVideoElement | null
     const element = (
         <Row>
             <Col>
-                <DropdownButton
-                    style={{
-                        position: "relative",
-                        display: "inline-block",
-                        height: "min-content",
-                    }}
-                    title="Select Source"
-                    id="dropdown-basic-button"
-                >
-                    {sources.map((source, index) => (
-                        <Dropdown.Item
-                            key={index}
-                            onClick={() => {
-                                changeSource(source.id);
-                                setSelectedSourceHighlighted(source);
-                            }}
-                            style={
-                                source === selectedSourceHighlighted
-                                    ? {backgroundColor: "#e8e9ea"}
-                                    : {}
-                            }
-                        >
-                            {source.name}
-                        </Dropdown.Item>
-                    ))}
-                </DropdownButton>
-            </Col>
-            <Col>
                 <Button
                     variant={recording ? "danger" : "success"}
                     onClick={toggleRecording}
@@ -302,6 +274,8 @@ export default function DesktopCapturerToolbar(videoRef: HTMLVideoElement | null
     return {
         element,
         videoRef,
+        sources,
+        changeSource,
         recording,
         setRecording
     }
