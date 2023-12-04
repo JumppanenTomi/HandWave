@@ -136,10 +136,17 @@
     background-color: #282828 !important;
 }
 
-.toolbar-container {
-  z-index: 99;
-  position: absolute;
+.bottom {
   bottom: 0;
+}
+
+.top {
+  top: 0;
+}
+
+.toolbar-container {
+  z-index: 50;
+  position: relative;
   left: 0;
   right: 0;
   background-color: #282828;

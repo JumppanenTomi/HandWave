@@ -43,6 +43,7 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.9.1",
     "react-dom": "^18.2.0",
+    "react-draggable": "^4.4.6",
     "react-router-dom": "^6.18.0",
     "robotjs": "^0.6.0",
     "sequelize": "^6.35.0",

@@ -1,22 +1,22 @@
-import {Col, Row} from "react-bootstrap";
+import {Col, Container, Row} from "react-bootstrap";
 import React, {MutableRefObject, useContext, useEffect, useRef, useState,} from "react";
 import {ipcRenderer} from "electron";
-import {ActionsDataContext} from "@/App";
+import {ActionsDataContext, MinimalViewContext} from "@/App";
 import HandVision from "@/AI/HandVision";
 import EnableWebcam from "@/AI/EnableWebcam";
 import FaceDetection from "@/AI/FaceVision";
 import {GestureData} from "@/types/GestureData";
 import {IndexFinger} from "@/types/IndexFinger";
-import ExecuteActions from "@/AI/executeActions";
 import Webcam from "@/Elements/Webcam";
 import DesktopCapturer from "@/Elements/DesktopCapturer";
 import DesktopCapturerToolbar from "@/Elements/DesktopCapturerToolbar";
 import {Thumb} from "@/types/Thumb";
-import SelectSourceModal from "@/Elements/SelectSourceModal";
-import Maintoolbar from "@/Elements/Maintoolbar";
-import TopAppBar from "@/TopAppBar";
-import NavBar from "@/Elements/NavBar";
-import NotificationManager from "@/components/NotificationManager";
+import ExecuteActions from "@/AI/executeActions";
+import TopToolbar from "../Elements/toolbars/TopToolbar";
+import Maintoolbar from "../Elements/toolbars/Maintoolbar";
+import MinimalView from "@/Views/MinimalView";
+import TitleBar from "@/TopAppBar";
+import Button from "react-bootstrap/Button";
 
 const constraints = {
     video: true,
@@ -28,7 +28,12 @@ function Home() {
 
     const desktopCapturer = DesktopCapturer()
     const desktopCapturerToolbar = DesktopCapturerToolbar(desktopCapturer.videoRef.current)
-    const notificationManager = NotificationManager()
+
+    const [trackMouse, setTrackMouse] = useState<boolean>(false)
+    const [trackGesture, setTrackGesture] = useState<boolean>(false)
+    const [trackFace, setTrackFace] = useState<boolean>(false)
+
+    const {minimalView, setMinimalView} = useContext(MinimalViewContext)
 
     const {gestureData: actionData} = useContext(ActionsDataContext)
     const [gestureData, setGestureData] = useState<GestureData[]>()
@@ -128,26 +133,37 @@ function Home() {
         console.log(gestureData?.[0]?.category);
     }, [gestureData]);
 
-    return (
-        <div style={{padding: 0, overflow: "hidden"}}>
-            {!hideElements && <TopAppBar/>}
-            <NavBar
-                hideElements={hideElements}
-                setHideElements={setHideElements}
-                recording={desktopCapturerToolbar.recording}
-                setRecording={desktopCapturerToolbar.setRecording!}
-            />
-            <Row>
-                <Col>
-                    <Webcam canvasRef={canvasRef} webCamRef={webCamRef}/>
-                </Col>
-                <Col>
-                    {desktopCapturer.element}
-                </Col>
-            </Row>
-
-            <Maintoolbar desktopCapturerOptions={desktopCapturerToolbar}/>
-        </div>
+    return minimalView === "false" ? (
+        <>
+            <Container
+                style={{
+                    maxWidth: "100%",
+                    height: "100vh",
+                    maxHeight: "100vh",
+                    padding: 0,
+                    overflow: "hidden",
+                    display: "flex",
+                    flexDirection: "column",
+                    backgroundColor: "#171717",
+                }}
+            >
+                <TitleBar/>
+                <TopToolbar/>
+                <Row style={{flex: "1", margin: 0, padding: 0, alignItems: "center"}}>
+                    <Col style={{margin: 0, padding: 0}}>
+                        <Webcam canvasRef={canvasRef} webCamRef={webCamRef}/>
+                    </Col>
+                    <Col style={{margin: 0, padding: 0, alignItems: "center"}}>
+                        {desktopCapturer.element}
+                    </Col>
+                </Row>
+                <Maintoolbar
+                    desktopCapturerOptions={desktopCapturerToolbar}
+                />
+            </Container>
+        </>
+    ) : (
+        <MinimalView/>
     )
 }
 

@@ -1,9 +1,10 @@
 import {faDisplay, faGear} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {ipcRenderer} from 'electron';
-import React from 'react';
+import React, {useContext} from 'react';
 import {Button, Col, Container, Nav, Navbar} from "react-bootstrap";
 import {Link} from 'react-router-dom';
+import {MinimalViewContext} from "@/App";
 
 
 const NavBar: React.FC<{ hideElements: boolean, setHideElements: React.Dispatch<React.SetStateAction<boolean>>, recording: boolean, setRecording: React.Dispatch<React.SetStateAction<boolean>> }> = ({hideElements, setHideElements, recording, setRecording}) => {

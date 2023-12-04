@@ -9,7 +9,7 @@ import {Link} from "react-router-dom";
 
 export default function Maintoolbar({desktopCapturerOptions}: { desktopCapturerOptions: any }) {
     return (
-        <Container className={"toolbar-container"}>
+        <Container className={"toolbar-container bottom"}>
             <Row className={"toolbar-row"}>
                 <Col xs={"auto"}>
                     <Row>

@@ -1,15 +1,17 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
-import {Button, Col, Dropdown, DropdownButton, Row} from "react-bootstrap";
+import {Button, Col, Row} from "react-bootstrap";
 import {ipcRenderer} from "electron";
 import os from "os";
-import {RecordingContext} from "@/App";
+import {NotificationManagerContext, RecordingContext} from "@/App";
 
 export default function DesktopCapturerToolbar(videoRef: HTMLVideoElement | null) {
     const isMac = os.platform() === "darwin";
 
+    const {notificationManager} = useContext(NotificationManagerContext)
+    const {reportError, reportSuccess} = notificationManager();
+
     const [recordedTime, setRecordedTime] = useState(0);
     const {recording, setRecording} = useContext(RecordingContext);
-    const [selectedSourceHighlighted, setSelectedSourceHighlighted] = useState<Electron.DesktopCapturerSource | null>(null);
     const [sources, setSources] = useState<Electron.DesktopCapturerSource[]>([]);
     const [sourceId, setSourceId] = useState<string>(
         localStorage.getItem("sourceId") || ""
@@ -102,6 +104,7 @@ export default function DesktopCapturerToolbar(videoRef: HTMLVideoElement | null
             } as unknown as MediaStreamConstraints)
             .then((stream: MediaStream) => {
                 handleStream(stream, videoRef!);
+                reportSuccess(undefined, "Video source changed", undefined, false, 1500)
             });
     };
 
@@ -188,19 +191,24 @@ export default function DesktopCapturerToolbar(videoRef: HTMLVideoElement | null
 
                         mediaRecorderRef.current.start();
                         console.log("Started recording");
+                        reportSuccess(undefined, "Started recording", undefined, false, 1500)
                         mediaRecorderRef.current.onerror = (event) => {
+                            reportError("Couldn't start screen capture", event.toString(), undefined, true, 999999999)
                             console.log("Error: ", event);
                         };
                     } else {
                         if ("reason" in windowResult) {
+                            reportError("Couldn't start screen capture", windowResult.reason.toString(), undefined, true, 999999999)
                             console.log("Error: ", windowResult.reason);
                         }
                         if ("reason" in micResult) {
+                            reportError("Couldn't start screen capture", micResult.reason.toString(), undefined, true, 999999999)
                             console.log("Error: ", micResult.reason);
                         }
                     }
                 })
                 .catch((error) => {
+                    reportError("Couldn't start screen capture", error.toString(), undefined, true, 999999999)
                     console.error("Error getting streams:", error);
                 });
         }
@@ -211,6 +219,7 @@ export default function DesktopCapturerToolbar(videoRef: HTMLVideoElement | null
         stopAndClearMediaRecorder();
         //@ts-ignore
         clearInterval(recordingInterval.current);
+        reportSuccess(undefined, "Stopped recording", undefined, false, 1500)
         console.log("Stopped recording");
     };
 

@@ -15,7 +15,7 @@ const TopAppBar: React.FC = () => {
   };
 
   return (
-    <Container className="drag" fluid style={{padding: 0}} onMouseDown={() => ipcRenderer.send('start-drag')}>
+    <div className="drag" style={{padding: 0, margin: 0, width: "100%", overflow: "hidden"}} onMouseDown={() => ipcRenderer.send('start-drag')}>
     <Row className="window-top-bar justify-content-end" style={{display: "grid"}}>
       <Col className="text-right no-drag">
         <Button variant="link" onClick={minimizeWindow}>
@@ -26,7 +26,7 @@ const TopAppBar: React.FC = () => {
         </Button>
       </Col>
     </Row>
-  </Container>
+  </div>
   );
 };
 
