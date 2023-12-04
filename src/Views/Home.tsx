@@ -1,7 +1,7 @@
 import {Col, Container, Row} from "react-bootstrap";
 import React, {MutableRefObject, useContext, useEffect, useRef, useState,} from "react";
 import {ipcRenderer} from "electron";
-import {ActionsDataContext, MinimalViewContext} from "@/App";
+import {ActionsDataContext, FaceDetectionContext, MeshContext, MinimalViewContext} from "@/App";
 import HandVision from "@/AI/HandVision";
 import EnableWebcam from "@/AI/EnableWebcam";
 import FaceDetection from "@/AI/FaceVision";
@@ -17,6 +17,7 @@ import Maintoolbar from "../Elements/toolbars/Maintoolbar";
 import MinimalView from "@/Views/MinimalView";
 import TitleBar from "@/TopAppBar";
 import Button from "react-bootstrap/Button";
+import FaceDetectionSettingsModal from "@/Elements/SettingModals/FaceDetectionSettingsModal";
 
 const constraints = {
     video: true,
@@ -28,6 +29,9 @@ function Home() {
 
     const desktopCapturer = DesktopCapturer()
     const desktopCapturerToolbar = DesktopCapturerToolbar(desktopCapturer.videoRef.current)
+
+    const {faceDetection} = useContext(FaceDetectionContext)
+    const {mesh} = useContext(MeshContext)
 
     const [trackMouse, setTrackMouse] = useState<boolean>(false)
     const [trackGesture, setTrackGesture] = useState<boolean>(false)
@@ -56,15 +60,15 @@ function Home() {
                     canvasRef.current,
                     setGestureData,
                     setIndexFinger,
-                    setThumb
+                    setThumb,
+                    mesh === "true"
                 )
             );
-
             setGazeAi(
-                FaceDetection(webCamRef.current, canvasRef.current, setGazeState)
+                FaceDetection(webCamRef.current, canvasRef.current, setGazeState, mesh === "true")
             );
         }
-    }, [canvasRef]);
+    }, [canvasRef, mesh, faceDetection]);
 
     useEffect(() => {
         if (webCamRef.current) {
@@ -91,7 +95,7 @@ function Home() {
     }, [gestureAi, gazeAi]);
 
     useEffect(() => {
-        if (gestureData && actionData && gazeState) {
+        if (gestureData && actionData && (gazeState || faceDetection === "false")) {
             ExecuteActions(gestureData, actionData).then(() =>
                 console.log("Actions executed")
             );

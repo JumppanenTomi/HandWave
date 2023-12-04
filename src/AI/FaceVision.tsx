@@ -5,7 +5,8 @@ let faceLandmarker: FaceLandmarker;
 export default function FaceDetection(
     video: HTMLVideoElement,
     canvasElement: HTMLCanvasElement,
-    setGazeState: Dispatch<SetStateAction<boolean>>
+    setGazeState: Dispatch<SetStateAction<boolean>>,
+    overlay: boolean
 ) {
     const createFaceMeshRecognizer = async () => {
         const vision = await FilesetResolver.forVisionTasks(
@@ -56,10 +57,12 @@ export default function FaceDetection(
         }
         if (results.faceLandmarks) {
             for (const landmarks of results.faceLandmarks) {
-                drawingUtils.drawConnectors(landmarks, FaceLandmarker.FACE_LANDMARKS_TESSELATION, {
-                    color: "rgba(68,68,68,0.29)",
-                    lineWidth: 1,
-                });
+                if (overlay) {
+                    drawingUtils.drawConnectors(landmarks, FaceLandmarker.FACE_LANDMARKS_TESSELATION, {
+                        color: "rgba(68,68,68,0.29)",
+                        lineWidth: 1,
+                    });
+                }
                 setGazeState(isUserLookingAtCamera(landmarks))
             }
         }

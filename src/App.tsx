@@ -5,7 +5,6 @@ import {getAllGestures} from "./modelApi/gesture";
 import Home from "@/Views/Home";
 import Settings from "@/Views/Settings";
 import NotificationManager from "@/Elements/NotificationManager";
-import TopAppBar from "@/TopAppBar";
 
 type ActionsDataContextType = {
     actionData: TriggerData[] | undefined;
@@ -23,6 +22,14 @@ type RecordingContextType = {
 type MinimalViewContextType = {
     minimalView: "true" | "false";
     setMinimalView: React.Dispatch<React.SetStateAction<"true" | "false">>;
+}
+type FaceMeshContextType = {
+    mesh: "true" | "false";
+    setMesh: React.Dispatch<React.SetStateAction<"true" | "false">>;
+}
+type FaceDetectionContextType = {
+    faceDetection: "true" | "false";
+    setFaceDetection: React.Dispatch<React.SetStateAction<"true" | "false">>;
 }
 
 type NotificationManagerContextType = { notificationManager: typeof NotificationManager }
@@ -46,6 +53,18 @@ export const MinimalViewContext = createContext<MinimalViewContextType>({
     }
 })
 
+export const MeshContext = createContext<FaceMeshContextType>({
+    mesh: "false",
+    setMesh: () => {
+    }
+})
+
+export const FaceDetectionContext = createContext<FaceDetectionContextType>({
+    faceDetection: "false",
+    setFaceDetection: () => {
+    }
+})
+
 export const NotificationManagerContext = createContext<NotificationManagerContextType>({notificationManager: NotificationManager});
 
 export default function App() {
@@ -55,6 +74,9 @@ export default function App() {
     const [recording, setRecording] = useState<boolean>(false)
     const notificationManager = NotificationManager()
     const [minimalView, setMinimalView] = useState<"true" | "false">("false")
+
+    const [mesh, setMesh] = useState<"true" | "false">("false")
+    const [faceDetection, setFaceDetection] = useState<"true" | "false">("false")
 
     useEffect(() => {
         const fetchGestureData = async () => {
@@ -72,19 +94,23 @@ export default function App() {
     return (
         <>
             {notificationManager.notificationElement}
-            <MinimalViewContext.Provider value={{minimalView, setMinimalView}}>
-                <NotificationManagerContext.Provider value={{notificationManager: () => notificationManager}}>
-                    <ActionsDataContext.Provider
-                        value={{actionData, setActionData, gestureData, setGestureData, forceRender}}>
-                        <RecordingContext.Provider value={{recording, setRecording}}>
-                            <Routes>
-                                <Route index element={<Home/>}/>
-                                <Route path={"/settings"} element={<Settings/>}/>
-                            </Routes>
-                        </RecordingContext.Provider>
-                    </ActionsDataContext.Provider>
-                </NotificationManagerContext.Provider>
-            </MinimalViewContext.Provider>
+            <MeshContext.Provider value={{mesh, setMesh}}>
+                <FaceDetectionContext.Provider value={{faceDetection, setFaceDetection}}>
+                    <MinimalViewContext.Provider value={{minimalView, setMinimalView}}>
+                        <NotificationManagerContext.Provider value={{notificationManager: () => notificationManager}}>
+                            <ActionsDataContext.Provider
+                                value={{actionData, setActionData, gestureData, setGestureData, forceRender}}>
+                                <RecordingContext.Provider value={{recording, setRecording}}>
+                                    <Routes>
+                                        <Route index element={<Home/>}/>
+                                        <Route path={"/settings"} element={<Settings/>}/>
+                                    </Routes>
+                                </RecordingContext.Provider>
+                            </ActionsDataContext.Provider>
+                        </NotificationManagerContext.Provider>
+                    </MinimalViewContext.Provider>
+                </FaceDetectionContext.Provider>
+            </MeshContext.Provider>
         </>
     )
 }
