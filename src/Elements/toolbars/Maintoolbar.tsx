@@ -1,42 +1,62 @@
-import {Col, Container, Row} from "react-bootstrap";
+import {Container, Row} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircle} from "@fortawesome/free-solid-svg-icons/faCircle";
 import {faCog} from "@fortawesome/free-solid-svg-icons/faCog";
-import {faCompressArrowsAlt} from "@fortawesome/free-solid-svg-icons/faCompressArrowsAlt";
-import SelectSourceModal from "@/Elements/SelectSourceModal";
-import React from "react";
-import {Link} from "react-router-dom";
+import React, {useContext} from "react";
+import {useNavigate} from "react-router-dom";
+import ToolbarItem from "@/Elements/toolbars/ToolbarItem";
+import formatTime from "@/sharedUtilities/formatTime";
+import {ToolbarItemType} from "@/Elements/toolbars/MinimalView";
+import {MinimalViewContext, RecordedTimeContext, RecordingContext} from "@/App";
+import {faMinimize} from "@fortawesome/free-solid-svg-icons/faMinimize";
+import {faDesktop} from "@fortawesome/free-solid-svg-icons/faDesktop";
+import {faHand} from "@fortawesome/free-solid-svg-icons";
 
-export default function Maintoolbar({desktopCapturerOptions}: { desktopCapturerOptions: any }) {
+export default function Maintoolbar({sourceModal, processingSettingModal}:{sourceModal: any, processingSettingModal: any}) {
+    const {recording, setRecording} = useContext(RecordingContext)
+    const {minimalView, setMinimalView} = useContext(MinimalViewContext)
+    const {recordedTime} = useContext(RecordedTimeContext)
+
+    const navigate = useNavigate();
+
+    const items: ToolbarItemType[] = [
+        {
+            name: "Minimize",
+            onClick: () => {
+                setMinimalView(!minimalView)
+            },
+            icon: <FontAwesomeIcon icon={faMinimize}/>
+        },
+        {
+            name: "Select source",
+            onClick: () => {
+                sourceModal.setShow(true)
+            },
+            icon: <FontAwesomeIcon icon={faDesktop}/>
+        },
+        {
+            name: recording ? "Stop recording" : "Start recording " + formatTime(recordedTime),
+            onClick: () => setRecording(!recording),
+            icon: <FontAwesomeIcon icon={faCircle} color={recording ? "#ff0000" : undefined}/>
+        },
+        {
+            name: "Processing settings",
+            onClick: () => processingSettingModal.setShow(true),
+            icon: <FontAwesomeIcon icon={faHand}/>
+        },
+        {
+            name: "Settings",
+            onClick: () => navigate("/settings"),
+            icon: <FontAwesomeIcon icon={faCog}/>
+        },
+    ]
+
     return (
         <Container className={"toolbar-container bottom"}>
             <Row className={"toolbar-row"}>
-                <Col xs={"auto"}>
-                    <Row>
-                        <SelectSourceModal sources={desktopCapturerOptions.sources}
-                                           changeSource={desktopCapturerOptions.changeSource}/>
-                        <Col xs={"auto"} className={"toolbar-item"} onClick={desktopCapturerOptions.toggleRecording}>
-                            <FontAwesomeIcon icon={faCircle} size={"lg"}/>
-                            <p className={"toolbar-item-text"}>{desktopCapturerOptions.recording
-                                ? `Stop Recording`
-                                : "Start Recording"}</p>
-                        </Col>
-                        <Col xs={"auto"} className={"toolbar-item"}>
-                            <FontAwesomeIcon icon={faCompressArrowsAlt} size={"lg"}/>
-                            <p className={"toolbar-item-text"}>Minimize</p>
-                        </Col>
-                    </Row>
-                </Col>
-                <Col xs={"auto"}>
-                    <Row>
-                        <Link to={"/settings"} style={{color: "#fff", textDecoration: "none"}}>
-                            <Col xs={"auto"} className={"toolbar-item"}>
-                                <FontAwesomeIcon icon={faCog} size={"lg"}/>
-                                <p className={"toolbar-item-text"}>Settings</p>
-                            </Col>
-                        </Link>
-                    </Row>
-                </Col>
+                {items.map((e, i) => (
+                    <ToolbarItem key={i} item={e}/>
+                ))}
             </Row>
         </Container>
     )

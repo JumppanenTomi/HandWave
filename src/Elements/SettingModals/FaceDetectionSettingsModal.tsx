@@ -20,21 +20,23 @@ export default function FaceDetectionSettingsModal() {
         setMesh(faceMeshInput.checkedValue)
     }, [faceMeshInput.checkedValue, faceDetectionInput.checkedValue]);
 
-    return (
-        <>
-            <Button onClick={() => setShow(!show)}>Face detection settings</Button>
-            <Modal show={show} onHide={handleClose} centered>
-                <Modal.Body className={"noDrag"} style={{color: "#fff"}}>
-                    {faceMeshInput.element}
-                    {faceDetectionInput.element}
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="link" onClick={handleClose}>
-                        Close
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        </>
-    );
+    const element = (
+        <Modal show={show} onHide={handleClose} centered>
+            <Modal.Body className={"noDrag"} style={{color: "#fff"}}>
+                {faceMeshInput.element}
+                {faceDetectionInput.element}
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="link" onClick={handleClose}>
+                    Close
+                </Button>
+            </Modal.Footer>
+        </Modal>
+    )
+
+    return {
+        setShow,
+        element
+    }
 };
 

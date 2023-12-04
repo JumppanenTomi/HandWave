@@ -2,16 +2,17 @@ import React, {useContext, useEffect, useRef, useState} from "react";
 import {Button, Col, Row} from "react-bootstrap";
 import {ipcRenderer} from "electron";
 import os from "os";
-import {NotificationManagerContext, RecordingContext} from "@/App";
+import {MinimalViewContext, NotificationManagerContext, RecordedTimeContext, RecordingContext} from "@/App";
 
 export default function DesktopCapturerToolbar(videoRef: HTMLVideoElement | null) {
     const isMac = os.platform() === "darwin";
-
     const {notificationManager} = useContext(NotificationManagerContext)
-    const {reportError, reportSuccess} = notificationManager();
+    const { setMinimalView} = useContext(MinimalViewContext)
+    const { recordedTime, setRecordedTime} = useContext(RecordedTimeContext)
 
-    const [recordedTime, setRecordedTime] = useState(0);
-    const {recording, setRecording} = useContext(RecordingContext);
+
+    const {reportError, reportSuccess} = notificationManager();
+    const {recording} = useContext(RecordingContext);
     const [sources, setSources] = useState<Electron.DesktopCapturerSource[]>([]);
     const [sourceId, setSourceId] = useState<string>(
         localStorage.getItem("sourceId") || ""
@@ -111,12 +112,11 @@ export default function DesktopCapturerToolbar(videoRef: HTMLVideoElement | null
     // Toggle the recording state
     const toggleRecording = () => {
         if (recording) {
+            setMinimalView(false)
             stopRecording();
         } else {
             startRecording(sourceId);
         }
-        // Toggle the recording state
-        setRecording!(!recording);
     };
 
     //Start recording the video
@@ -233,15 +233,6 @@ export default function DesktopCapturerToolbar(videoRef: HTMLVideoElement | null
         }
     };
 
-    // Convert the timer to a time format
-    const formatTime = (timeInSeconds: any) => {
-        const minutes = Math.floor(timeInSeconds / 60);
-        const seconds = timeInSeconds % 60;
-        return `${minutes.toString().padStart(2, "0")}:${seconds
-            .toString()
-            .padStart(2, "0")}`;
-    };
-
     // Send the recorded video to the main process
     const handleStreamDataAvailable = async (e: BlobEvent) => {
         try {
@@ -264,28 +255,15 @@ export default function DesktopCapturerToolbar(videoRef: HTMLVideoElement | null
         video.onloadedmetadata = () => video.play();
     }
 
-
-    const element = (
-        <Row>
-            <Col>
-                <Button
-                    variant={recording ? "danger" : "success"}
-                    onClick={toggleRecording}
-                >
-                    {recording
-                        ? `Stop Recording (${formatTime(recordedTime)})`
-                        : "Start Recording"}
-                </Button>
-            </Col>
-        </Row>
-    )
+    useEffect(() => {
+        toggleRecording()
+    }, [recording]);
 
     return {
         videoRef,
         sources,
         toggleRecording,
         changeSource,
-        recording,
-        setRecording
+        recording
     }
 }

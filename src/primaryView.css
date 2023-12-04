@@ -1,0 +1,22 @@
+.content {
+    max-width: 100%;
+    height: 100vh;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--dark);
+}
+
+.video-container {
+    flex: 1;
+    margin: 0;
+    padding: 20px;
+    align-items: center;
+}
+
+.video-container > div {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}

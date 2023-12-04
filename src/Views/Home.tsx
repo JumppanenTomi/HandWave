@@ -14,10 +14,11 @@ import {Thumb} from "@/types/Thumb";
 import ExecuteActions from "@/AI/executeActions";
 import TopToolbar from "../Elements/toolbars/TopToolbar";
 import Maintoolbar from "../Elements/toolbars/Maintoolbar";
-import MinimalView from "@/Views/MinimalView";
+import MinimalView from "@/Elements/toolbars/MinimalView";
 import TitleBar from "@/TopAppBar";
-import Button from "react-bootstrap/Button";
+import SelectSourceModal from "@/Elements/SettingModals/SelectSourceModal";
 import FaceDetectionSettingsModal from "@/Elements/SettingModals/FaceDetectionSettingsModal";
+import "../primaryView.css"
 
 const constraints = {
     video: true,
@@ -29,6 +30,8 @@ function Home() {
 
     const desktopCapturer = DesktopCapturer()
     const desktopCapturerToolbar = DesktopCapturerToolbar(desktopCapturer.videoRef.current)
+    const sourceModal = SelectSourceModal(desktopCapturerToolbar.sources, desktopCapturerToolbar.changeSource)
+    const processingSetting = FaceDetectionSettingsModal()
 
     const {faceDetection} = useContext(FaceDetectionContext)
     const {mesh} = useContext(MeshContext)
@@ -137,37 +140,25 @@ function Home() {
         console.log(gestureData?.[0]?.category);
     }, [gestureData]);
 
-    return minimalView === "false" ? (
+    return (
         <>
-            <Container
-                style={{
-                    maxWidth: "100%",
-                    height: "100vh",
-                    maxHeight: "100vh",
-                    padding: 0,
-                    overflow: "hidden",
-                    display: "flex",
-                    flexDirection: "column",
-                    backgroundColor: "#171717",
-                }}
-            >
+            {minimalView && <MinimalView/>}
+            <div className={"content"} style={minimalView ? {display: "none"} : undefined}>
                 <TitleBar/>
                 <TopToolbar/>
-                <Row style={{flex: "1", margin: 0, padding: 0, alignItems: "center"}}>
-                    <Col style={{margin: 0, padding: 0}}>
+                <Row className={"video-container"}>
+                    <Col>
                         <Webcam canvasRef={canvasRef} webCamRef={webCamRef}/>
                     </Col>
-                    <Col style={{margin: 0, padding: 0, alignItems: "center"}}>
+                    <Col>
                         {desktopCapturer.element}
                     </Col>
                 </Row>
-                <Maintoolbar
-                    desktopCapturerOptions={desktopCapturerToolbar}
-                />
-            </Container>
+                <Maintoolbar sourceModal={sourceModal} processingSettingModal={processingSetting}/>
+                {sourceModal.element}
+                {processingSetting.element}
+            </div>
         </>
-    ) : (
-        <MinimalView/>
     )
 }
 

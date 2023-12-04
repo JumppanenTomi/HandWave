@@ -1,193 +1,252 @@
-/* Form Styling */
+:root {
+    --white: #FFF;
+    --dim-white: #a8a8a8;
+    --dark: #282828;
+    --super-dark: #1c1c1c;
+    --shadow-dark: rgba(28, 28, 28, 0.8);
+    --blue: #004369;
+    --red: #ff0000;
+}
 
 .formSection {
-  padding: 8px;
+    padding: 8px;
 }
 
 .formContainer {
-  background-color: #eaeaea;
-  padding: 16px;
-  border-radius: 5px;
-  margin: 8px;
+    background-color: #eaeaea;
+    padding: 16px;
+    border-radius: 5px;
+    margin: 8px;
 }
 
 /* Alignment */
 
 .alignCenter {
-  align-content: center;
-  align-items: center;
-  text-align: center;
-  vertical-align: center;
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    vertical-align: center;
 }
 
 /* Margin */
 
 .smallMarginHorizontal {
-  margin-left: 8px;
-  margin-right: 8px;
+    margin-left: 8px;
+    margin-right: 8px;
 }
 
 /* Icon Links */
 
 .iconLink {
-  cursor: pointer;
-  margin: 5px;
-  transition: 0.3s;
+    cursor: pointer;
+    margin: 5px;
+    transition: 0.3s;
 }
 
 .iconLink:hover {
-  scale: 1.15;
+    scale: 1.15;
 }
 
 /* Video Recording Animation */
 
 .video.recording {
-  animation: border-change 3s infinite;
+    animation: border-change 3s infinite;
 }
 
 @keyframes border-change {
-  0% {
-    border: 2px solid transparent;
-  }
+    0% {
+        border: 2px solid transparent;
+    }
 
-  25% {
-    border: 2px solid red;
-  }
+    25% {
+        border: 2px solid var(--red);
+    }
 
-  100% {
-    border: 2px solid transparent;
-  }
+    100% {
+        border: 2px solid transparent;
+    }
 }
 
 .video.recording.minimized {
-  animation: background-change 3s infinite;
+    animation: background-change 3s infinite;
 }
 
 @keyframes background-change {
-  0% {
-    background-color: transparent;
-  }
+    0% {
+        background-color: transparent;
+    }
 
-  25% {
-    background-color: red;
-  }
+    25% {
+        background-color: var(--red);
+    }
 
-  100% {
-    background-color: transparent;
-  }
+    100% {
+        background-color: transparent;
+    }
 }
 
 /* Drag Behavior */
 
 .drag {
-  -webkit-app-region: drag;
+    -webkit-app-region: drag;
 }
 
 .no-drag {
-  -webkit-app-region: no-drag;
+    -webkit-app-region: no-drag;
 }
 
 .modalBody {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .sourceItem {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  background-color: #1e1e1e;
-  color: #ffffff;
-  border-radius: 5px;
-  border-style: solid;
-  border-width: 0;
-  padding: 10px;
-  margin-top: 10px;
-  cursor: pointer;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--super-dark);
+    color: var(--white);
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 0;
+    padding: 10px;
+    margin-top: 10px;
+    cursor: pointer;
 }
 
 .selectedSourceItem {
-  border-width: 1px;
-  border-color: #009dff;
+    border-width: 1px;
+    border-color: var(--blue);
 }
 
 .sourceItem:hover {
-  transform: scale(1.05);
+    transform: scale(1.05);
 }
 
 .sourceItemImage {
-  height: 90px;
+    max-height: 90px;
+    max-width: 100%;
 }
 
 .sourceItemName {
-  width: 100%;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  text-align: center;
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: center;
 }
 
 /** Maintoolbar **/
 
-.modal-content{
-    background-color: #282828 !important;
-}
-
 .bottom {
-  bottom: 0;
+    bottom: 0;
 }
 
 .top {
-  top: 0;
+    top: 0;
 }
 
 .toolbar-container {
-  z-index: 50;
-  position: relative;
-  left: 0;
-  right: 0;
-  background-color: #282828;
-  padding: 0;
-  margin: 0;
-  max-width: unset !important;
-  text-align: center;
-  color: #fff;
+    z-index: 50;
+    position: relative;
+    left: 0;
+    right: 0;
+    background-color: var(--super-dark);
+    padding: 0;
+    margin: 0;
+    max-width: unset !important;
+    text-align: center;
+    color: var(--white);
+    box-shadow: 0px -10px 50px var(--shadow-dark);
 }
 
 .toolbar-container > * {
-  color: #a29a9a;
+    color: var(--dim-white);
+}
+
+.logo-bar {
+    max-width: 100% !important;
+    background-color: var(--super-dark);
+    box-shadow: 0px 10px 50px var(--shadow-dark);
+    padding: 20px;
 }
 
 .toolbar-row {
-  justify-content: space-between;
-  align-items: stretch !important;
-  padding-left: 50px;
-  padding-right: 50px;
+    justify-content: space-between;
+    align-items: stretch !important;
+    padding-left: 50px;
+    padding-right: 50px;
+    flex-wrap: wrap !important;
 }
 
 .toolbar-item {
-  display: flex;
-  align-items: stretch !important;
-  flex-wrap: wrap;
-  padding: 15px;
+    display: flex;
+    align-items: stretch !important;
+    flex-wrap: wrap;
+    padding: 15px;
 }
 
 .toolbar-item > * {
-  width: 100%;
+    width: 100%;
 }
 
 .toolbar-item > p {
-  padding: 2px;
-  background-color: #000000;
-  margin-top: 5px;
-  margin-bottom: 0;
-  border-radius: 5px;
+    padding: 2px;
+    background-color: var(--super-dark);
+    margin-top: 5px;
+    margin-bottom: 0;
+    border-radius: 5px;
 }
 
-.toolbar-item:hover{
-  cursor: pointer;
-  background-color: #000;
+.toolbar-item:hover {
+    cursor: pointer;
+    background-color: var(--blue);
+}
+
+/** title bar **/
+.title-bar{
+    background-color: var(--super-dark);
+}
+
+.title-bar > .col > svg {
+    color: var(--white);
+    cursor: pointer;
+    font-size: 20px;
+    padding: 5px 10px 10px 5px
+}
+
+.title-bar > .col > svg:hover {
+    color: var(--blue);
+}
+
+/** bs override **/
+div.modal-footer {
+    border-top: none;
+}
+
+.modal-content {
+    color: var(--white) !important;
+    background-color: var(--dark) !important;
+}
+
+ul.nav-tabs {
+    border-bottom-color: var(--blue);
+}
+
+.nav-link {
+    color: var(--dim-white) !important;
+}
+
+.nav-link:hover {
+    border-color: var(--blue) !important;
+}
+
+.nav-link.active {
+    color: var(--white) !important;
+    background-color: var(--super-dark) !important;
+    border-color: var(--blue) !important;
+    border-bottom: none !important;
 }

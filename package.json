@@ -51,6 +51,7 @@
     "sqlite3": "^5.1.6"
   },
   "devDependencies": {
+    "@electron-forge/cli": "^7.2.0",
     "@playwright/test": "^1.37.1",
     "@types/better-sqlite3": "^7.6.7",
     "@types/react": "^18.2.20",

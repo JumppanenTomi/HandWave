@@ -1,0 +1,12 @@
+.minimal-view-container {
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    color: #ffffff;
+    background-color: #282828;
+}
+
+.minimal-view-row {
+  justify-content: space-evenly;
+  align-items: stretch !important;
+}

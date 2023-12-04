@@ -70,6 +70,8 @@ async function createWindow() {
         icon: join(process.env.VITE_PUBLIC, "favicon.ico"),
         alwaysOnTop: true,
         frame: false,
+        width: 1000,
+        height: 700,
         autoHideMenuBar: true,
         webPreferences: {
             preload,
@@ -220,8 +222,9 @@ ipcMain.on("toggle-elements", (event, hideElements) => {
         win?.setPosition(screenSize.width / 4, 0);
         win?.setResizable(false);
     } else {
-        win?.setSize(800, 600);
-        win?.setPosition(screenSize.width / 4, 0);
+        let windowSize = {width: 1000, height: 700}
+        win?.setSize(windowSize.width, windowSize.height);
+        win?.setPosition((screenSize.width / 2) - (windowSize.width / 2), (screenSize.height / 2) - (windowSize.height / 2));
         win?.setResizable(true);
     }
 });

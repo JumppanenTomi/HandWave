@@ -5,6 +5,8 @@ import {getAllGestures} from "./modelApi/gesture";
 import Home from "@/Views/Home";
 import Settings from "@/Views/Settings";
 import NotificationManager from "@/Elements/NotificationManager";
+import {ipcRenderer} from "electron";
+import TitleBar from "@/TopAppBar";
 
 type ActionsDataContextType = {
     actionData: TriggerData[] | undefined;
@@ -16,12 +18,17 @@ type ActionsDataContextType = {
 
 type RecordingContextType = {
     recording: boolean;
-    setRecording: React.Dispatch<React.SetStateAction<boolean>> | undefined;
+    setRecording: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+type RecordTimeContextType = {
+    recordedTime: number;
+    setRecordedTime: React.Dispatch<React.SetStateAction<number>>;
 }
 
 type MinimalViewContextType = {
-    minimalView: "true" | "false";
-    setMinimalView: React.Dispatch<React.SetStateAction<"true" | "false">>;
+    minimalView: boolean;
+    setMinimalView: React.Dispatch<React.SetStateAction<boolean>>;
 }
 type FaceMeshContextType = {
     mesh: "true" | "false";
@@ -44,11 +51,18 @@ export const ActionsDataContext = createContext<ActionsDataContextType>({
 
 export const RecordingContext = createContext<RecordingContextType>({
     recording: false,
-    setRecording: undefined
+    setRecording: () => {
+    }
+})
+
+export const RecordedTimeContext = createContext<RecordTimeContextType>({
+    recordedTime: 0,
+    setRecordedTime: () => {
+    }
 })
 
 export const MinimalViewContext = createContext<MinimalViewContextType>({
-    minimalView: "false",
+    minimalView: false,
     setMinimalView: () => {
     }
 })
@@ -71,10 +85,15 @@ export default function App() {
     const [actionData, setActionData] = useState<TriggerData[] | undefined>()
     const [gestureData, setGestureData] = useState<any[] | undefined>([])
     const [render, setRender] = useState<object>({})
-    const [recording, setRecording] = useState<boolean>(false)
-    const notificationManager = NotificationManager()
-    const [minimalView, setMinimalView] = useState<"true" | "false">("false")
 
+
+    const [recording, setRecording] = useState<boolean>(false)
+    const [recordedTime, setRecordedTime] = useState<number>(0);
+
+
+    const notificationManager = NotificationManager()
+
+    const [minimalView, setMinimalView] = useState<boolean>(false)
     const [mesh, setMesh] = useState<"true" | "false">("false")
     const [faceDetection, setFaceDetection] = useState<"true" | "false">("false")
 
@@ -91,26 +110,33 @@ export default function App() {
 
     const forceRender = () => setRender({});
 
+    useEffect(() => {
+        ipcRenderer.send('toggle-elements', minimalView)
+    }, [minimalView]);
+
     return (
         <>
-            {notificationManager.notificationElement}
-            <MeshContext.Provider value={{mesh, setMesh}}>
-                <FaceDetectionContext.Provider value={{faceDetection, setFaceDetection}}>
-                    <MinimalViewContext.Provider value={{minimalView, setMinimalView}}>
-                        <NotificationManagerContext.Provider value={{notificationManager: () => notificationManager}}>
-                            <ActionsDataContext.Provider
-                                value={{actionData, setActionData, gestureData, setGestureData, forceRender}}>
-                                <RecordingContext.Provider value={{recording, setRecording}}>
-                                    <Routes>
-                                        <Route index element={<Home/>}/>
-                                        <Route path={"/settings"} element={<Settings/>}/>
-                                    </Routes>
-                                </RecordingContext.Provider>
-                            </ActionsDataContext.Provider>
-                        </NotificationManagerContext.Provider>
-                    </MinimalViewContext.Provider>
-                </FaceDetectionContext.Provider>
-            </MeshContext.Provider>
+            {!minimalView && notificationManager.notificationElement}
+            <RecordedTimeContext.Provider value={{recordedTime, setRecordedTime}}>
+                <MeshContext.Provider value={{mesh, setMesh}}>
+                    <FaceDetectionContext.Provider value={{faceDetection, setFaceDetection}}>
+                        <MinimalViewContext.Provider value={{minimalView, setMinimalView}}>
+                            <NotificationManagerContext.Provider
+                                value={{notificationManager: () => notificationManager}}>
+                                <ActionsDataContext.Provider
+                                    value={{actionData, setActionData, gestureData, setGestureData, forceRender}}>
+                                    <RecordingContext.Provider value={{recording, setRecording}}>
+                                        <Routes>
+                                            <Route index element={<Home/>}/>
+                                            <Route path={"/settings"} element={<Settings/>}/>
+                                        </Routes>
+                                    </RecordingContext.Provider>
+                                </ActionsDataContext.Provider>
+                            </NotificationManagerContext.Provider>
+                        </MinimalViewContext.Provider>
+                    </FaceDetectionContext.Provider>
+                </MeshContext.Provider>
+            </RecordedTimeContext.Provider>
         </>
     )
 }

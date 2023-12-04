@@ -10,28 +10,14 @@ export default function TopToolbar() {
     const {setMinimalView} = useContext(MinimalViewContext)
 
     return (
-        <Container className={"toolbar-container top"}>
-            <Row className={"toolbar-row"}>
+        <Container className={"logo-bar"}>
+            <Row>
                 <Col>
                     <img
                         src={"/src/assets/handwave-logo.svg"}
                         alt="logo"
-                        style={{width: "16rem"}}
+                        style={{width: "10rem"}}
                     />
-                </Col>
-                <Col xs={"auto"}>
-                    <Row>
-                        <Col xs={"auto"} className={"toolbar-item no-drag"} onClick={() => {
-                            setMinimalView("true")
-                            ipcRenderer.send('toggle-elements', true)
-                        }}>
-                            <FontAwesomeIcon icon={faDisplay} size={"lg"}/>
-                            <p className={"toolbar-item-text"}>Minimize</p>
-                        </Col>
-                        <Col>
-                            <FaceDetectionSettingsModal/>
-                        </Col>
-                    </Row>
                 </Col>
             </Row>
         </Container>

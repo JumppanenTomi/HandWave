@@ -58,7 +58,7 @@ export default function NotificationManager() {
                 <Alert.Heading>{title}</Alert.Heading>
             )}
             {message && (
-                <p>{message}</p>
+                <p style={{margin: 0, padding: 0}}>{message}</p>
             )}
             {additionalContent && (
                 <>
