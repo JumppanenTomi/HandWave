@@ -145,7 +145,7 @@ export default function EditAction({button, actionToModify}: {
             ) : (
                 <FontAwesomeIcon icon={faPenSquare} onClick={open} className={"iconLink"}/>
             )}
-            <Modal show={show} onHide={close} centered size={"lg"}>
+            <Modal show={show} onHide={close} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Add Action</Modal.Title>
                 </Modal.Header>

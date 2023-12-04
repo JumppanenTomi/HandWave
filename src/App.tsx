@@ -1,12 +1,9 @@
-import {Route, Routes} from "react-router-dom";
 import React, {createContext, useEffect, useState} from "react";
 import {TriggerData} from "./types/TriggerData";
 import {getAllGestures} from "./modelApi/gesture";
 import Home from "@/Views/Home";
-import Settings from "@/Views/Settings";
 import NotificationManager from "@/Elements/NotificationManager";
 import {ipcRenderer} from "electron";
-import TitleBar from "@/TopAppBar";
 
 type ActionsDataContextType = {
     actionData: TriggerData[] | undefined;
@@ -17,8 +14,8 @@ type ActionsDataContextType = {
 }
 
 type RecordingContextType = {
-    recording: boolean;
-    setRecording: React.Dispatch<React.SetStateAction<boolean>>;
+    recording: boolean | undefined;
+    setRecording: React.Dispatch<React.SetStateAction<boolean | undefined>>;
 }
 
 type RecordTimeContextType = {
@@ -50,7 +47,7 @@ export const ActionsDataContext = createContext<ActionsDataContextType>({
 })
 
 export const RecordingContext = createContext<RecordingContextType>({
-    recording: false,
+    recording: undefined,
     setRecording: () => {
     }
 })
@@ -86,10 +83,8 @@ export default function App() {
     const [gestureData, setGestureData] = useState<any[] | undefined>([])
     const [render, setRender] = useState<object>({})
 
-
-    const [recording, setRecording] = useState<boolean>(false)
+    const [recording, setRecording] = useState<boolean>()
     const [recordedTime, setRecordedTime] = useState<number>(0);
-
 
     const notificationManager = NotificationManager()
 
@@ -126,10 +121,7 @@ export default function App() {
                                 <ActionsDataContext.Provider
                                     value={{actionData, setActionData, gestureData, setGestureData, forceRender}}>
                                     <RecordingContext.Provider value={{recording, setRecording}}>
-                                        <Routes>
-                                            <Route index element={<Home/>}/>
-                                            <Route path={"/settings"} element={<Settings/>}/>
-                                        </Routes>
+                                        <Home/>
                                     </RecordingContext.Provider>
                                 </ActionsDataContext.Provider>
                             </NotificationManagerContext.Provider>

@@ -1,4 +1,4 @@
-import {Col, Container, Row} from "react-bootstrap";
+import {Col, Row} from "react-bootstrap";
 import React, {MutableRefObject, useContext, useEffect, useRef, useState,} from "react";
 import {ipcRenderer} from "electron";
 import {ActionsDataContext, FaceDetectionContext, MeshContext, MinimalViewContext} from "@/App";
@@ -12,13 +12,14 @@ import DesktopCapturer from "@/Elements/DesktopCapturer";
 import DesktopCapturerToolbar from "@/Elements/DesktopCapturerToolbar";
 import {Thumb} from "@/types/Thumb";
 import ExecuteActions from "@/AI/executeActions";
-import TopToolbar from "../Elements/toolbars/TopToolbar";
-import Maintoolbar from "../Elements/toolbars/Maintoolbar";
-import MinimalView from "@/Elements/toolbars/MinimalView";
-import TitleBar from "@/TopAppBar";
-import SelectSourceModal from "@/Elements/SettingModals/SelectSourceModal";
-import FaceDetectionSettingsModal from "@/Elements/SettingModals/FaceDetectionSettingsModal";
-import "../primaryView.css"
+import TopToolbar from "@/Elements/Actionbars/TopToolbar";
+import Maintoolbar from "@/Elements/Actionbars/Maintoolbar";
+import MinimalView from "@/Elements/Actionbars/MinimalView";
+import TitleBar from "@/Elements/Actionbars/TopAppBar";
+import SelectSourceModal from "@/Elements/Modals/SelectSourceModal";
+import FaceDetectionSettingsModal from "@/Elements/Modals/FaceDetectionSettingsModal";
+import "@/styles/primaryView.css"
+import MacroModal from "@/Elements/Modals/MacroModal";
 
 const constraints = {
     video: true,
@@ -30,15 +31,13 @@ function Home() {
 
     const desktopCapturer = DesktopCapturer()
     const desktopCapturerToolbar = DesktopCapturerToolbar(desktopCapturer.videoRef.current)
+
     const sourceModal = SelectSourceModal(desktopCapturerToolbar.sources, desktopCapturerToolbar.changeSource)
     const processingSetting = FaceDetectionSettingsModal()
+    const macroModal = MacroModal()
 
     const {faceDetection} = useContext(FaceDetectionContext)
     const {mesh} = useContext(MeshContext)
-
-    const [trackMouse, setTrackMouse] = useState<boolean>(false)
-    const [trackGesture, setTrackGesture] = useState<boolean>(false)
-    const [trackFace, setTrackFace] = useState<boolean>(false)
 
     const {minimalView, setMinimalView} = useContext(MinimalViewContext)
 
@@ -49,7 +48,7 @@ function Home() {
     const [gazeState, setGazeState] = useState<boolean>(false)
     const [indexFinger, setIndexFinger] = useState<IndexFinger[] | undefined>()
     const [thumb, setThumb] = useState<Thumb[] | undefined>();
-    const [hideElements, setHideElements] = useState(false)
+    const [executionTime, setExecutionTime] = useState<number | undefined>()
 
     useEffect(() => {
         if (
@@ -99,7 +98,7 @@ function Home() {
 
     useEffect(() => {
         if (gestureData && actionData && (gazeState || faceDetection === "false")) {
-            ExecuteActions(gestureData, actionData).then(() =>
+            ExecuteActions(gestureData, actionData, executionTime, setExecutionTime).then(() =>
                 console.log("Actions executed")
             );
         }
@@ -154,9 +153,10 @@ function Home() {
                         {desktopCapturer.element}
                     </Col>
                 </Row>
-                <Maintoolbar sourceModal={sourceModal} processingSettingModal={processingSetting}/>
+                <Maintoolbar sourceModal={sourceModal} processingSettingModal={processingSetting} macroModal={macroModal}/>
                 {sourceModal.element}
                 {processingSetting.element}
+                {macroModal.element}
             </div>
         </>
     )

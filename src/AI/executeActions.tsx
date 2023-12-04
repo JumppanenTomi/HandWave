@@ -1,7 +1,8 @@
 import {ipcRenderer} from "electron";
 import {TriggerData} from "@/types/TriggerData";
+import {Dispatch, SetStateAction} from "react";
 
-export default async function ExecuteActions(gestureData: any[], actionData: any[]): Promise<void> {
+export default async function ExecuteActions(gestureData: any[], actionData: any[], lastExecution: number | undefined, setExecutionTime: Dispatch<SetStateAction<number | undefined>>): Promise<void> {
     if (!gestureData || !actionData) {
         // Handle missing data
         console.error("Gesture data or action data is missing.");
@@ -9,7 +10,6 @@ export default async function ExecuteActions(gestureData: any[], actionData: any
     }
 
     const foundAction = actionData.find((entry) => entry.trigger === gestureData[0]?.category) as TriggerData;
-    console.log(foundAction);
 
     if (!foundAction) {
         // Handle case when no action is found for the given gesture
@@ -17,20 +17,24 @@ export default async function ExecuteActions(gestureData: any[], actionData: any
         return;
     }
 
+    const time = new Date().getTime();
+    if (lastExecution && (time - lastExecution > 3000)) {
+        console.error("too soon");
+        return
+    }
+    setExecutionTime(time)
+
     for (const action of foundAction.actions) {
-        //@ts-ignore
         switch (action.type) {
             case "keyboard":
                 console.log("keyboard");
                 // @ts-ignore
                 if (action.press === "true") {
                     console.log("press");
-                    // @ts-ignore
-                    await pressKey(action.key && parseInt(action.key.toString()));
+                    await pressKey(action.key && action.key);
                 } else {
                     console.log("release");
-                    // @ts-ignore
-                    await releaseKey(action.key && parseInt(action.key.toString()));
+                    await releaseKey(action.key && action.key);
                 }
                 break;
             case "delay":

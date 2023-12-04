@@ -23,11 +23,12 @@ export default function FaceDetectionSettingsModal() {
     const element = (
         <Modal show={show} onHide={handleClose} centered>
             <Modal.Body className={"noDrag"} style={{color: "#fff"}}>
+                <h2>Face detection settings</h2>
                 {faceMeshInput.element}
                 {faceDetectionInput.element}
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="link" onClick={handleClose}>
+                <Button variant="primary" onClick={handleClose}>
                     Close
                 </Button>
             </Modal.Footer>

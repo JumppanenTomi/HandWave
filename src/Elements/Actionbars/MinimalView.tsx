@@ -1,9 +1,9 @@
 import {Container, Row} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import React, {useContext} from "react";
-import "@/minimalView.css"
+import "@/styles/minimalView.css"
 import {faMaximize} from "@fortawesome/free-solid-svg-icons/faMaximize";
-import ToolbarItem from "@/Elements/toolbars/ToolbarItem";
+import ToolbarItem from "@/Elements/Actionbars/ToolbarItem";
 import {MinimalViewContext, RecordedTimeContext, RecordingContext} from "@/App";
 import {faCircle} from "@fortawesome/free-solid-svg-icons/faCircle";
 import formatTime from "@/sharedUtilities/formatTime";
@@ -28,9 +28,9 @@ export default function MinimalView() {
             icon: <FontAwesomeIcon icon={faMaximize}/>
         },
         {
-            name: recording ? "Start recording" : "Stop recording " + formatTime(recordedTime),
+            name: recording ? "Stop recording "  + formatTime(recordedTime) : "Start recording",
             onClick: () => setRecording(!recording),
-            icon: <FontAwesomeIcon icon={faCircle} color={recording ? "#ff0000" : undefined}/>
+            icon: <FontAwesomeIcon icon={faCircle} color={recording ? "#ff0000" : undefined} />
         },
     ]
 

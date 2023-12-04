@@ -1,7 +1,7 @@
 // todo this file provides an API to interact with the db users 
 //todo table making it easier to work with
 import { Optional } from "sequelize";
-import { Action } from "../getdb"
+import { Action } from "@/getdb"
 
 export interface ActionAttributes {
     press: string | null;

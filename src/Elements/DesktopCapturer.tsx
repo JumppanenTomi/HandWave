@@ -1,7 +1,9 @@
-import React, {useRef} from "react";
+import React, {useContext, useRef} from "react";
+import {RecordingContext} from "@/App";
 
 export default function DesktopCapturer() {
     const videoRef = useRef<HTMLVideoElement | null>(null);
+    const {recording} = useContext(RecordingContext)
 
     const element = (
         <div
@@ -14,7 +16,7 @@ export default function DesktopCapturer() {
             <video
                 ref={videoRef}
                 autoPlay
-                className={"video recording"}
+                className={`video ${recording && "recording"}`}
                 style={{width: '100%', objectFit: "cover", borderRadius: 5, border: "2px solid transparent"}}
             />
         </div>

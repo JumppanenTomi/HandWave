@@ -82,7 +82,7 @@ async function createWindow() {
 
     // Event handler when main window finishes loading
     win.webContents.on("did-finish-load", () => {
-        getSource(win); // Get sources when window finishes loading
+        if (win !== null) getSource(win); // Get sources when window finishes loading
         win?.webContents.send("main-process-message", new Date().toLocaleString());
     });
 
@@ -165,11 +165,11 @@ ipcMain.handle("open-win", (_, arg) => {
 });
 
 ipcMain.on("minimize-window", () => {
-    win.minimize();
+    win?.minimize();
 });
 
 ipcMain.on("close-window", () => {
-    win.close();
+    win?.close();
 });
 
 ipcMain.handle("getKeyboardKeys", async () => {
@@ -177,11 +177,11 @@ ipcMain.handle("getKeyboardKeys", async () => {
 });
 
 ipcMain.handle("pressKey", async (event, data) => {
-    await keyboard.pressKey(Key.Space);
+    await keyboard.pressKey(parseInt(data));
 });
 
 ipcMain.handle("releaseKey", async (event, data) => {
-    await keyboard.releaseKey(Key.Space);
+    await keyboard.releaseKey(parseInt(data));
 });
 
 ipcMain.handle("moveMouse", async (event, indexFinger, thumb) => {
@@ -248,6 +248,7 @@ ipcMain.on("recording-stopped", async (event) => {
     const {dialog, BrowserWindow} = require("electron");
     const win = BrowserWindow.getFocusedWindow();
 
+    if (win !== null)
     try {
         const result = await dialog.showSaveDialog(win, {
             title: "Save Recorded File",
@@ -260,7 +261,7 @@ ipcMain.on("recording-stopped", async (event) => {
             const filePath = result.filePath;
             const bufferData = Buffer.concat(chunks);
 
-            fs.writeFile(filePath, bufferData, (err) => {
+            fs.writeFile(filePath, bufferData, (err: any) => {
                 if (err) {
                     console.error("Error saving recording:", err);
                     event.sender.send(
@@ -276,7 +277,7 @@ ipcMain.on("recording-stopped", async (event) => {
         } else {
             event.sender.send("file-selection-cancelled");
         }
-    } catch (error) {
+    } catch (error: any) {
         console.error("Error during file selection:", error);
         event.sender.send(
             "file-selection-error",

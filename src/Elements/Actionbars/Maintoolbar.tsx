@@ -1,23 +1,20 @@
 import {Container, Row} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircle} from "@fortawesome/free-solid-svg-icons/faCircle";
-import {faCog} from "@fortawesome/free-solid-svg-icons/faCog";
 import React, {useContext} from "react";
-import {useNavigate} from "react-router-dom";
-import ToolbarItem from "@/Elements/toolbars/ToolbarItem";
+import ToolbarItem from "@/Elements/Actionbars/ToolbarItem";
 import formatTime from "@/sharedUtilities/formatTime";
-import {ToolbarItemType} from "@/Elements/toolbars/MinimalView";
+import {ToolbarItemType} from "@/Elements/Actionbars/MinimalView";
 import {MinimalViewContext, RecordedTimeContext, RecordingContext} from "@/App";
 import {faMinimize} from "@fortawesome/free-solid-svg-icons/faMinimize";
 import {faDesktop} from "@fortawesome/free-solid-svg-icons/faDesktop";
 import {faHand} from "@fortawesome/free-solid-svg-icons";
+import {faSection} from "@fortawesome/free-solid-svg-icons/faSection";
 
-export default function Maintoolbar({sourceModal, processingSettingModal}:{sourceModal: any, processingSettingModal: any}) {
+export default function Maintoolbar({sourceModal, processingSettingModal, macroModal}: { sourceModal: any, processingSettingModal: any, macroModal: any }) {
     const {recording, setRecording} = useContext(RecordingContext)
     const {minimalView, setMinimalView} = useContext(MinimalViewContext)
     const {recordedTime} = useContext(RecordedTimeContext)
-
-    const navigate = useNavigate();
 
     const items: ToolbarItemType[] = [
         {
@@ -35,7 +32,7 @@ export default function Maintoolbar({sourceModal, processingSettingModal}:{sourc
             icon: <FontAwesomeIcon icon={faDesktop}/>
         },
         {
-            name: recording ? "Stop recording" : "Start recording " + formatTime(recordedTime),
+            name: recording ? "Stop recording " + formatTime(recordedTime) : "Start recording",
             onClick: () => setRecording(!recording),
             icon: <FontAwesomeIcon icon={faCircle} color={recording ? "#ff0000" : undefined}/>
         },
@@ -45,9 +42,9 @@ export default function Maintoolbar({sourceModal, processingSettingModal}:{sourc
             icon: <FontAwesomeIcon icon={faHand}/>
         },
         {
-            name: "Settings",
-            onClick: () => navigate("/settings"),
-            icon: <FontAwesomeIcon icon={faCog}/>
+            name: "Rules",
+            onClick: () => macroModal.setShow(true),
+            icon: <FontAwesomeIcon icon={faSection}/>
         },
     ]
 

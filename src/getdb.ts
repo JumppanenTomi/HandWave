@@ -58,6 +58,7 @@ Gesture.init(
 class Action extends Model {
   public press!: string | null;
   public key!: string | null;
+  public delay!: number | null;
   public type!: string | null;
   public id!: number | null;
 }

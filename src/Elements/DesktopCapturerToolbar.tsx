@@ -1,5 +1,4 @@
-import React, {useContext, useEffect, useRef, useState} from "react";
-import {Button, Col, Row} from "react-bootstrap";
+import {useContext, useEffect, useRef, useState} from "react";
 import {ipcRenderer} from "electron";
 import os from "os";
 import {MinimalViewContext, NotificationManagerContext, RecordedTimeContext, RecordingContext} from "@/App";
@@ -7,8 +6,8 @@ import {MinimalViewContext, NotificationManagerContext, RecordedTimeContext, Rec
 export default function DesktopCapturerToolbar(videoRef: HTMLVideoElement | null) {
     const isMac = os.platform() === "darwin";
     const {notificationManager} = useContext(NotificationManagerContext)
-    const { setMinimalView} = useContext(MinimalViewContext)
-    const { recordedTime, setRecordedTime} = useContext(RecordedTimeContext)
+    const {setMinimalView} = useContext(MinimalViewContext)
+    const {setRecordedTime} = useContext(RecordedTimeContext)
 
 
     const {reportError, reportSuccess} = notificationManager();
@@ -39,36 +38,7 @@ export default function DesktopCapturerToolbar(videoRef: HTMLVideoElement | null
         });
         if (videoRef) {
             ipcRenderer.on("SET_SOURCE", async (event, sourceId) => {
-                console.log(event);
-                setSourceId(sourceId);
-                localStorage.setItem("sourceId", sourceId);
-                try {
-                    (navigator.mediaDevices as any)
-                        .getUserMedia({
-                            audio: isMac
-                                ? false
-                                : {
-                                    mandatory: {
-                                        chromeMediaSource: "desktop",
-                                    },
-                                },
-                            video: {
-                                mandatory: {
-                                    chromeMediaSource: "desktop",
-                                    chromeMediaSourceId: sourceId,
-                                    minWidth: 1920,
-                                    maxWidth: 1920,
-                                    minHeight: 1080,
-                                    maxHeight: 1080,
-                                },
-                            },
-                        } as unknown as MediaStreamConstraints)
-                        .then((stream: MediaStream) => {
-                            handleStream(stream, videoRef!);
-                        });
-                } catch (e) {
-                    console.log(e);
-                }
+                changeSource(sourceId)
             });
         }
         // Clean up the listeners when the component unmounts
@@ -111,10 +81,12 @@ export default function DesktopCapturerToolbar(videoRef: HTMLVideoElement | null
 
     // Toggle the recording state
     const toggleRecording = () => {
-        if (recording) {
+        //sketchy way to make this but it works so don't touch :DDD
+        if (recording === false) {
             setMinimalView(false)
             stopRecording();
         } else {
+            console.log("2 "+recording)
             startRecording(sourceId);
         }
     };
@@ -217,8 +189,9 @@ export default function DesktopCapturerToolbar(videoRef: HTMLVideoElement | null
     // Stop recording the video
     const stopRecording = () => {
         stopAndClearMediaRecorder();
-        //@ts-ignore
-        clearInterval(recordingInterval.current);
+        if (recordingInterval.current !== null) {
+            clearInterval(recordingInterval.current);
+        }
         reportSuccess(undefined, "Stopped recording", undefined, false, 1500)
         console.log("Stopped recording");
     };
@@ -256,7 +229,9 @@ export default function DesktopCapturerToolbar(videoRef: HTMLVideoElement | null
     }
 
     useEffect(() => {
-        toggleRecording()
+        if (recording !== undefined) {
+            toggleRecording()
+        }
     }, [recording]);
 
     return {

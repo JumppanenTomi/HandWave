@@ -20,7 +20,7 @@ export default function Ai(
         );
         gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
             baseOptions: {
-                modelAssetPath: "src/models/hagrid_dataset_512_1000.task",
+                modelAssetPath: "src/tasks/hagrid_dataset_512_1000.task",
                 delegate: "GPU",
             },
             numHands: 2,
