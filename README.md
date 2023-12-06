@@ -11,7 +11,7 @@ This project enables users to control various actions, such as changing slides i
 - Map gestures to specific actions
 - Provide visual feedback for gesture recognition
 <div>
-<img src="./src/assets/gestures.jpg" alt="gestures" width="400"/>
+<img src="./src/assets/gestures.jpg" alt="gestures"/>
 <div>
 
 ### Face Landmarking:
