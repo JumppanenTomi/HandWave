@@ -185,12 +185,24 @@ ipcMain.handle("releaseKey", async (event, data) => {
 });
 
 ipcMain.handle("moveMouse", async (event, indexFinger, thumb) => {
-    const midpointX = 1 - (indexFinger.x + thumb.x) / 2;
-    const midpointY = (indexFinger.y + thumb.y) / 2;
+    const minX = 0.1;
+    const maxX = 0.9;
+    const minY = 0.1;
+    const maxY = 0.7;
 
-    const absoluteX = midpointX * screenSize.width;
-    const absoluteY = midpointY * screenSize.height;
-    await mouse.setPosition({x: absoluteX, y: absoluteY});
+    // Normalize index finger coordinates
+    const normalizedX = (indexFinger.x - minX) / (maxX - minX);
+    const normalizedY = (indexFinger.y - minY) / (maxY - minY);
+
+    // Normalize midpoint coordinates
+    const normalizedMidpointX = (1 - (indexFinger.x + thumb.x) / 2 - minX) / (maxX - minX);
+    const normalizedMidpointY = ((indexFinger.y + thumb.y) / 2 - minY) / (maxY - minY);
+
+    // Calculate absolute positions
+    const absoluteX = normalizedMidpointX * screenSize.width;
+    const absoluteY = normalizedMidpointY * screenSize.height;
+
+    await mouse.setPosition({ x: absoluteX, y: absoluteY });
 });
 
 ipcMain.handle("dragMouse", async (event, indexFinger, thumb, gestureData) => {
