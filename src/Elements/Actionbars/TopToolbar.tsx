@@ -12,7 +12,7 @@ export default function TopToolbar() {
                     <img
                         src={"/src/assets/handwave-logo.svg"}
                         alt="logo"
-                        style={{width: "10rem"}}
+                        style={{width: "10rem", userSelect: "none"}}
                     />
                 </Col>
             </Row>

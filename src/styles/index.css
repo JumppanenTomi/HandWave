@@ -159,6 +159,8 @@
     margin-top: 5px;
     margin-bottom: 0;
     border-radius: 5px;
+    text-align: center;
+    user-select: none;
 }
 
 .toolbar-item:hover {

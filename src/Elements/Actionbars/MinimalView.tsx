@@ -36,7 +36,7 @@ export default function MinimalView() {
 
 
     return (
-        <Container className="minimal-view-container">
+        <Container className="minimal-view-container drag">
             <Row className={"minimal-view-row"}>
                 {items.map((e, i) => (
                     <ToolbarItem key={i} item={e}/>
