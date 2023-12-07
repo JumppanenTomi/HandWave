@@ -4,9 +4,13 @@
     overflow: hidden;
     color: #ffffff;
     background-color: #282828;
+    background-image: url('/src/assets/handwave-favicon-color.svg');
+    background-size: 75vh;
+    background-position: left 10vh bottom 12.5vh;
+    background-repeat: no-repeat;
 }
 
 .minimal-view-row {
-  justify-content: space-evenly;
+  justify-content: flex-end;
   align-items: stretch !important;
 }
