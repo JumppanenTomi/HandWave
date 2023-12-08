@@ -13,11 +13,13 @@ import InputsToJson from "@/sharedUtilities/inputsToJson";
 import {TriggerData} from "@/types/TriggerData";
 import {ActionType} from "@/types/ActionType";
 import {createGesture, updateGesture} from "@/modelApi/gesture";
+import DeleteAction from "@/Elements/deleteAction";
+import EventItem from "@/Elements/EventItem";
+import {faPlay} from "@fortawesome/free-solid-svg-icons/faPlay";
+import {faFlagCheckered} from "@fortawesome/free-solid-svg-icons/faFlagCheckered";
+import {faArrowRight} from "@fortawesome/free-solid-svg-icons/faArrowRight";
 
-export default function EditAction({button, actionToModify}: {
-    button: boolean,
-    actionToModify: any | null
-}) {
+export default function EditAction(actionToModify: any | null) {
     const {forceRender} = useContext(ActionsDataContext);
     const [show, setShow] = useState(false);
     const [keys, setKeys] = useState<any>([{name: "undefined", value: 0}]);
@@ -37,6 +39,8 @@ export default function EditAction({button, actionToModify}: {
     };
 
     const [newAction, setNewAction] = useState(actionToModify ? actionToModify : initialData);
+
+    const deleteRule = DeleteAction(newAction.id)
 
     const mainInputs = [
         useStringInput("Action name", "name", {
@@ -121,13 +125,13 @@ export default function EditAction({button, actionToModify}: {
 
         if (!newAction.id) {
             await createGesture({
-                name: newAction.name, 
+                name: newAction.name,
                 trigger: newAction.trigger,
             }, newAction.actions)
-    
+
         } else {
             await updateGesture(newAction.id, {
-                name: newAction.name, 
+                name: newAction.name,
                 trigger: newAction.trigger,
             }, newAction.actions)
         }
@@ -136,72 +140,78 @@ export default function EditAction({button, actionToModify}: {
         close();
     };
 
-    return (
-        <>
-            {button ? (
-                <Button variant="primary" onClick={open}>
-                    Add action
-                </Button>
-            ) : (
-                <FontAwesomeIcon icon={faPenSquare} onClick={open} className={"iconLink"}/>
-            )}
-            <Modal show={show} onHide={close} centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>Add Action</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Container className={"formContainer"}>
-                        {mainInputs.map((e) => (
-                            <InputGroup className={"formSection"}>{e.element}</InputGroup>
-                        ))}
-                    </Container>
-                    <Accordion>
-                        {newAction.actions.map((e: { type: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; delay: any; key: any; press: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }, i: React.Key | null | undefined) => (
-                            <Accordion.Item key={i} eventKey={String(i)}>
-                                <Accordion.Header>
-                                    <div className={"alignCenter"}>
-                                        {e.type} {e.delay && e.delay} {e.key && e.key} {e.press}
-                                    </div>
-                                </Accordion.Header>
-                                <Accordion.Body>
-                                    <Row>
-                                        <Col>
-                                            <Button variant={"danger"}>
-                                                <FontAwesomeIcon icon={faTrash}/>
-                                            </Button>
+    const element = (
+        <Modal show={show} onHide={close} size={"lg"} centered>
+            <Modal.Header>
+                <Row style={{width: "100%", alignItems: "center"}}>
+                    <Col>
+                        <Row>
+                            {mainInputs.map((e) => (
+                                <Col xs={6}>{e.element}</Col>
+                            ))}
+                        </Row>
+                    </Col>
+                    <Col xs={"auto"}>
+                        {newAction.id && (
+                            <Button onClick={deleteRule.open} variant={"danger"}><FontAwesomeIcon
+                                icon={faTrash}/></Button>
+                        )}
+                    </Col>
+                </Row>
+            </Modal.Header>
+            <Modal.Body>
+                <Accordion>
+                    <Row style={{alignItems: "center", marginLeft: 20, marginRight: 20}}>
+                        <Col xs={"auto"} className={"badgeRow"}>
+                            <FontAwesomeIcon icon={faPlay} size={"2xl"}/>
+                        </Col>
+                        {newAction.actions && newAction.actions.map((e: ActionType, i: number) => (
+                                <>
+                                    <EventItem item={e} key={i}/>
+                                    {i < newAction.actions.length - 1 && (
+                                        <Col xs={"auto"} className={"badgeRow"}>
+                                            <FontAwesomeIcon icon={faArrowRight}/>
                                         </Col>
-                                    </Row>
-                                </Accordion.Body>
-                            </Accordion.Item>
-                        ))}
-                    </Accordion>
-                    <Container className={"formContainer"}>
-                        <h4>Add new</h4>
-                        <InputGroup className={"formSection"}>
-                            {actionTypeInput.element}
-                        </InputGroup>
-                        <InputGroup className={"formSection"}>
-                            {actionTypeInput.value === "delay" && delayInputs.map((e, i) => {
-                                return e.element;
-                            })}
-                            {actionTypeInput.value === "keyboard" && keyboardInputs.map((e, i) => {
-                                return e.element;
-                            })}
-                        </InputGroup>
-                        <Button onClick={addAction}>
-                            <FontAwesomeIcon icon={faPlus}/> Add Group
-                        </Button>
-                    </Container>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={close}>
-                        Close
+                                    )}
+                                </>
+                            )
+                        )}
+                        <Col xs={"auto"} className={"badgeRow"}>
+                            <FontAwesomeIcon icon={faFlagCheckered} size={"2xl"}/>
+                        </Col>
+                    </Row>
+                </Accordion>
+                <Container className={"formContainer"}>
+                    <h4>Add new</h4>
+                    <InputGroup className={"formSection"}>
+                        {actionTypeInput.element}
+                    </InputGroup>
+                    <InputGroup className={"formSection"}>
+                        {actionTypeInput.value === "delay" && delayInputs.map((e, i) => {
+                            return e.element;
+                        })}
+                        {actionTypeInput.value === "keyboard" && keyboardInputs.map((e, i) => {
+                            return e.element;
+                        })}
+                    </InputGroup>
+                    <Button onClick={addAction}>
+                        <FontAwesomeIcon icon={faPlus}/> Add Group
                     </Button>
-                    <Button variant="primary" onClick={save}>
-                        Save Changes
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        </>
-    );
+                </Container>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={close}>
+                    Close
+                </Button>
+                <Button variant="primary" onClick={save}>
+                    Save Changes
+                </Button>
+            </Modal.Footer>
+        </Modal>
+    )
+
+    return {
+        element,
+        open
+    }
 }

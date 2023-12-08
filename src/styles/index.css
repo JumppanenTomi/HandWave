@@ -216,3 +216,30 @@ ul.nav-tabs {
     border-color: var(--blue) !important;
     border-bottom: none !important;
 }
+
+.badge > p {
+    margin: 0;
+}
+
+div.badgeRow {
+    padding: 0;
+    margin: 5px;
+}
+
+
+.form-select, .form-control {
+    background-color: transparent !important;
+    color: var(--dim-white) !important;
+    border: none !important;
+    border-bottom: solid 1px var(--dim-white) !important;
+    border-radius: 0 !important;
+}
+
+.form-select > option {
+    background-color: var(--dark);
+    color: var(--dim-white) !important;
+}
+
+.form-select:focus, .form-control:focus {
+    color: var(--white) !important;
+}

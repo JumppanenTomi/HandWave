@@ -50,7 +50,7 @@ export default function SelectSourceModal(sources: Electron.DesktopCapturerSourc
                 <Container>
                     <div style={{textAlign: "center", height: 120}}>
                         <h2>Select display source</h2>
-                        <p>Select source that you want to record.</p>
+                        <p>Choose the source you wish to capture for recording.</p>
                     </div>
                     <Tabs defaultActiveKey="apps">
                         <Tab eventKey="apps" title="Apps">

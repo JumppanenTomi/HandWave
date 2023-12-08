@@ -32,8 +32,9 @@ export default function useStringInput(title: string, key: string, props?: Input
 
     const element = (
         <>
-            <InputGroup.Text>{title}</InputGroup.Text>
+            <label>{title}</label>
             <Form.Control
+                style={{backgroundColor: "none"}}
                 required={props?.required || false}
                 type={"text"}
                 placeholder={props?.placeholder || ""}

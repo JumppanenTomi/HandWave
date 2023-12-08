@@ -10,7 +10,7 @@ export default function Actions() {
         <Container>
             <Row>
                 {gestureData && gestureData.map((e, i) => (
-                    <RuleItem item={e} onClick={() => console.log("moi")}/>
+                    <RuleItem item={e}/>
                 ))}
             </Row>
         </Container>
