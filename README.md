@@ -4,18 +4,6 @@ Harness the power of your hand gestures to effortlessly control your computer wi
 ## Overview
 Handwave transforms your hand movements into intuitive commands, enabling you to navigate your computer, control presentations, and interact with applications without the need for traditional input devices. Leveraging MediaPipe's robust hand and face recognition capabilities, Handwave seamlessly integrates gesture recognition with mouse control, presentation recording, and facial detection, making it a versatile tool for enhancing accessibility and productivity.
 
-## Project Setup
-1. Prerequisites:
-- Node.js 16 or higher
-- npm 7 or higher
-- Yarn package manager
-2. Project Initialization:
-- Clone the project repository
-- Install dependencies using `yarn install` or `npm install`
-3. Development Environment:
-- Code editor or IDE (Visual Studio Code recommended)
-- Electron development tools (e.g., Electron Fiddle)
-
 ## Technology Stack
 - **Front-ennd**: React, TypeScript, Vite
 - **Back-end**: Electron, Sequelize, SQLite3
