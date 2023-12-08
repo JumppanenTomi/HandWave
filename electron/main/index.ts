@@ -109,7 +109,7 @@ async function createWindow() {
     });
 
     // Apply electron-updater
-    update(win);
+        update(win);
 }
 
 sequelize
@@ -120,6 +120,9 @@ sequelize
 app.whenReady().then(() => {
     screenSize = screen.getPrimaryDisplay().size;
     createWindow();
+    win?.on("blur", () => {
+        win?.webContents.send('window-blur');
+    })
 });
 
 app.on("window-all-closed", () => {
