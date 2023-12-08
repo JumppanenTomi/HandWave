@@ -1,7 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import {useState} from "react";
-import Actions from "@/Actions";
+import Actions from "@/Elements/Actions";
 import EditAction from "@/Elements/editAction";
 
 export default function MacroModal() {

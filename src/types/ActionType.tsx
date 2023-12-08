@@ -3,5 +3,5 @@ export type ActionType = {
   type: "keyboard" | "delay";
   press: "true" | "false";
   delay?: number;
-  key?: string | number;
+  key?: number;
 };
