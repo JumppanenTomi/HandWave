@@ -3,6 +3,8 @@ import {release} from "node:os";
 import {join} from "node:path";
 import {update} from "./update";
 import {sequelize} from "../../src/getdb";
+import { IndexFinger } from "@/types/IndexFinger";
+import { Thumb } from "@/types/Thumb";
 
 const {Key, keyboard, mouse, Button} = require("@nut-tree/nut-js");
 
@@ -184,35 +186,58 @@ ipcMain.handle("releaseKey", async (event, data) => {
     await keyboard.releaseKey(parseInt(data));
 });
 
-ipcMain.handle("moveMouse", async (event, indexFinger, thumb) => {
-    const midpointX = 1 - (indexFinger.x + thumb.x) / 2;
-    const midpointY = (indexFinger.y + thumb.y) / 2;
+const calculatePosition = (indexFinger: IndexFinger, thumb:Thumb) => {
+    // if either is undefined
+    if (!indexFinger) {
+        return { x: 0, y: 0 };
+    }
+    if (!thumb){
+        return {x:0, y: 0}
+    }
 
-    const absoluteX = midpointX * screenSize.width;
-    const absoluteY = midpointY * screenSize.height;
-    await mouse.setPosition({x: absoluteX, y: absoluteY});
-});
+    const minX = 0.1;
+    const maxX = 0.8;
+    const minY = 0.1;
+    const maxY = 0.7;
+
+    // normalize index finger coordinates
+    const normalizedX = (indexFinger.x - minX) / (maxX - minX);
+    const normalizedY = (indexFinger.y - minY) / (maxY - minY);
+
+    // normalize midpoint coordinates
+    const normalizedMidpointX = (1 - (indexFinger.x + thumb.x) / 2 - minX) / (maxX - minX);
+    const normalizedMidpointY = ((indexFinger.y + thumb.y) / 2 - minY) / (maxY - minY);
+
+    // calculate absolute positions
+    const absoluteX = normalizedMidpointX * screenSize.width;
+    const absoluteY = normalizedMidpointY * screenSize.height;
+    return {x: absoluteX, y: absoluteY}
+}
+
+ipcMain.handle("moveMouse", async (event, indexFinger, thumb) => {
+    await mouse.setPosition(calculatePosition(indexFinger, thumb));
+}); 
+
+
 
 ipcMain.handle("dragMouse", async (event, indexFinger, thumb, gestureData) => {
-    const midpointX = 1 - (indexFinger.x + thumb.x) / 2;
-    const midpointY = (indexFinger.y + thumb.y) / 2;
-
-    const absoluteX = midpointX * screenSize.width;
-    const absoluteY = midpointY * screenSize.height;
+    console.log(gestureData);
     if (gestureData != "ok") {
         await mouse.releaseButton(Button.LEFT);
     } else {
         await mouse.pressButton(Button.LEFT);
-        await mouse.setPosition({x: absoluteX, y: absoluteY});
+        await mouse.setPosition(calculatePosition(indexFinger, thumb));
     }
 });
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+const sleep = (ms: number) => new Promise((r) => {
+    console.log("sleeping");
+    setTimeout(r, ms)  
+});
 
 ipcMain.handle("mouseClick", async (event, data) => {
     await mouse.pressButton(Button.LEFT);
     await mouse.releaseButton(Button.LEFT);
     await sleep(3000);
-
     console.log("click");
 });
 

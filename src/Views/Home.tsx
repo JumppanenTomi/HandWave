@@ -124,7 +124,6 @@ function Home() {
         ) {
             ipcRenderer.invoke("moveMouse", indexFinger[0], thumb[0]);
         }
-        console.log(gestureData?.[0]?.category);
     }, [gestureData]);
 
     useEffect(() => {
@@ -136,7 +135,6 @@ function Home() {
                 gestureData[0].category
             );
         }
-        console.log(gestureData?.[0]?.category);
     }, [gestureData]);
 
     return (
