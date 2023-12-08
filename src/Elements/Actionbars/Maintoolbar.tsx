@@ -1,7 +1,7 @@
 import {Container, Row} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircle} from "@fortawesome/free-solid-svg-icons/faCircle";
-import React, {useContext} from "react";
+import React, {useContext, useEffect} from "react";
 import ToolbarItem from "@/Elements/Actionbars/ToolbarItem";
 import formatTime from "@/sharedUtilities/formatTime";
 import {ToolbarItemType} from "@/Elements/Actionbars/MinimalView";
@@ -10,6 +10,8 @@ import {faMinimize} from "@fortawesome/free-solid-svg-icons/faMinimize";
 import {faDesktop} from "@fortawesome/free-solid-svg-icons/faDesktop";
 import {faHand} from "@fortawesome/free-solid-svg-icons";
 import {faSection} from "@fortawesome/free-solid-svg-icons/faSection";
+const { ipcRenderer } = window.require('electron');
+
 
 export default function Maintoolbar({sourceModal, processingSettingModal, macroModal}: { sourceModal: any, processingSettingModal: any, macroModal: any }) {
     const {recording, setRecording} = useContext(RecordingContext)
@@ -47,6 +49,18 @@ export default function Maintoolbar({sourceModal, processingSettingModal, macroM
             icon: <FontAwesomeIcon icon={faSection}/>
         },
     ]
+
+    useEffect(() => {
+        ipcRenderer.on('window-blur', () => {
+          console.log('Window blurred');
+            setMinimalView(true);
+        });
+    
+        // Clean up the event listeners when the component unmounts
+        return () => {
+          ipcRenderer.removeAllListeners('window-blur');
+        };
+      }, []);
 
     return (
         <Container className={"toolbar-container bottom"}>
