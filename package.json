@@ -16,7 +16,15 @@
     "build": "tsc && vite build && electron-builder",
     "preview": "vite preview",
     "pree2e": "vite build --mode=test",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.handwaveteam.handwave",
+    "mac": {
+      "category": "your.app.category.tool"
+    }
   },
   "dependencies": {
     "@electron/remote": "^2.0.12",
@@ -44,9 +52,7 @@
     "react-bootstrap": "^2.9.1",
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.6",
-    "robotjs": "^0.6.0",
     "sequelize": "^6.35.0",
-    "socket.io": "^4.7.2",
     "sqlite3": "^5.1.6"
   },
   "devDependencies": {
