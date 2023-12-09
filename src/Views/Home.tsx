@@ -151,10 +151,15 @@ function Home() {
                         {desktopCapturer.element}
                     </Col>
                 </Row>
-                <Maintoolbar sourceModal={sourceModal} processingSettingModal={processingSetting} macroModal={macroModal}/>
-                {sourceModal.element}
-                {processingSetting.element}
-                {macroModal.element}
+                <Maintoolbar sourceModal={sourceModal} processingSettingModal={processingSetting}
+                             macroModal={macroModal}/>
+                {!minimalView && (
+                    <>
+                        {sourceModal.element}
+                        {processingSetting.element}
+                        {macroModal.element}
+                    </>
+                )}
             </div>
         </>
     )

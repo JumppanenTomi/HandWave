@@ -18,11 +18,14 @@ import EventItem from "@/Elements/EventItem";
 import {faPlay} from "@fortawesome/free-solid-svg-icons/faPlay";
 import {faFlagCheckered} from "@fortawesome/free-solid-svg-icons/faFlagCheckered";
 import {faArrowRight} from "@fortawesome/free-solid-svg-icons/faArrowRight";
+import AddActionInputs from "@/Elements/AddActionInputs";
+import * as buffer from "buffer";
 
 export default function EditAction(actionToModify: any | null) {
     const {forceRender} = useContext(ActionsDataContext);
     const [show, setShow] = useState(false);
     const [keys, setKeys] = useState<any>([{name: "undefined", value: 0}]);
+    const [selectedId, setSelectedId] = useState<number | undefined>()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -51,70 +54,16 @@ export default function EditAction(actionToModify: any | null) {
         useSelectInput("Triggering gesture", "trigger", gestureData, {initial: newAction.trigger}),
     ];
 
-    const actionTypeInput = useSelectInput("Action type", "type", [
-        {name: "keyboard", value: "keyboard"},
-        {name: "delay", value: "delay"},
-    ]);
-
-    const keyboardInputs = [
-        useSelectInput("Press or Release", "press", [
-            {name: "Press", value: true},
-            {name: "Release", value: false},
-        ]),
-        useSelectInput("Select key", "key", keys),
-    ];
-
-    const delayInputs = [
-        useNumberInput("Delay", "delay", {
-            placeholder: "Delay in milliseconds",
-            unit: "ms",
-        }),
-    ];
-
-    const clearAll = () => {
-        mainInputs.forEach((e) => e.clear());
-        actionTypeInput.clear();
-        keyboardInputs.forEach((e) => e.clear());
-        delayInputs.forEach((e) => e.clear());
-        setNewAction(actionToModify ? actionToModify : initialData);
-    };
-
-    const validateInputs = () => {
-        const isValidMainInputs = mainInputs.every((input) => input.isValid);
-        const isValidActionType = actionTypeInput.isValid;
-
-        const isValidKeyboardInputs = keyboardInputs.every((input) => input.isValid);
-        const isValidDelayInputs = delayInputs.every((input) => input.isValid);
-
-        return isValidMainInputs && isValidActionType && (actionTypeInput.value === "keyboard" ? isValidKeyboardInputs : isValidDelayInputs);
-    };
-
-    const addAction = () => {
-        if (!validateInputs()) {
-            // Validation failed, prevent adding action
-            return;
-        }
-
-        const parentJson = InputsToJson(mainInputs) as unknown as TriggerData;
-        const actionsJson = InputsToJson(actionTypeInput.value === "keyboard" ? keyboardInputs : delayInputs) as unknown as ActionType;
-        actionsJson.type = actionTypeInput.value as "keyboard" | "delay"
-
-        setNewAction((prevState: { actions: any; }) => ({
-            ...prevState,
-            ...parentJson,
-            actions: [...prevState.actions, actionsJson],
-        }));
-    };
+    const addActionsInputs = AddActionInputs(keys, mainInputs, setNewAction, actionToModify, initialData)
 
     const close = () => {
-        clearAll();
+        addActionsInputs.clearAll();
         setShow(false);
     };
     const open = () => setShow(true);
 
     const save = async () => {
-        if (!validateInputs()) {
-            // Validation failed, prevent saving
+        if (!addActionsInputs.validateInputs()) {
             return;
         }
         const parentJson = InputsToJson(mainInputs) as unknown as TriggerData;
@@ -167,7 +116,7 @@ export default function EditAction(actionToModify: any | null) {
                         </Col>
                         {newAction.actions && newAction.actions.map((e: ActionType, i: number) => (
                                 <>
-                                    <EventItem item={e} key={i}/>
+                                    <EventItem item={e} key={i} />
                                     {i < newAction.actions.length - 1 && (
                                         <Col xs={"auto"} className={"badgeRow"}>
                                             <FontAwesomeIcon icon={faArrowRight}/>
@@ -176,28 +125,12 @@ export default function EditAction(actionToModify: any | null) {
                                 </>
                             )
                         )}
+                        {addActionsInputs.element}
                         <Col xs={"auto"} className={"badgeRow"}>
                             <FontAwesomeIcon icon={faFlagCheckered} size={"2xl"}/>
                         </Col>
                     </Row>
                 </Accordion>
-                <Container className={"formContainer"}>
-                    <h4>Add new</h4>
-                    <InputGroup className={"formSection"}>
-                        {actionTypeInput.element}
-                    </InputGroup>
-                    <InputGroup className={"formSection"}>
-                        {actionTypeInput.value === "delay" && delayInputs.map((e, i) => {
-                            return e.element;
-                        })}
-                        {actionTypeInput.value === "keyboard" && keyboardInputs.map((e, i) => {
-                            return e.element;
-                        })}
-                    </InputGroup>
-                    <Button onClick={addAction}>
-                        <FontAwesomeIcon icon={faPlus}/> Add Group
-                    </Button>
-                </Container>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={close}>

@@ -3,6 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import {useEffect, useState} from "react";
 import {Container, Row, Tab, Tabs} from "react-bootstrap";
 import SourceItem from "@/Elements/SourceItem";
+import SourceNotFound from "@/Elements/SourceNotFound";
 
 export default function SelectSourceModal(sources: Electron.DesktopCapturerSource[], changeSource: (sourceId: string) => void) {
     const [show, setShow] = useState(false);
@@ -60,7 +61,7 @@ export default function SelectSourceModal(sources: Electron.DesktopCapturerSourc
                                         <SourceItem item={e} selectedSource={selectedSource}
                                                     onClick={() => setSelectedSource(e.id)}/>
                                     )) : (
-                                        <label>No windows open that can be captured</label>
+                                        <SourceNotFound text={"No windows open that can be captured"}/>
                                     )}
                             </Row>
                         </Tab>
@@ -71,7 +72,7 @@ export default function SelectSourceModal(sources: Electron.DesktopCapturerSourc
                                         <SourceItem item={e} selectedSource={selectedSource}
                                                     onClick={() => setSelectedSource(e.id)}/>
                                     )) : (
-                                        <label>No screens open that can be captured</label>
+                                        <SourceNotFound text={"No screens open that can be captured"}/>
                                     )}
                             </Row>
                         </Tab>
@@ -82,7 +83,7 @@ export default function SelectSourceModal(sources: Electron.DesktopCapturerSourc
                                         <SourceItem item={e} selectedSource={selectedSource}
                                                     onClick={() => setSelectedSource(e.id)}/>
                                     )) : (
-                                        <label>No other instances available that can be captured</label>
+                                        <SourceNotFound text={"No other instances available that can be captured"}/>
                                     )}
                             </Row>
                         </Tab>

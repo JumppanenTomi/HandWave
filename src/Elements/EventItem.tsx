@@ -10,7 +10,7 @@ import EditAction from "@/Elements/editAction";
 import {ActionType} from "@/types/ActionType";
 import {faClock} from "@fortawesome/free-solid-svg-icons/faClock";
 
-export default function EventItem({item}: { item: ActionType }) {
+export default function EventItem({item}: { item: ActionType}) {
     const [keyboard, setKeyboard] = useState<string[] | undefined>();
     const editAction = EditAction(item);
 
