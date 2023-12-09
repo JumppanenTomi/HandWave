@@ -7,6 +7,7 @@
     --blue: #004369;
     --red: #ff0000;
 }
+
 /* Video Recording Animation */
 
 .video.recording {
@@ -134,6 +135,11 @@
     padding: 20px;
 }
 
+.logo-bar-row {
+    justify-content: space-between;
+    align-items: center;
+}
+
 .toolbar-row {
     justify-content: space-between;
     align-items: stretch !important;
@@ -143,6 +149,7 @@
 }
 
 .toolbar-item {
+    color: var(--dim-white) !important;
     display: flex;
     align-items: stretch !important;
     flex-wrap: wrap;
@@ -165,11 +172,12 @@
 
 .toolbar-item:hover {
     cursor: pointer;
+    color: var(--white) !important;
     background-color: var(--blue);
 }
 
 /** title bar **/
-.title-bar{
+.title-bar {
     background-color: var(--super-dark);
 }
 
