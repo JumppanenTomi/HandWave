@@ -48,3 +48,4 @@ Handwave utilizes HaGRID Dataset, a valuable resource for developing hand gestur
 
 ## Credits
 - [HaGRID](https://github.com/hukenovs/hagrid)
+- [electron-vite-react](https://github.com/electron-vite/electron-vite-react)
