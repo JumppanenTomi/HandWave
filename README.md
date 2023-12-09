@@ -1,6 +1,6 @@
 <div>
 <img src="./src/assets/handwave-logo.svg" alt="logo" width="300"/>
-<br />
+<hr />
 <div>
 Harness the power of your hand gestures to effortlessly control your computer with Handwave, an AI-based application that utilizes Google MediaPipe for gesture recognition and face landmarking.
 
