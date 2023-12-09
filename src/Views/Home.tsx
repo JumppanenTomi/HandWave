@@ -9,7 +9,7 @@ import {GestureData} from "@/types/GestureData";
 import {IndexFinger} from "@/types/IndexFinger";
 import Webcam from "@/Elements/Webcam";
 import DesktopCapturer from "@/Elements/DesktopCapturer";
-import DesktopCapturerToolbar from "@/Elements/DesktopCapturerToolbar";
+import DesktopCapturerController from "@/Elements/DesktopCapturerController";
 import {Thumb} from "@/types/Thumb";
 import ExecuteActions from "@/AI/executeActions";
 import TopToolbar from "@/Elements/Actionbars/TopToolbar";
@@ -30,7 +30,7 @@ function Home() {
     const canvasRef: MutableRefObject<HTMLCanvasElement | null> = useRef(null)
 
     const desktopCapturer = DesktopCapturer()
-    const desktopCapturerToolbar = DesktopCapturerToolbar(desktopCapturer.videoRef.current)
+    const desktopCapturerToolbar = DesktopCapturerController(desktopCapturer.videoRef.current)
 
     const sourceModal = SelectSourceModal(desktopCapturerToolbar.sources, desktopCapturerToolbar.changeSource)
     const processingSetting = FaceDetectionSettingsModal()
@@ -75,34 +75,37 @@ function Home() {
     }, [canvasRef]);
 
     useEffect(() => {
-        if (gestureAi && gazeAi){
+        if (gestureAi && gazeAi) {
             gestureAi.setOverlay(mesh)
             gazeAi.setOverlay(mesh)
         }
     }, [mesh]);
 
     useEffect(() => {
-        if (webCamRef.current) {
-            EnableWebcam(webCamRef.current);
-        }
-        if (gestureAi) {
-            gestureAi.createGestureRecognizer();
-            if (webCamRef.current !== null) {
-                const webcamCurrent = webCamRef.current;
-                navigator.mediaDevices.getUserMedia(constraints).then(() => {
-                    webcamCurrent.addEventListener("loadeddata", gestureAi.predictWebcam);
-                });
+        const enableAiAndWebcam = async () => {
+            if (webCamRef.current) {
+                EnableWebcam(webCamRef.current);
+            }
+            if (gestureAi) {
+                gestureAi.createGestureRecognizer();
+                if (webCamRef.current !== null) {
+                    const webcamCurrent = webCamRef.current;
+                    navigator.mediaDevices.getUserMedia(constraints).then(() => {
+                        webcamCurrent.addEventListener("loadeddata", gestureAi.predictWebcam);
+                    });
+                }
+            }
+            if (gazeAi) {
+                gazeAi.createFaceMeshRecognizer();
+                if (webCamRef.current !== null) {
+                    const webcamCurrent = webCamRef.current;
+                    navigator.mediaDevices.getUserMedia(constraints).then(() => {
+                        webcamCurrent.addEventListener("loadeddata", gazeAi.predictWebcam);
+                    });
+                }
             }
         }
-        if (gazeAi) {
-            gazeAi.createFaceMeshRecognizer();
-            if (webCamRef.current !== null) {
-                const webcamCurrent = webCamRef.current;
-                navigator.mediaDevices.getUserMedia(constraints).then(() => {
-                    webcamCurrent.addEventListener("loadeddata", gazeAi.predictWebcam);
-                });
-            }
-        }
+        enableAiAndWebcam()
     }, [gestureAi, gazeAi]);
 
     useEffect(() => {

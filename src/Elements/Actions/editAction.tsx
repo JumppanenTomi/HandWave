@@ -1,32 +1,30 @@
 import React, {useContext, useEffect, useState} from "react";
-import {Accordion, Button, Col, Container, InputGroup, Modal, Row,} from "react-bootstrap";
+import {Accordion, Button, Col, Modal, Row,} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPenSquare, faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
-import useStringInput from "./useInputs/useStringInput";
-import useSelectInput from "./useInputs/useSelectInput";
+import {faTrash} from "@fortawesome/free-solid-svg-icons";
+import useStringInput from "../useInputs/useStringInput";
+import useSelectInput from "../useInputs/useSelectInput";
 import {ipcRenderer} from "electron";
 import {ActionsDataContext} from "@/App";
 import arrayIndexAsValue from "@/sharedUtilities/arrayIndexAsValue";
 import {gestureData} from "@/staticData/gestureData";
-import useNumberInput from "@/Elements/useInputs/useNumberInput";
 import InputsToJson from "@/sharedUtilities/inputsToJson";
 import {TriggerData} from "@/types/TriggerData";
 import {ActionType} from "@/types/ActionType";
 import {createGesture, updateGesture} from "@/modelApi/gesture";
-import DeleteAction from "@/Elements/deleteAction";
-import EventItem from "@/Elements/EventItem";
+import DeleteAction from "./deleteAction";
 import {faPlay} from "@fortawesome/free-solid-svg-icons/faPlay";
 import {faFlagCheckered} from "@fortawesome/free-solid-svg-icons/faFlagCheckered";
 import {faArrowRight} from "@fortawesome/free-solid-svg-icons/faArrowRight";
-import AddActionInputs from "@/Elements/AddActionInputs";
-import * as buffer from "buffer";
+import AddActionInputs from "./AddActionInputs";
+import EventItem from "@/Elements/Actions/EventItem";
 
 export default function EditAction(actionToModify: any | null) {
     const {forceRender} = useContext(ActionsDataContext);
     const [show, setShow] = useState(false);
     const [keys, setKeys] = useState<any>([{name: "undefined", value: 0}]);
-    const [selectedId, setSelectedId] = useState<number | undefined>()
 
+    console.log(actionToModify)
     useEffect(() => {
         const fetchData = async () => {
             const result = await ipcRenderer.invoke('getKeyboardKeys');
@@ -91,6 +89,7 @@ export default function EditAction(actionToModify: any | null) {
 
     const element = (
         <Modal show={show} onHide={close} size={"lg"} centered>
+            {deleteRule.element}
             <Modal.Header>
                 <Row style={{width: "100%", alignItems: "center"}}>
                     <Col>

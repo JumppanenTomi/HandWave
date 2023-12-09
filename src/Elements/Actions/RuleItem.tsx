@@ -1,19 +1,14 @@
 import {Badge, Col, Container, Row} from "react-bootstrap";
 import {TriggerData} from "@/types/TriggerData";
-import {gestureData} from "@/staticData/gestureData";
-import {useEffect, useMemo, useState} from "react";
+import {useEffect, useState} from "react";
 import {ipcRenderer} from "electron";
-import arrayIndexAsValue from "@/sharedUtilities/arrayIndexAsValue";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faDownLong, faEdit, faTrash, faUpLong} from "@fortawesome/free-solid-svg-icons";
-import DeleteAction from "@/Elements/deleteAction";
-import EditAction from "@/Elements/editAction";
-import {faRightLong} from "@fortawesome/free-solid-svg-icons/faRightLong";
+import {faDownLong, faUpLong} from "@fortawesome/free-solid-svg-icons";
 import {faArrowRight} from "@fortawesome/free-solid-svg-icons/faArrowRight";
-import {faStop} from "@fortawesome/free-solid-svg-icons/faStop";
 import {faFlagCheckered} from "@fortawesome/free-solid-svg-icons/faFlagCheckered";
 import {faPlay} from "@fortawesome/free-solid-svg-icons/faPlay";
 import {faClock} from "@fortawesome/free-solid-svg-icons/faClock";
+import EditAction from "@/Elements/Actions/editAction";
 
 export default function RuleItem({item}: { item: TriggerData}) {
     const [keyboard, setKeyboard] = useState<string[] | undefined>()

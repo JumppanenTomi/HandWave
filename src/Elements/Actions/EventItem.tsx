@@ -6,9 +6,9 @@ import {
     faDownLong,
     faUpLong,
 } from "@fortawesome/free-solid-svg-icons";
-import EditAction from "@/Elements/editAction";
 import {ActionType} from "@/types/ActionType";
 import {faClock} from "@fortawesome/free-solid-svg-icons/faClock";
+import EditAction from "@/Elements/Actions/editAction";
 
 export default function EventItem({item}: { item: ActionType}) {
     const [keyboard, setKeyboard] = useState<string[] | undefined>();

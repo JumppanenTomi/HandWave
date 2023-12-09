@@ -1,11 +1,11 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import {useState} from "react";
-import Actions from "@/Elements/Actions";
-import EditAction from "@/Elements/editAction";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlus} from "@fortawesome/free-solid-svg-icons";
 import {Col, Row} from "react-bootstrap";
+import Actions from "@/Elements/Actions/Actions";
+import EditAction from "@/Elements/Actions/editAction";
 
 export default function MacroModal() {
     const [show, setShow] = useState(false);

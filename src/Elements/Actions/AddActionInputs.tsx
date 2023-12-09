@@ -1,5 +1,5 @@
+import React from "react";
 import {Button, Col, Row} from "react-bootstrap";
-import React, {useEffect} from "react";
 import useSelectInput from "@/Elements/useInputs/useSelectInput";
 import useNumberInput from "@/Elements/useInputs/useNumberInput";
 import InputsToJson from "@/sharedUtilities/inputsToJson";
@@ -29,16 +29,8 @@ export default function AddActionInputs(keys: any, mainInputs: any[], setNewActi
         }),
     ];
 
-
     const clearAll = () => {
         mainInputs.forEach((e) => e.clear());
-        actionTypeInput.clear();
-        keyboardInputs.forEach((e) => e.clear());
-        delayInputs.forEach((e) => e.clear());
-        setNewAction(actionToModify ? actionToModify : initialData);
-    };
-
-    const clearActions = () => {
         actionTypeInput.clear();
         keyboardInputs.forEach((e) => e.clear());
         delayInputs.forEach((e) => e.clear());
@@ -60,8 +52,8 @@ export default function AddActionInputs(keys: any, mainInputs: any[], setNewActi
             // Validation failed, prevent adding action
             return;
         }
-        const parentJson = InputsToJson(mainInputs) as unknown as TriggerData;
-        const actionsJson = InputsToJson(actionTypeInput.value === "keyboard" ? keyboardInputs : delayInputs) as unknown as ActionType;
+        const parentJson = InputsToJson(mainInputs) as TriggerData;
+        const actionsJson = InputsToJson(actionTypeInput.value === "keyboard" ? keyboardInputs : delayInputs) as ActionType;
         actionsJson.type = actionTypeInput.value as "keyboard" | "delay"
 
         setNewAction((prevState: { actions: any; }) => ({
@@ -80,9 +72,7 @@ export default function AddActionInputs(keys: any, mainInputs: any[], setNewActi
                         <Row>
                             {actionTypeInput.value === "delay" && (
                                 <Col>
-                                    {delayInputs.map((e, i) => {
-                                        return e.element;
-                                    })}
+                                    {delayInputs.map(({element}, i) => element)}
                                     <Button onClick={addAction}>
                                         <FontAwesomeIcon icon={faPlus}/>
                                     </Button>
@@ -90,9 +80,7 @@ export default function AddActionInputs(keys: any, mainInputs: any[], setNewActi
                             )}
                             {actionTypeInput.value === "keyboard" && (
                                 <Col>
-                                    {keyboardInputs.map((e, i) => {
-                                        return e.element;
-                                    })}
+                                    {keyboardInputs.map(({element}, i) => element)}
                                     <Button onClick={addAction}>
                                         <FontAwesomeIcon icon={faPlus}/>
                                     </Button>
@@ -103,7 +91,7 @@ export default function AddActionInputs(keys: any, mainInputs: any[], setNewActi
                 </Row>
             </div>
         </Col>
-    )
+    );
 
     return {
         element,
@@ -112,6 +100,6 @@ export default function AddActionInputs(keys: any, mainInputs: any[], setNewActi
         delayInputs,
         clearAll,
         validateInputs,
-        addAction
-    }
+        addAction,
+    };
 }
