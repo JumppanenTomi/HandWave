@@ -2,11 +2,11 @@ import {useState} from "react";
 import {Form} from "react-bootstrap";
 
 
-export default function useCheckboxInput(title: string, key: string, initial?: "true" | "false") {
-    const [checkedValue, setCheckedValue] = useState<"true" | "false">(initial || "false");
+export default function useCheckboxInput(title: string, key: string, initial?: boolean) {
+    const [checkedValue, setCheckedValue] = useState<boolean>(initial || false);
 
     const clear = () => {
-        setCheckedValue(initial || "false");
+        setCheckedValue(initial || false);
     };
 
     const element = (
@@ -14,9 +14,9 @@ export default function useCheckboxInput(title: string, key: string, initial?: "
             <Form.Check
                 type="checkbox"
                 label={title}
-                checked={checkedValue === "true"}
+                checked={checkedValue}
                 onChange={() => {
-                    setCheckedValue(checkedValue === "true" ? "false" : "true");
+                    setCheckedValue(!checkedValue);
                 }}
             />
         </>

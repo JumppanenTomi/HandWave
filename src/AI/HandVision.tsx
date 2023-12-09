@@ -12,8 +12,9 @@ export default function Ai(
     setGestureData: Dispatch<SetStateAction<GestureData[] | undefined>>,
     setIndexFinger: Dispatch<SetStateAction<IndexFinger[] | undefined>>,
     setThumb: Dispatch<SetStateAction<Thumb[] | undefined>>,
-    overlay: boolean
 ) {
+    let overlay: boolean
+
     const createGestureRecognizer = async () => {
         const vision = await FilesetResolver.forVisionTasks(
             "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm"
@@ -28,6 +29,11 @@ export default function Ai(
         });
         return;
     };
+
+
+    function setOverlay(value: boolean) {
+        overlay = value
+    }
 
     const canvasCtx = canvasElement.getContext("2d");
 
@@ -60,6 +66,8 @@ export default function Ai(
                     }
                 }
                 canvasCtx.restore();
+            } else {
+                canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
             }
             if (results.gestures.length > 0) {
                 const tempArray = results.gestures.map((gesture, index) => {
@@ -87,5 +95,6 @@ export default function Ai(
     return {
         createGestureRecognizer,
         predictWebcam,
+        setOverlay
     };
 }

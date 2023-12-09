@@ -51,26 +51,35 @@ function Home() {
     const [executionTime, setExecutionTime] = useState<number | undefined>()
 
     useEffect(() => {
-        if (
-            canvasRef !== null &&
-            webCamRef.current != null &&
-            canvasRef.current != null
-        ) {
-            setGestureAi(
-                HandVision(
-                    webCamRef.current,
-                    canvasRef.current,
-                    setGestureData,
-                    setIndexFinger,
-                    setThumb,
-                    mesh === "true"
-                )
-            );
-            setGazeAi(
-                FaceDetection(webCamRef.current, canvasRef.current, setGazeState, mesh === "true")
-            );
+        const configureAi = async () => {
+            if (
+                canvasRef !== null &&
+                webCamRef.current != null &&
+                canvasRef.current != null
+            ) {
+                setGestureAi(
+                    HandVision(
+                        webCamRef.current,
+                        canvasRef.current,
+                        setGestureData,
+                        setIndexFinger,
+                        setThumb,
+                    )
+                );
+                setGazeAi(
+                    FaceDetection(webCamRef.current, canvasRef.current, setGazeState)
+                );
+            }
         }
-    }, [canvasRef, mesh, faceDetection]);
+        configureAi().then(() => console.log("ai done"))
+    }, [canvasRef]);
+
+    useEffect(() => {
+        if (gestureAi && gazeAi){
+            gestureAi.setOverlay(mesh)
+            gazeAi.setOverlay(mesh)
+        }
+    }, [mesh]);
 
     useEffect(() => {
         if (webCamRef.current) {
@@ -97,7 +106,7 @@ function Home() {
     }, [gestureAi, gazeAi]);
 
     useEffect(() => {
-        if (gestureData && actionData && (gazeState || faceDetection === "false")) {
+        if (gestureData && actionData && (gazeState || !faceDetection)) {
             ExecuteActions(gestureData, actionData, executionTime, setExecutionTime).then(() =>
                 console.log("Actions executed")
             );
