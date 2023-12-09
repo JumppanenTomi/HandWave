@@ -1,7 +1,6 @@
 import {app, BrowserWindow, ipcMain, screen, shell} from "electron";
 import {release} from "node:os";
 import {join} from "node:path";
-import {update} from "./update";
 import {sequelize} from "../../src/getdb";
 import { IndexFinger } from "@/types/IndexFinger";
 import { Thumb } from "@/types/Thumb";
@@ -107,9 +106,6 @@ async function createWindow() {
         if (url.startsWith("https:")) shell.openExternal(url);
         return {action: "deny"};
     });
-
-    // Apply electron-updater
-        update(win);
 }
 
 sequelize
@@ -220,8 +216,6 @@ const calculatePosition = (indexFinger: IndexFinger, thumb:Thumb) => {
 ipcMain.handle("moveMouse", async (event, indexFinger, thumb) => {
     await mouse.setPosition(calculatePosition(indexFinger, thumb));
 }); 
-
-
 
 ipcMain.handle("dragMouse", async (event, indexFinger, thumb, gestureData) => {
     console.log(gestureData);

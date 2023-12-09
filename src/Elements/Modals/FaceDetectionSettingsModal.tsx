@@ -23,8 +23,9 @@ export default function FaceDetectionSettingsModal() {
     const element = (
         <Modal show={show} onHide={handleClose} centered>
             <Modal.Body className={"noDrag"} style={{color: "#fff"}}>
-                <h2>Face detection settings</h2>
+                <h2>Mesh settings</h2>
                 {faceMeshInput.element}
+                <h2>Face detection settings</h2>
                 {faceDetectionInput.element}
             </Modal.Body>
             <Modal.Footer>

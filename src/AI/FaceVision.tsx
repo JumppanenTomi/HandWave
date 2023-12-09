@@ -5,9 +5,10 @@ let faceLandmarker: FaceLandmarker;
 export default function FaceDetection(
     video: HTMLVideoElement,
     canvasElement: HTMLCanvasElement,
-    setGazeState: Dispatch<SetStateAction<boolean>>,
-    overlay: boolean
+    setGazeState: Dispatch<SetStateAction<boolean>>
 ) {
+    let overlay: boolean
+
     const createFaceMeshRecognizer = async () => {
         const vision = await FilesetResolver.forVisionTasks(
             "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm"
@@ -49,6 +50,10 @@ export default function FaceDetection(
         return isLookingAtCamera;
     }
 
+    function setOverlay(value: boolean) {
+        overlay = value
+    }
+
     async function predictWebcam() {
         let startTimeMs = performance.now();
         if (lastVideoTime !== video.currentTime) {
@@ -62,6 +67,8 @@ export default function FaceDetection(
                         color: "rgba(68,68,68,0.29)",
                         lineWidth: 1,
                     });
+                } else if (canvasCtx != null) {
+                    canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
                 }
                 setGazeState(isUserLookingAtCamera(landmarks))
             }
@@ -72,6 +79,7 @@ export default function FaceDetection(
 
     return {
         createFaceMeshRecognizer,
-        predictWebcam
+        predictWebcam,
+        setOverlay
     };
 }

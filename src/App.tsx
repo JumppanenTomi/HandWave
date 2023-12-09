@@ -28,12 +28,12 @@ type MinimalViewContextType = {
     setMinimalView: React.Dispatch<React.SetStateAction<boolean>>;
 }
 type FaceMeshContextType = {
-    mesh: "true" | "false";
-    setMesh: React.Dispatch<React.SetStateAction<"true" | "false">>;
+    mesh: boolean;
+    setMesh: React.Dispatch<React.SetStateAction<boolean>>;
 }
 type FaceDetectionContextType = {
-    faceDetection: "true" | "false";
-    setFaceDetection: React.Dispatch<React.SetStateAction<"true" | "false">>;
+    faceDetection: boolean;
+    setFaceDetection: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 type NotificationManagerContextType = { notificationManager: typeof NotificationManager }
@@ -65,13 +65,13 @@ export const MinimalViewContext = createContext<MinimalViewContextType>({
 })
 
 export const MeshContext = createContext<FaceMeshContextType>({
-    mesh: "false",
+    mesh: false,
     setMesh: () => {
     }
 })
 
 export const FaceDetectionContext = createContext<FaceDetectionContextType>({
-    faceDetection: "false",
+    faceDetection: false,
     setFaceDetection: () => {
     }
 })
@@ -89,8 +89,8 @@ export default function App() {
     const notificationManager = NotificationManager()
 
     const [minimalView, setMinimalView] = useState<boolean>(false)
-    const [mesh, setMesh] = useState<"true" | "false">("false")
-    const [faceDetection, setFaceDetection] = useState<"true" | "false">("false")
+    const [mesh, setMesh] = useState<boolean>(false)
+    const [faceDetection, setFaceDetection] = useState<boolean>(false)
 
     useEffect(() => {
         const fetchGestureData = async () => {

@@ -3,7 +3,7 @@ import {ipcRenderer} from "electron";
 import os from "os";
 import {MinimalViewContext, NotificationManagerContext, RecordedTimeContext, RecordingContext} from "@/App";
 
-export default function DesktopCapturerToolbar(videoRef: HTMLVideoElement | null) {
+export default function DesktopCapturerController(videoRef: HTMLVideoElement | null) {
     const isMac = os.platform() === "darwin";
     const {notificationManager} = useContext(NotificationManagerContext)
     const {setMinimalView} = useContext(MinimalViewContext)

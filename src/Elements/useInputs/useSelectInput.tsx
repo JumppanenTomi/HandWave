@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {Form, InputGroup} from "react-bootstrap";
+import {Form} from "react-bootstrap";
 
 type InputProps = {
   initial?: string;
@@ -29,7 +29,7 @@ export default function useSelectInput(title: string, key: string, items: Select
 
   const element = (
     <>
-      <InputGroup.Text>{title}</InputGroup.Text>
+      <label>{title}</label>
       <Form.Select
         value={value}
         onChange={(e) => validate(e.target.value)}
