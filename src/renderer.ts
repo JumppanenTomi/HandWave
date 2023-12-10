@@ -26,6 +26,5 @@
  * ```
  */
 
-import './styles/index.css';
+import './styles.css';
 import './mainReact';
-

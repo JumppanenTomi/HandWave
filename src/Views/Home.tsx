@@ -18,7 +18,6 @@ import MinimalView from "@/Elements/Actionbars/MinimalView";
 import TitleBar from "@/Elements/Actionbars/TopAppBar";
 import SelectSourceModal from "@/Elements/Modals/SelectSourceModal";
 import FaceDetectionSettingsModal from "@/Elements/Modals/FaceDetectionSettingsModal";
-import "@/styles/primaryView.css"
 import MacroModal from "@/Elements/Modals/MacroModal";
 
 /**

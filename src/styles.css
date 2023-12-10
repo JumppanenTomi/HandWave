@@ -8,7 +8,7 @@
     --red: #ff0000;
 }
 
-/* Video Recording Animation */
+/* ----------- Video recording animation ------------ */
 
 .video.recording {
     animation: border-change 3s infinite;
@@ -46,7 +46,8 @@
     }
 }
 
-/* Drag Behavior */
+/* ----------- Drag behavior ------------ */
+
 .drag {
     -webkit-app-region: drag;
 }
@@ -55,52 +56,7 @@
     -webkit-app-region: no-drag;
 }
 
-
-.modalBody {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.sourceItem {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--super-dark);
-    color: var(--white);
-    border-radius: 5px;
-    border-style: solid;
-    border-width: 0;
-    padding: 10px;
-    margin-top: 10px;
-    cursor: pointer;
-}
-
-.selectedSourceItem {
-    border-width: 1px;
-    border-color: var(--blue);
-}
-
-.sourceItem:hover {
-    transform: scale(1.05);
-}
-
-.sourceItemImage {
-    max-height: 90px;
-    max-width: 100%;
-}
-
-.sourceItemName {
-    width: 100%;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    text-align: center;
-}
-
-/** Maintoolbar **/
+/* ----------- Toolbar ------------ */
 
 .bottom {
     bottom: 0;
@@ -192,13 +148,129 @@
     color: var(--blue);
 }
 
-/** bs override **/
+/* ----------- No sources found ------------ */
+
+.sourceNotFound {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+/* ----------- Source item ------------ */
+.sourceItem {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--super-dark);
+    color: var(--white);
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 0;
+    padding: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.selectedSourceItem {
+    border-width: 1px;
+    border-color: var(--blue);
+}
+
+.sourceItem:hover {
+    transform: scale(1.05);
+}
+
+.sourceItemImage {
+    max-height: 90px;
+    max-width: 100%;
+}
+
+.sourceItemName {
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: center;
+}
+
+/* ----------- Notification ------------ */
+
+.notification {
+    position: absolute !important;
+    top: 25px;
+    left: 0;
+    z-index: 999;
+    width: fit-content;
+}
+
+.notification > p {
+    margin: 0;
+    padding: 0;
+}
+
+/* ----------- Minimal view ------------ */
+
+.minimal-view-container {
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    color: #ffffff;
+    background-color: #282828;
+    background-image: url('/src/assets/handwave-favicon-color.svg');
+    background-size: 75vh;
+    background-position: left 10vh bottom 12.5vh;
+    background-repeat: no-repeat;
+}
+
+.minimal-view-row {
+    justify-content: flex-end;
+    align-items: stretch !important;
+}
+
+/* ----------- Primary view ------------ */
+.content {
+    max-width: 100%;
+    height: 100vh;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--dark);
+}
+
+.video-container {
+    flex: 1;
+    margin: 0;
+    padding: 20px;
+    align-items: center;
+}
+
+.video-container > div {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* ----------- Bootstrap override ------------ */
+
 div.modal-footer {
+    color: var(--white) !important;
     border-top: none;
+}
+
+.modalBody {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 div.modal-header {
     border-bottom: none;
+    color: var(--white) !important;
 }
 
 .modal-content {
@@ -233,7 +305,6 @@ div.badgeRow {
     padding: 0;
     margin: 5px;
 }
-
 
 .form-select, .form-control {
     background-color: transparent !important;

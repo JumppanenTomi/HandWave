@@ -63,12 +63,12 @@ export default function NotificationManager() {
     }
 
     const element = (
-        <Alert show={show} variant={variant} dismissible={dismissable} style={{position: "absolute", top: 25, left: 0, zIndex: 999, width: "fit-content"}}>
+        <Alert show={show} variant={variant} dismissible={dismissable} className={"notification"}>
             {title && (
                 <Alert.Heading>{title}</Alert.Heading>
             )}
             {message && (
-                <p style={{margin: 0, padding: 0}}>{message}</p>
+                <p>{message}</p>
             )}
             {additionalContent && (
                 <>

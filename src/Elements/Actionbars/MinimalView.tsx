@@ -1,7 +1,6 @@
 import {Container, Row} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import React, {useContext} from "react";
-import "@/styles/minimalView.css"
 import {faMaximize} from "@fortawesome/free-solid-svg-icons/faMaximize";
 import ToolbarItem from "@/Elements/Actionbars/ToolbarItem";
 import {MinimalViewContext, RecordedTimeContext, RecordingContext} from "@/App";

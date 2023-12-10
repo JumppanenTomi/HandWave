@@ -13,13 +13,7 @@ export default function DesktopCapturer() {
     const {recording} = useContext(RecordingContext)
 
     const element = (
-        <div
-            className={`video`}
-            style={{
-                width: '100%',
-                height: 'min-content',
-            }}
-        >
+        <div className={`video`}>
             <video
                 ref={videoRef}
                 autoPlay
