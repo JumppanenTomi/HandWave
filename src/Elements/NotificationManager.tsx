@@ -1,6 +1,16 @@
 import {Alert} from "react-bootstrap";
 import React, {useState} from "react";
 
+/**
+ * Creates a NotificationManager object that can be used to display different types of notifications.
+ * @returns {{
+ *   closeNotification: function,
+ *   notificationElement: React.Element,
+ *   reportError: function,
+ *   reportWarning: function,
+ *   reportSuccess: function
+ * }} Returns an object with methods for managing notifications.
+ */
 export default function NotificationManager() {
     const [show, setShow] = useState(false);
     const [dismissable, setDismissable] = useState<boolean>(false)
@@ -53,12 +63,12 @@ export default function NotificationManager() {
     }
 
     const element = (
-        <Alert show={show} variant={variant} dismissible={dismissable} style={{position: "absolute", top: 25, left: 0, zIndex: 999, width: "fit-content"}}>
+        <Alert show={show} variant={variant} dismissible={dismissable} className={"notification"}>
             {title && (
                 <Alert.Heading>{title}</Alert.Heading>
             )}
             {message && (
-                <p style={{margin: 0, padding: 0}}>{message}</p>
+                <p>{message}</p>
             )}
             {additionalContent && (
                 <>

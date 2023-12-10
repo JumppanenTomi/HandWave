@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title>Elements/Actions/RuleItem.tsx - Documentation</title>
+
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="styles/prettify.css" rel="stylesheet" type="text/css">
+    <link href="styles/jsdoc.css" rel="stylesheet" type="text/css">
+    <script defer src="scripts/nav.js"></script>
+
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+</head>
+<body>
+
+<input class="nav-trigger" id="nav-trigger" type="checkbox"/>
+<label class="navicon-button x" for="nav-trigger">
+    <div class="navicon"></div>
+</label>
+
+<label class="overlay" for="nav-trigger"></label>
+
+<nav>
+
+
+    <h2><a href="index.html">Home</a></h2>
+    <h3>Classes</h3>
+    <ul>
+        <li><a href="Action.html">Action</a></li>
+        <li><a href="global.html#Gesture">Gesture</a></li>
+        <li><a href="gestureRecognizer.html">gestureRecognizer</a></li>
+        <li><a href="module-facialRecognition.faceLandmarker.html">faceLandmarker</a></li>
+    </ul>
+    <h3>Interfaces</h3>
+    <ul>
+        <li><a href="ActionAttributes.html">ActionAttributes</a></li>
+        <li><a href="ActionCreationAttributes.html">ActionCreationAttributes</a></li>
+        <li><a href="GestureAttributes.html">GestureAttributes</a></li>
+        <li><a href="GestureCreationAttributes.html">GestureCreationAttributes</a></li>
+        <li><a href="ToolbarItemType.html">ToolbarItemType</a></li>
+    </ul>
+    <h3>Global</h3>
+    <ul>
+        <li><a href="global.html#Home">Home</a></li>
+        <li><a href="global.html#MinimalView">MinimalView</a></li>
+        <li><a href="global.html#NavBar">NavBar</a></li>
+        <li><a href="global.html#SourceItem">SourceItem</a></li>
+        <li><a href="global.html#TopAppBar">TopAppBar</a></li>
+        <li><a href="global.html#Webcam">Webcam</a></li>
+        <li><a href="global.html#createAction">createAction</a></li>
+        <li><a href="global.html#createGesture">createGesture</a></li>
+        <li><a href="global.html#deleteAction">deleteAction</a></li>
+        <li><a href="global.html#deleteGesture">deleteGesture</a></li>
+        <li><a href="global.html#formatTime">formatTime</a></li>
+        <li><a href="global.html#getAction">getAction</a></li>
+        <li><a href="global.html#getAllActions">getAllActions</a></li>
+        <li><a href="global.html#getAllGestures">getAllGestures</a></li>
+        <li><a href="global.html#getGesture">getGesture</a></li>
+        <li><a href="global.html#isBuild">isBuild</a></li>
+        <li><a href="global.html#locDb">locDb</a></li>
+        <li><a href="global.html#openWebpage">openWebpage</a></li>
+        <li><a href="global.html#pressKey">pressKey</a></li>
+        <li><a href="global.html#releaseKey">releaseKey</a></li>
+        <li><a href="global.html#updateAction">updateAction</a></li>
+        <li><a href="global.html#updateGesture">updateGesture</a></li>
+    </ul>
+
+</nav>
+
+<div id="main">
+
+    <h1 class="page-title">Elements/Actions/RuleItem.tsx</h1>
+
+
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {Badge, Col, Container, Row} from "react-bootstrap";
+import {TriggerData} from "@/types/TriggerData";
+import {useEffect, useState} from "react";
+import {ipcRenderer} from "electron";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faDownLong, faUpLong} from "@fortawesome/free-solid-svg-icons";
+import {faArrowRight} from "@fortawesome/free-solid-svg-icons/faArrowRight";
+import {faFlagCheckered} from "@fortawesome/free-solid-svg-icons/faFlagCheckered";
+import {faPlay} from "@fortawesome/free-solid-svg-icons/faPlay";
+import {faClock} from "@fortawesome/free-solid-svg-icons/faClock";
+import EditAction from "@/Elements/Actions/editAction";
+
+/**
+ * Renders a Rule Item component.
+ *
+ * @param {Object} props - The props object.
+ * @param {TriggerData} props.item - The trigger data for the Rule Item.
+ *
+ * @return {ReactElement} The Rule Item component.
+ */
+export default function RuleItem({item}: { item: TriggerData}) {
+    const [keyboard, setKeyboard] = useState&lt;string[] | undefined>()
+    const editAction = EditAction(item)
+
+    const fetchKeyboard = async () => {
+        try {
+            await ipcRenderer.invoke('getKeyboardKeys').then((result) => {
+                setKeyboard(result)
+            })
+        } catch (error) {
+            return undefined;
+        }
+    }
+
+    useEffect(() => {
+        fetchKeyboard()
+    }, []);
+
+    return (
+        &lt;Col xs={6} key={item.id}>
+            {editAction.element}
+            &lt;div className={'sourceItem'} onClick={editAction.open}>
+                &lt;Container>
+                    &lt;h3 className={"sourceItemName"}>{item.name}&lt;/h3>
+                    &lt;p className={"sourceItemName"}>Gesture: "{item.trigger}"&lt;/p>
+                    &lt;Row>
+                        &lt;Col xs={"auto"} className={"badgeRow"}>
+                            &lt;FontAwesomeIcon icon={faPlay}/>
+                        &lt;/Col>
+                        {item.actions.map((e, i) => (
+                            &lt;>
+                                &lt;Col xs={"auto"} className={"badgeRow"}>
+                                    {e.type === "delay" &amp;&amp; (
+                                        &lt;Badge>&lt;FontAwesomeIcon icon={faClock} />&lt;p> {e.delay} ms&lt;/p>&lt;/Badge>
+                                    )}
+                                    {(e.type === "keyboard" &amp;&amp; e.key &amp;&amp; keyboard) &amp;&amp; (
+                                        &lt;Badge>
+                                            &lt;p>
+                                                {keyboard[e.key]} {(e.press === "true") ?
+                                                &lt;FontAwesomeIcon icon={faDownLong}/> :
+                                                &lt;FontAwesomeIcon icon={faUpLong}/>}
+                                            &lt;/p>
+                                        &lt;/Badge>
+                                    )}
+                                &lt;/Col>
+                                {i &lt; item.actions.length - 1 ? (
+                                    &lt;Col xs={"auto"} className={"badgeRow"}>
+                                        &lt;FontAwesomeIcon icon={faArrowRight}/>
+                                    &lt;/Col>
+                                ) : (
+                                    &lt;Col xs={"auto"} className={"badgeRow"}>
+                                        &lt;FontAwesomeIcon icon={faFlagCheckered}/>
+                                    &lt;/Col>
+                                )}
+                            &lt;/>
+                        ))}
+                    &lt;/Row>
+                &lt;/Container>
+            &lt;/div>
+        &lt;/Col>
+    )
+}</code></pre>
+        </article>
+    </section>
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Sun Dec 10 2023 18:08:58
+    GMT+0200 (Itä-Euroopan normaaliaika) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+</body>
+</html>

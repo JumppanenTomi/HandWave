@@ -1,6 +1,16 @@
 import {useState} from "react";
-import {Col, Form, InputGroup, Row} from "react-bootstrap";
+import {Col, Form, Row} from "react-bootstrap";
 
+/**
+ * Represents the properties for a NumberInput component.
+ * @typedef {Object} NumberInputProps
+ * @property {number} [initial] - The initial value for the NumberInput.
+ * @property {boolean} [required] - Specifies if the NumberInput is required.
+ * @property {string} [placeholder] - The placeholder text for the NumberInput.
+ * @property {string} [unit] - The unit of measurement for the NumberInput.
+ * @property {number} [min] - The minimum value allowed for the NumberInput.
+ * @property {number} [max] - The maximum value allowed for the NumberInput.
+ */
 type NumberInputProps = {
     initial?: number;
     required?: boolean;
@@ -10,6 +20,22 @@ type NumberInputProps = {
     max?: number;
 };
 
+/**
+ * Creates a number input element with validation and utility methods.
+ *
+ * @param {string} title - The title or label for the number input.
+ * @param {string} key - The unique key identifier for the number input.
+ * @param {Object} props - Additional properties for the number input.
+ * @param {number} props.initial - The initial value for the number input.
+ * @param {boolean} props.required - Whether the number input is required.
+ * @param {number} props.min - The minimum value allowed for the number input.
+ * @param {number} props.max - The maximum value allowed for the number input.
+ * @param {string} props.placeholder - The placeholder text for the number input.
+ * @param {string} props.unit - The unit of measurement for the number input.
+ *
+ * @return {Object} - An object containing the number input element, value, clear method, key,
+ *   validity flag, and validation message.
+ */
 export default function useNumberInput(title: string, key: string, props?: NumberInputProps) {
     const [value, setValue] = useState<number | undefined>(props?.initial);
     const [isValid, setIsValid] = useState<boolean>(true);

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title>Elements/useInputs/useNumberInput.tsx - Documentation</title>
+
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="styles/prettify.css" rel="stylesheet" type="text/css">
+    <link href="styles/jsdoc.css" rel="stylesheet" type="text/css">
+    <script defer src="scripts/nav.js"></script>
+
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+</head>
+<body>
+
+<input class="nav-trigger" id="nav-trigger" type="checkbox"/>
+<label class="navicon-button x" for="nav-trigger">
+    <div class="navicon"></div>
+</label>
+
+<label class="overlay" for="nav-trigger"></label>
+
+<nav>
+
+
+    <h2><a href="index.html">Home</a></h2>
+    <h3>Classes</h3>
+    <ul>
+        <li><a href="Action.html">Action</a></li>
+        <li><a href="global.html#Gesture">Gesture</a></li>
+        <li><a href="gestureRecognizer.html">gestureRecognizer</a></li>
+        <li><a href="module-facialRecognition.faceLandmarker.html">faceLandmarker</a></li>
+    </ul>
+    <h3>Interfaces</h3>
+    <ul>
+        <li><a href="ActionAttributes.html">ActionAttributes</a></li>
+        <li><a href="ActionCreationAttributes.html">ActionCreationAttributes</a></li>
+        <li><a href="GestureAttributes.html">GestureAttributes</a></li>
+        <li><a href="GestureCreationAttributes.html">GestureCreationAttributes</a></li>
+        <li><a href="ToolbarItemType.html">ToolbarItemType</a></li>
+    </ul>
+    <h3>Global</h3>
+    <ul>
+        <li><a href="global.html#Home">Home</a></li>
+        <li><a href="global.html#MinimalView">MinimalView</a></li>
+        <li><a href="global.html#NavBar">NavBar</a></li>
+        <li><a href="global.html#SourceItem">SourceItem</a></li>
+        <li><a href="global.html#TopAppBar">TopAppBar</a></li>
+        <li><a href="global.html#Webcam">Webcam</a></li>
+        <li><a href="global.html#createAction">createAction</a></li>
+        <li><a href="global.html#createGesture">createGesture</a></li>
+        <li><a href="global.html#deleteAction">deleteAction</a></li>
+        <li><a href="global.html#deleteGesture">deleteGesture</a></li>
+        <li><a href="global.html#formatTime">formatTime</a></li>
+        <li><a href="global.html#getAction">getAction</a></li>
+        <li><a href="global.html#getAllActions">getAllActions</a></li>
+        <li><a href="global.html#getAllGestures">getAllGestures</a></li>
+        <li><a href="global.html#getGesture">getGesture</a></li>
+        <li><a href="global.html#isBuild">isBuild</a></li>
+        <li><a href="global.html#locDb">locDb</a></li>
+        <li><a href="global.html#openWebpage">openWebpage</a></li>
+        <li><a href="global.html#pressKey">pressKey</a></li>
+        <li><a href="global.html#releaseKey">releaseKey</a></li>
+        <li><a href="global.html#updateAction">updateAction</a></li>
+        <li><a href="global.html#updateGesture">updateGesture</a></li>
+    </ul>
+
+</nav>
+
+<div id="main">
+
+    <h1 class="page-title">Elements/useInputs/useNumberInput.tsx</h1>
+
+
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {useState} from "react";
+import {Col, Form, Row} from "react-bootstrap";
+
+/**
+ * Represents the properties for a NumberInput component.
+ * @typedef {Object} NumberInputProps
+ * @property {number} [initial] - The initial value for the NumberInput.
+ * @property {boolean} [required] - Specifies if the NumberInput is required.
+ * @property {string} [placeholder] - The placeholder text for the NumberInput.
+ * @property {string} [unit] - The unit of measurement for the NumberInput.
+ * @property {number} [min] - The minimum value allowed for the NumberInput.
+ * @property {number} [max] - The maximum value allowed for the NumberInput.
+ */
+type NumberInputProps = {
+    initial?: number;
+    required?: boolean;
+    placeholder?: string;
+    unit?: string;
+    min?: number;
+    max?: number;
+};
+
+/**
+ * Creates a number input element with validation and utility methods.
+ *
+ * @param {string} title - The title or label for the number input.
+ * @param {string} key - The unique key identifier for the number input.
+ * @param {Object} props - Additional properties for the number input.
+ * @param {number} props.initial - The initial value for the number input.
+ * @param {boolean} props.required - Whether the number input is required.
+ * @param {number} props.min - The minimum value allowed for the number input.
+ * @param {number} props.max - The maximum value allowed for the number input.
+ * @param {string} props.placeholder - The placeholder text for the number input.
+ * @param {string} props.unit - The unit of measurement for the number input.
+ *
+ * @return {Object} - An object containing the number input element, value, clear method, key,
+ *   validity flag, and validation message.
+ */
+export default function useNumberInput(title: string, key: string, props?: NumberInputProps) {
+    const [value, setValue] = useState&lt;number | undefined>(props?.initial);
+    const [isValid, setIsValid] = useState&lt;boolean>(true);
+    const [validationMessage, setValidationMessage] = useState&lt;string | null>(null);
+
+    const validate = (v: string) => {
+        const numericValue = parseFloat(v);
+        setValue(isNaN(numericValue) ? undefined : numericValue);
+
+        if (props?.required &amp;&amp; isNaN(numericValue)) {
+            setIsValid(false);
+            setValidationMessage("Please enter a valid number.");
+        } else if (props?.min !== undefined &amp;&amp; numericValue &lt; props.min) {
+            setIsValid(false);
+            setValidationMessage(`Value must be greater than or equal to ${props.min}.`);
+        } else if (props?.max !== undefined &amp;&amp; numericValue > props.max) {
+            setIsValid(false);
+            setValidationMessage(`Value must be less than or equal to ${props.max}.`);
+        } else {
+            setIsValid(true);
+            setValidationMessage(null);
+        }
+    };
+
+    const clear = () => {
+        setValue(props?.initial);
+        setIsValid(true);
+        setValidationMessage(null);
+    };
+
+    const element = (
+        &lt;>
+            &lt;Row style={{alignItems: "center"}}>
+                &lt;Col xs={"auto"}>
+                    &lt;label>{title}&lt;/label>
+                &lt;/Col>
+                &lt;Col xs={3}>
+                    &lt;Form.Control
+                        required={props?.required || false}
+                        type={"number"}
+                        placeholder={props?.placeholder || ""}
+                        value={value === undefined ? "" : value}
+                        onChange={(e) => {
+                            validate(e.target.value);
+                        }}
+                        isInvalid={!isValid}
+                    />
+                &lt;/Col>
+                &lt;Col xs={"auto"}>
+                    {props?.unit &amp;&amp; &lt;label>{props.unit}&lt;/label>}
+                &lt;/Col>
+            &lt;/Row>
+            &lt;Row>
+                &lt;Col xs={"auto"}>
+                    {validationMessage &amp;&amp; (
+                        &lt;Form.Control.Feedback type="invalid">{validationMessage}&lt;/Form.Control.Feedback>
+                    )}
+                &lt;/Col>
+            &lt;/Row>
+        &lt;/>
+    );
+
+    return {
+        element,
+        value,
+        clear,
+        key,
+        isValid,
+        validationMessage,
+    };
+}
+</code></pre>
+        </article>
+    </section>
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Sun Dec 10 2023 18:08:58
+    GMT+0200 (Itä-Euroopan normaaliaika) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+</body>
+</html>

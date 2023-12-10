@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title>modelApi/gesture.ts - Documentation</title>
+
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="styles/prettify.css" rel="stylesheet" type="text/css">
+    <link href="styles/jsdoc.css" rel="stylesheet" type="text/css">
+    <script defer src="scripts/nav.js"></script>
+
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+</head>
+<body>
+
+<input class="nav-trigger" id="nav-trigger" type="checkbox"/>
+<label class="navicon-button x" for="nav-trigger">
+    <div class="navicon"></div>
+</label>
+
+<label class="overlay" for="nav-trigger"></label>
+
+<nav>
+
+
+    <h2><a href="index.html">Home</a></h2>
+    <h3>Classes</h3>
+    <ul>
+        <li><a href="Action.html">Action</a></li>
+        <li><a href="global.html#Gesture">Gesture</a></li>
+        <li><a href="gestureRecognizer.html">gestureRecognizer</a></li>
+        <li><a href="module-facialRecognition.faceLandmarker.html">faceLandmarker</a></li>
+    </ul>
+    <h3>Interfaces</h3>
+    <ul>
+        <li><a href="ActionAttributes.html">ActionAttributes</a></li>
+        <li><a href="ActionCreationAttributes.html">ActionCreationAttributes</a></li>
+        <li><a href="GestureAttributes.html">GestureAttributes</a></li>
+        <li><a href="GestureCreationAttributes.html">GestureCreationAttributes</a></li>
+        <li><a href="ToolbarItemType.html">ToolbarItemType</a></li>
+    </ul>
+    <h3>Global</h3>
+    <ul>
+        <li><a href="global.html#Home">Home</a></li>
+        <li><a href="global.html#MinimalView">MinimalView</a></li>
+        <li><a href="global.html#NavBar">NavBar</a></li>
+        <li><a href="global.html#SourceItem">SourceItem</a></li>
+        <li><a href="global.html#TopAppBar">TopAppBar</a></li>
+        <li><a href="global.html#Webcam">Webcam</a></li>
+        <li><a href="global.html#createAction">createAction</a></li>
+        <li><a href="global.html#createGesture">createGesture</a></li>
+        <li><a href="global.html#deleteAction">deleteAction</a></li>
+        <li><a href="global.html#deleteGesture">deleteGesture</a></li>
+        <li><a href="global.html#formatTime">formatTime</a></li>
+        <li><a href="global.html#getAction">getAction</a></li>
+        <li><a href="global.html#getAllActions">getAllActions</a></li>
+        <li><a href="global.html#getAllGestures">getAllGestures</a></li>
+        <li><a href="global.html#getGesture">getGesture</a></li>
+        <li><a href="global.html#isBuild">isBuild</a></li>
+        <li><a href="global.html#locDb">locDb</a></li>
+        <li><a href="global.html#openWebpage">openWebpage</a></li>
+        <li><a href="global.html#pressKey">pressKey</a></li>
+        <li><a href="global.html#releaseKey">releaseKey</a></li>
+        <li><a href="global.html#updateAction">updateAction</a></li>
+        <li><a href="global.html#updateGesture">updateGesture</a></li>
+    </ul>
+
+</nav>
+
+<div id="main">
+
+    <h1 class="page-title">modelApi/gesture.ts</h1>
+
+
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// todo this file provides an API to interact with the db users
+//todo table making it easier to work with
+import {Optional} from "sequelize";
+import {Action, Gesture} from "../getdb"
+import {createAction} from "./action";
+import {ActionType} from "@/types/ActionType";
+
+/**
+ * Represents the attributes of a gesture.
+ *
+ * @interface GestureAttributes
+ */
+export interface GestureAttributes {
+    name: string | null;
+    trigger: string | null;
+    id?: number | null;
+    actions?: any[] | null;
+}
+
+/**
+ * Represents the attributes required for creating a gesture.
+ *
+ * @interface
+ * @extends Optional&lt;GestureAttributes, 'id'>
+ */
+interface GestureCreationAttributes extends Optional&lt;GestureAttributes, 'id'>  {}
+
+/**
+ * Retrieves all gestures from the database.
+ *
+ * @async
+ * @function getAllGestures
+ * @returns {Promise&lt;Array&lt;Object>>} - A promise that resolves with an array of gestures.
+ *
+ * @throws {Error} - If there is an error while fetching the gestures from the database.
+ */
+const getAllGestures = async () => {
+    const gestures = await Gesture.findAll({
+        include: [{
+            model: Action,
+            as: 'actions' // the name of the association
+        }]
+    })
+    return gestures
+}
+
+/**
+ * Retrieves a gesture by its ID.
+ *
+ * @param {number} id - The ID of the gesture to retrieve.
+ * @returns {Promise&lt;Gesture>} - A promise that resolves to the retrieved gesture.
+ */
+const getGesture = async (id: number) => {
+    const gesture = await Gesture.findOne({
+        where: { id: id },
+        include: [{
+            model: Action,
+            as: 'actions' // the name of the association
+        }]
+    });
+    return gesture
+}
+
+/**
+ * Creates a new gesture with the given attributes and actions.
+ * If actions are provided, it creates corresponding actions for the gesture.
+ *
+ * @param {GestureCreationAttributes} gesture - The attributes of the gesture to be created.
+ * @param {ActionType[]} actions - The actions to be created for the gesture.
+ * @returns {Promise&lt;void>} - A promise that resolves when the gesture and actions are created successfully.
+ */
+const createGesture = async (gesture: GestureCreationAttributes, actions: ActionType[]) => {
+    const retData = await Gesture.create(gesture)
+    if (actions) {
+        for (const action of actions) {
+            const value = await createAction({
+                ...action,
+                key: String(action.key),
+                delay: Number(action.delay) || null,
+                gestureId: retData.id
+            })
+        }
+    }
+}
+
+/**
+ * Updates a gesture with the provided id.
+ *
+ * @param {number} id - The id of the gesture to update.
+ * @param {GestureCreationAttributes} gesture - The updated gesture object.
+ * @param {ActionType[]} actions - The actions associated with the gesture.
+ * @returns {Promise&lt;void>} - A promise that resolves when the update is complete.
+ */
+const updateGesture = async (id: number, gesture: GestureCreationAttributes, actions: ActionType[]) => {
+    const g = await Gesture.findOne({where: {id: id}});
+    if (g) {
+        g.set({
+            name: gesture.name,
+            trigger: gesture.trigger
+        })
+        await g.save();
+    }
+
+    if (actions) {
+        for (const action of actions) {
+            if (!action.id) {
+                await createAction({
+                    press: action.press,
+                    type: action.type,
+                    key: action.key ? String(action.key) : null,
+                    delay: Number(action.delay) || null,
+                    gestureId: id
+                })    
+            }
+        }
+    }
+}
+
+/**
+ * Deletes a gesture from the database.
+ *
+ * @param {number} id - The ID of the gesture to delete.
+ * @returns {Promise&lt;void>} - A promise that resolves when the gesture is deleted.
+ */
+const deleteGesture = async (id: number) => {
+    await Action.destroy({
+        where: {
+            gestureId: id
+        },
+    })
+
+    await Gesture.destroy({
+        where: {
+            id: id
+        }
+    })
+}
+
+export { getAllGestures, getGesture, createGesture, updateGesture, deleteGesture }</code></pre>
+        </article>
+    </section>
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Sun Dec 10 2023 18:08:58
+    GMT+0200 (Itä-Euroopan normaaliaika) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+</body>
+</html>

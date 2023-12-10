@@ -7,6 +7,15 @@ import {Col, Row} from "react-bootstrap";
 import Actions from "@/Elements/Actions/Actions";
 import EditAction from "@/Elements/Actions/editAction";
 
+/**
+ * MacroModal
+ *
+ * A method that returns an object with two properties:
+ *  - `setShow`, which is a function to set the show state of the modal
+ *  - `element`, which is the JSX element representing the modal
+ *
+ * @returns {object} - An object with `setShow` and `element` properties
+ */
 export default function MacroModal() {
     const [show, setShow] = useState(false);
     const addAction = EditAction(null)

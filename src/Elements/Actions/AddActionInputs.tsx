@@ -8,6 +8,16 @@ import {ActionType} from "@/types/ActionType";
 import {faPlus} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
+/**
+ * Adds action inputs to a form.
+ *
+ * @param {any} keys - The keys to be used in the keyboard inputs.
+ * @param {any[]} mainInputs - The main inputs of the form.
+ * @param {any} setNewAction - A function to set the new action.
+ * @param {any} actionToModify - The action to modify (optional).
+ * @param {any} initialData - The initial data for the action.
+ * @returns {Object} - An object containing the element, actionTypeInput, keyboardInputs, delayInputs, clearAll, validateInputs, and addAction.
+ */
 export default function AddActionInputs(keys: any, mainInputs: any[], setNewAction: any, actionToModify: any, initialData: any) {
     const actionTypeInput = useSelectInput("Action type", "type", [
         {name: "keyboard", value: "keyboard"},

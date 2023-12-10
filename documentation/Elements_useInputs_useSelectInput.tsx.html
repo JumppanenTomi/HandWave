@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title>Elements/useInputs/useSelectInput.tsx - Documentation</title>
+
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="styles/prettify.css" rel="stylesheet" type="text/css">
+    <link href="styles/jsdoc.css" rel="stylesheet" type="text/css">
+    <script defer src="scripts/nav.js"></script>
+
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+</head>
+<body>
+
+<input class="nav-trigger" id="nav-trigger" type="checkbox"/>
+<label class="navicon-button x" for="nav-trigger">
+    <div class="navicon"></div>
+</label>
+
+<label class="overlay" for="nav-trigger"></label>
+
+<nav>
+
+
+    <h2><a href="index.html">Home</a></h2>
+    <h3>Classes</h3>
+    <ul>
+        <li><a href="Action.html">Action</a></li>
+        <li><a href="global.html#Gesture">Gesture</a></li>
+        <li><a href="gestureRecognizer.html">gestureRecognizer</a></li>
+        <li><a href="module-facialRecognition.faceLandmarker.html">faceLandmarker</a></li>
+    </ul>
+    <h3>Interfaces</h3>
+    <ul>
+        <li><a href="ActionAttributes.html">ActionAttributes</a></li>
+        <li><a href="ActionCreationAttributes.html">ActionCreationAttributes</a></li>
+        <li><a href="GestureAttributes.html">GestureAttributes</a></li>
+        <li><a href="GestureCreationAttributes.html">GestureCreationAttributes</a></li>
+        <li><a href="ToolbarItemType.html">ToolbarItemType</a></li>
+    </ul>
+    <h3>Global</h3>
+    <ul>
+        <li><a href="global.html#Home">Home</a></li>
+        <li><a href="global.html#MinimalView">MinimalView</a></li>
+        <li><a href="global.html#NavBar">NavBar</a></li>
+        <li><a href="global.html#SourceItem">SourceItem</a></li>
+        <li><a href="global.html#TopAppBar">TopAppBar</a></li>
+        <li><a href="global.html#Webcam">Webcam</a></li>
+        <li><a href="global.html#createAction">createAction</a></li>
+        <li><a href="global.html#createGesture">createGesture</a></li>
+        <li><a href="global.html#deleteAction">deleteAction</a></li>
+        <li><a href="global.html#deleteGesture">deleteGesture</a></li>
+        <li><a href="global.html#formatTime">formatTime</a></li>
+        <li><a href="global.html#getAction">getAction</a></li>
+        <li><a href="global.html#getAllActions">getAllActions</a></li>
+        <li><a href="global.html#getAllGestures">getAllGestures</a></li>
+        <li><a href="global.html#getGesture">getGesture</a></li>
+        <li><a href="global.html#isBuild">isBuild</a></li>
+        <li><a href="global.html#locDb">locDb</a></li>
+        <li><a href="global.html#openWebpage">openWebpage</a></li>
+        <li><a href="global.html#pressKey">pressKey</a></li>
+        <li><a href="global.html#releaseKey">releaseKey</a></li>
+        <li><a href="global.html#updateAction">updateAction</a></li>
+        <li><a href="global.html#updateGesture">updateGesture</a></li>
+    </ul>
+
+</nav>
+
+<div id="main">
+
+    <h1 class="page-title">Elements/useInputs/useSelectInput.tsx</h1>
+
+
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {useState} from "react";
+import {Form} from "react-bootstrap";
+
+/**
+ * Represents the input properties for a form field.
+ *
+ * @typedef {Object} InputProps
+ * @property {string} [initial] - The initial value for the input field.
+ * @property {boolean} [required] - Indicates if the input field is required.
+ */
+type InputProps = {
+  initial?: string;
+  required?: boolean;
+};
+
+/**
+ * Represents a select input type.
+ *
+ * @typedef {Object} SelectInputType
+ * @property {string|number} name - The name of the select input type.
+ * @property {*} value - The value of the select input type.
+ */
+export type SelectInputType = {
+  name: string | number;
+  value: any;
+};
+
+/**
+ * Creates a select input element with validation and control functions.
+ *
+ * @param {string} title - The title of the select input element.
+ * @param {string} key - The unique key identifier for the select input.
+ * @param {SelectInputType[]} items - An array of objects representing the options for the select input.
+ * @param {InputProps} [props] - Additional input properties.
+ * @returns {Object} - An object containing the select input's validity, element, value, clear function, and key.
+ */
+export default function useSelectInput(title: string, key: string, items: SelectInputType[], props?: InputProps) {
+  const [isValid, setIsValid] = useState&lt;boolean>(true);
+  const [value, setValue] = useState&lt;string | undefined>(props?.initial || "");
+
+  const validate = (v: string) => {
+    const isValidSelection = v !== ""; // Customize validation logic as needed
+
+    setIsValid(isValidSelection);
+    setValue(v);
+  };
+
+  const clear = () => {
+    setValue(undefined);
+    setIsValid(true);
+  };
+
+  const element = (
+    &lt;>
+      &lt;label>{title}&lt;/label>
+      &lt;Form.Select
+        value={value}
+        onChange={(e) => validate(e.target.value)}
+        isInvalid={!isValid}
+      >
+        {!props?.required &amp;&amp; &lt;option value="">Select...&lt;/option>}
+        {items.map((e, i) => (
+          &lt;option key={i} value={e.value}>
+            {e.name}
+          &lt;/option>
+        ))}
+      &lt;/Form.Select>
+      {isValid || (
+        &lt;Form.Control.Feedback type="invalid">
+          Please make a selection.
+        &lt;/Form.Control.Feedback>
+      )}
+    &lt;/>
+  );
+
+  return {
+    isValid,
+    element,
+    value,
+    clear,
+    key,
+  };
+}
+</code></pre>
+        </article>
+    </section>
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Sun Dec 10 2023 18:08:58
+    GMT+0200 (Itä-Euroopan normaaliaika) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+</body>
+</html>

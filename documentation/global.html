@@ -1,0 +1,5847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title>Global - Documentation</title>
+
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="styles/prettify.css" rel="stylesheet" type="text/css">
+    <link href="styles/jsdoc.css" rel="stylesheet" type="text/css">
+    <script defer src="scripts/nav.js"></script>
+
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+</head>
+<body>
+
+<input class="nav-trigger" id="nav-trigger" type="checkbox"/>
+<label class="navicon-button x" for="nav-trigger">
+    <div class="navicon"></div>
+</label>
+
+<label class="overlay" for="nav-trigger"></label>
+
+<nav>
+
+
+    <h2><a href="index.html">Home</a></h2>
+    <h3>Classes</h3>
+    <ul>
+        <li><a href="Action.html">Action</a></li>
+        <li><a href="global.html#Gesture">Gesture</a></li>
+        <li><a href="gestureRecognizer.html">gestureRecognizer</a></li>
+        <li><a href="module-facialRecognition.faceLandmarker.html">faceLandmarker</a></li>
+    </ul>
+    <h3>Interfaces</h3>
+    <ul>
+        <li><a href="ActionAttributes.html">ActionAttributes</a></li>
+        <li><a href="ActionCreationAttributes.html">ActionCreationAttributes</a></li>
+        <li><a href="GestureAttributes.html">GestureAttributes</a></li>
+        <li><a href="GestureCreationAttributes.html">GestureCreationAttributes</a></li>
+        <li><a href="ToolbarItemType.html">ToolbarItemType</a></li>
+    </ul>
+    <h3>Global</h3>
+    <ul>
+        <li><a href="global.html#Home">Home</a></li>
+        <li><a href="global.html#MinimalView">MinimalView</a></li>
+        <li><a href="global.html#NavBar">NavBar</a></li>
+        <li><a href="global.html#SourceItem">SourceItem</a></li>
+        <li><a href="global.html#TopAppBar">TopAppBar</a></li>
+        <li><a href="global.html#Webcam">Webcam</a></li>
+        <li><a href="global.html#createAction">createAction</a></li>
+        <li><a href="global.html#createGesture">createGesture</a></li>
+        <li><a href="global.html#deleteAction">deleteAction</a></li>
+        <li><a href="global.html#deleteGesture">deleteGesture</a></li>
+        <li><a href="global.html#formatTime">formatTime</a></li>
+        <li><a href="global.html#getAction">getAction</a></li>
+        <li><a href="global.html#getAllActions">getAllActions</a></li>
+        <li><a href="global.html#getAllGestures">getAllGestures</a></li>
+        <li><a href="global.html#getGesture">getGesture</a></li>
+        <li><a href="global.html#isBuild">isBuild</a></li>
+        <li><a href="global.html#locDb">locDb</a></li>
+        <li><a href="global.html#openWebpage">openWebpage</a></li>
+        <li><a href="global.html#pressKey">pressKey</a></li>
+        <li><a href="global.html#releaseKey">releaseKey</a></li>
+        <li><a href="global.html#updateAction">updateAction</a></li>
+        <li><a href="global.html#updateGesture">updateGesture</a></li>
+    </ul>
+
+</nav>
+
+<div id="main">
+
+    <h1 class="page-title">Global</h1>
+
+
+    <section>
+
+        <header>
+
+            <h2>
+
+
+            </h2>
+
+
+        </header>
+
+        <article>
+
+            <div class="container-overview">
+
+
+                <dl class="details">
+
+
+                </dl>
+
+
+            </div>
+
+
+            <h3 class="subsection-title">Members</h3>
+
+
+            <h4 class="name" id="isBuild"><span class="type-signature type-signature-constant">(constant) </span>isBuild<span
+                    class="type-signature"> :boolean</span></h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>The `isBuild` variable is used to check if the current build is in production mode.
+                            It is a read-only variable that is determined by comparing the value of the `NODE_ENV`
+                            environment variable with the string "production".
+                        </li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="getdb.ts.html">getdb.ts</a>, <a href="getdb.ts.html#line25">line 25</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <div class="description usertext">
+                The `isBuild` variable is used to check if the current build is in production mode.
+                It is a read-only variable that is determined by comparing the value of the `NODE_ENV` environment
+                variable with the string "production".
+            </div>
+
+
+            <h5 class="h5-types">Type:</h5>
+            <ul>
+                <li>
+
+                    <span class="param-type">boolean</span>
+
+
+                </li>
+            </ul>
+
+
+            <h5 class="h5-examples">Example</h5>
+
+            <pre class="prettyprint"><code>if (isBuild) {
+  console.log("The build is in production mode");
+} else {
+  console.log("The build is not in production mode");
+}</code></pre>
+
+
+            <h4 class="name" id="locDb"><span
+                    class="type-signature type-signature-constant">(constant) </span>locDb<span class="type-signature"> :string</span>
+            </h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>File path for the database.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="getdb.ts.html">getdb.ts</a>, <a href="getdb.ts.html#line31">line 31</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <div class="description usertext">
+                File path for the database.
+            </div>
+
+
+            <h5 class="h5-types">Type:</h5>
+            <ul>
+                <li>
+
+                    <span class="param-type">string</span>
+
+
+                </li>
+            </ul>
+
+
+            <h4 class="name" id="openWebpage"><span class="type-signature type-signature-constant">(constant) </span>openWebpage<span
+                    class="type-signature"></span></h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Opens a webpage in the default browser.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="sharedUtilities_openWebpage.tsx.html">sharedUtilities/openWebpage.tsx</a>, <a
+                                href="sharedUtilities_openWebpage.tsx.html#line7">line 7</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <div class="description usertext">
+                Opens a webpage in the default browser.
+            </div>
+
+
+            <h3 class="subsection-title">Methods</h3>
+
+
+            <h4 class="name" id="Home"><span class="type-signature"></span>Home<span class="signature">()</span><span
+                    class="type-signature"> &rarr; {React.Component}</span></h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Represents the Home component.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="Views_Home.tsx.html">Views/Home.tsx</a>, <a href="Views_Home.tsx.html#line35">line
+                            35</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="h5-returns">Returns:</h5>
+
+
+            <div class="param-desc">
+                The rendered Home component.
+            </div>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">React.Component</span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="MinimalView"><span class="type-signature"></span>MinimalView<span
+                    class="signature">()</span><span class="type-signature"> &rarr; {React.Element}</span></h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Creates a minimal view component.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="Elements_Actionbars_MinimalView.tsx.html">Elements/Actionbars/MinimalView.tsx</a>,
+                            <a href="Elements_Actionbars_MinimalView.tsx.html#line52">line 52</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="h5-returns">Returns:</h5>
+
+
+            <div class="param-desc">
+                A React component representing the minimal view.
+            </div>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">React.Element</span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="MinimalView"><span class="type-signature"></span>MinimalView<span
+                    class="signature">()</span><span class="type-signature"> &rarr; {React.Element}</span></h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Creates a minimal view component.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="Elements_Actionbars_MinimalView.tsx.html">Elements/Actionbars/MinimalView.tsx</a>,
+                            <a href="Elements_Actionbars_MinimalView.tsx.html#line11">line 11</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="h5-returns">Returns:</h5>
+
+
+            <div class="param-desc">
+                A React component representing the minimal view.
+            </div>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">React.Element</span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="NavBar"><span class="type-signature"></span>NavBar<span class="signature">(hideElements, setHideElements, recording, setRecording)</span><span
+                    class="type-signature"> &rarr; {React.FC}</span></h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Represents a navigation bar component.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="Elements_NavBar.tsx.html">Elements/NavBar.tsx</a>, <a
+                                href="Elements_NavBar.tsx.html#line19">line 19</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="h5-parameters">Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>hideElements</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+
+
+                    </td>
+
+
+                    <td class="description last">Flag indicating whether to hide elements.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>setHideElements</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">React.Dispatch.&lt;React.SetStateAction.&lt;boolean>></span>
+
+
+                    </td>
+
+
+                    <td class="description last">Function to set the value of `hideElements`.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>recording</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+
+
+                    </td>
+
+
+                    <td class="description last">Flag indicating whether recording is in progress.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>setRecording</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">React.Dispatch.&lt;React.SetStateAction.&lt;boolean>></span>
+
+
+                    </td>
+
+
+                    <td class="description last">Function to set the value of `recording`.</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <h5 class="h5-returns">Returns:</h5>
+
+
+            <div class="param-desc">
+                A React functional component representing a navigation bar.
+            </div>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">React.FC</span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="SourceItem"><span class="type-signature"></span>SourceItem<span class="signature">(props)</span><span
+                    class="type-signature"> &rarr; {JSX.Element}</span></h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Represents a source item.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="Elements_SourceItem.tsx.html">Elements/SourceItem.tsx</a>, <a
+                                href="Elements_SourceItem.tsx.html#line23">line 23</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="h5-parameters">Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>props</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">Object</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The properties for the source item.
+                        <h6>Properties</h6>
+
+
+                        <table class="params">
+                            <thead>
+                            <tr>
+
+                                <th>Name</th>
+
+
+                                <th>Type</th>
+
+
+                                <th class="last">Description</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+
+                            <tr>
+
+                                <td class="name"><code>item</code></td>
+
+
+                                <td class="type">
+
+
+                                    <span class="param-type">Electron.DesktopCapturerSource</span>
+
+
+                                </td>
+
+
+                                <td class="description last">The Electron desktop capturer source for the item.</td>
+                            </tr>
+
+
+                            <tr>
+
+                                <td class="name"><code>selectedSource</code></td>
+
+
+                                <td class="type">
+
+
+                                    <span class="param-type">string</span>
+                                    |
+
+                                    <span class="param-type">undefined</span>
+
+
+                                </td>
+
+
+                                <td class="description last">The ID of the selected source, or undefined if none
+                                    selected.
+                                </td>
+                            </tr>
+
+
+                            <tr>
+
+                                <td class="name"><code>onClick</code></td>
+
+
+                                <td class="type">
+
+
+                                    <span class="param-type">function</span>
+
+
+                                </td>
+
+
+                                <td class="description last">The function to be called when the item is clicked.</td>
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+
+                    </td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <h5 class="h5-returns">Returns:</h5>
+
+
+            <div class="param-desc">
+                - The rendered source item component.
+            </div>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">JSX.Element</span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="SourceItem"><span class="type-signature"></span>SourceItem<span class="signature">(props)</span><span
+                    class="type-signature"> &rarr; {JSX.Element}</span></h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Represents a source item.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="Elements_SourceItem.tsx.html">Elements/SourceItem.tsx</a>, <a
+                                href="Elements_SourceItem.tsx.html#line3">line 3</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="h5-parameters">Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>props</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">Object</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The properties for the source item.
+                        <h6>Properties</h6>
+
+
+                        <table class="params">
+                            <thead>
+                            <tr>
+
+                                <th>Name</th>
+
+
+                                <th>Type</th>
+
+
+                                <th class="last">Description</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+
+                            <tr>
+
+                                <td class="name"><code>item</code></td>
+
+
+                                <td class="type">
+
+
+                                    <span class="param-type">Electron.DesktopCapturerSource</span>
+
+
+                                </td>
+
+
+                                <td class="description last">The Electron desktop capturer source for the item.</td>
+                            </tr>
+
+
+                            <tr>
+
+                                <td class="name"><code>selectedSource</code></td>
+
+
+                                <td class="type">
+
+
+                                    <span class="param-type">string</span>
+                                    |
+
+                                    <span class="param-type">undefined</span>
+
+
+                                </td>
+
+
+                                <td class="description last">The ID of the selected source, or undefined if none
+                                    selected.
+                                </td>
+                            </tr>
+
+
+                            <tr>
+
+                                <td class="name"><code>onClick</code></td>
+
+
+                                <td class="type">
+
+
+                                    <span class="param-type">function</span>
+
+
+                                </td>
+
+
+                                <td class="description last">The function to be called when the item is clicked.</td>
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+
+                    </td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <h5 class="h5-returns">Returns:</h5>
+
+
+            <div class="param-desc">
+                - The rendered source item component.
+            </div>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">JSX.Element</span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="TopAppBar"><span class="type-signature"></span>TopAppBar<span
+                    class="signature">()</span><span class="type-signature"> &rarr; {JSX.Element}</span></h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>React functional component representing the top app bar.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="Elements_Actionbars_TopAppBar.tsx.html">Elements/Actionbars/TopAppBar.tsx</a>, <a
+                                href="Elements_Actionbars_TopAppBar.tsx.html#line12">line 12</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="h5-returns">Returns:</h5>
+
+
+            <div class="param-desc">
+                The top app bar component.
+            </div>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">JSX.Element</span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="Webcam"><span class="type-signature"></span>Webcam<span
+                    class="signature">(param)</span><span class="type-signature"> &rarr; {React.Element}</span></h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Renders a webcam component with a video and canvas element.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="Elements_Webcam.tsx.html">Elements/Webcam.tsx</a>, <a
+                                href="Elements_Webcam.tsx.html#line12">line 12</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="h5-parameters">Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>param</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">Object</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The configuration object.
+                        <h6>Properties</h6>
+
+
+                        <table class="params">
+                            <thead>
+                            <tr>
+
+                                <th>Name</th>
+
+
+                                <th>Type</th>
+
+
+                                <th class="last">Description</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+
+                            <tr>
+
+                                <td class="name"><code>webCamRef</code></td>
+
+
+                                <td class="type">
+
+
+                                    <span class="param-type">React.RefObject.&lt;any></span>
+
+
+                                </td>
+
+
+                                <td class="description last">The React ref object used to access the video element.</td>
+                            </tr>
+
+
+                            <tr>
+
+                                <td class="name"><code>canvasRef</code></td>
+
+
+                                <td class="type">
+
+
+                                    <span class="param-type">React.RefObject.&lt;any></span>
+
+
+                                </td>
+
+
+                                <td class="description last">The React ref object used to access the canvas element.
+                                </td>
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+
+                    </td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <h5 class="h5-returns">Returns:</h5>
+
+
+            <div class="param-desc">
+                The webcam component.
+            </div>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">React.Element</span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="createAction"><span class="type-signature type-signature-async">(async) </span>createAction<span
+                    class="signature">(action)</span><span class="type-signature"> &rarr; {Promise.&lt;<a
+                    href="ActionAttributes.html">ActionAttributes</a>>}</span></h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Creates a new action in the system.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="modelApi_action.ts.html">modelApi/action.ts</a>, <a
+                                href="modelApi_action.ts.html#line34">line 34</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="h5-parameters">Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>action</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type"><a
+                                href="ActionCreationAttributes.html">ActionCreationAttributes</a></span>
+
+
+                    </td>
+
+
+                    <td class="description last">The action object containing the required data for creating the
+                        action.
+                    </td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <h5 class="h5-returns">Returns:</h5>
+
+
+            <div class="param-desc">
+                - A promise that resolves to the added action object.
+            </div>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">Promise.&lt;<a href="ActionAttributes.html">ActionAttributes</a>></span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="createGesture"><span class="type-signature type-signature-async">(async) </span>createGesture<span
+                    class="signature">(gesture, actions)</span><span
+                    class="type-signature"> &rarr; {Promise.&lt;void>}</span></h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Creates a new gesture with the given attributes and actions.
+                            If actions are provided, it creates corresponding actions for the gesture.
+                        </li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="modelApi_gesture.ts.html">modelApi/gesture.ts</a>, <a
+                                href="modelApi_gesture.ts.html#line46">line 46</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="h5-parameters">Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>gesture</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type"><a href="GestureCreationAttributes.html">GestureCreationAttributes</a></span>
+
+
+                    </td>
+
+
+                    <td class="description last">The attributes of the gesture to be created.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>actions</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">Array.&lt;ActionType></span>
+
+
+                    </td>
+
+
+                    <td class="description last">The actions to be created for the gesture.</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <h5 class="h5-returns">Returns:</h5>
+
+
+            <div class="param-desc">
+                - A promise that resolves when the gesture and actions are created successfully.
+            </div>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">Promise.&lt;void></span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="deleteAction"><span class="type-signature type-signature-async">(async) </span>deleteAction<span
+                    class="signature">(id)</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span></h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Delete an action by its id.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="modelApi_action.ts.html">modelApi/action.ts</a>, <a
+                                href="modelApi_action.ts.html#line70">line 70</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="h5-parameters">Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>id</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">number</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The id of the action to delete.</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <h5 class="h5-returns">Returns:</h5>
+
+
+            <div class="param-desc">
+                - A promise that resolves when the action is deleted.
+            </div>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">Promise.&lt;void></span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="deleteGesture"><span class="type-signature type-signature-async">(async) </span>deleteGesture<span
+                    class="signature">(id)</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span></h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Deletes a gesture from the database.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="modelApi_gesture.ts.html">modelApi/gesture.ts</a>, <a
+                                href="modelApi_gesture.ts.html#line96">line 96</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="h5-parameters">Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>id</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">number</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The ID of the gesture to delete.</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <h5 class="h5-returns">Returns:</h5>
+
+
+            <div class="param-desc">
+                - A promise that resolves when the gesture is deleted.
+            </div>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">Promise.&lt;void></span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="formatTime"><span class="type-signature"></span>formatTime<span class="signature">(timeInSeconds)</span><span
+                    class="type-signature"> &rarr; {string}</span></h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>A function that formats time in seconds into a string representation of minutes and seconds
+                            in the format "MM:SS".
+                        </li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="sharedUtilities_formatTime.tsx.html">sharedUtilities/formatTime.tsx</a>, <a
+                                href="sharedUtilities_formatTime.tsx.html#line8">line 8</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="h5-parameters">Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>timeInSeconds</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">*</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The time in seconds.</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <h5 class="h5-returns">Returns:</h5>
+
+
+            <div class="param-desc">
+                - The formatted time string in the format "MM:SS".
+            </div>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">string</span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="getAction"><span
+                    class="type-signature type-signature-async">(async) </span>getAction<span
+                    class="signature">(id)</span><span class="type-signature"> &rarr; {Promise.&lt;<a
+                    href="Action.html">Action</a>>}</span></h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Retrieves an action by its id</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="modelApi_action.ts.html">modelApi/action.ts</a>, <a
+                                href="modelApi_action.ts.html#line17">line 17</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="h5-parameters">Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>id</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">number</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The id of the action to retrieve</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <h5 class="h5-returns">Returns:</h5>
+
+
+            <div class="param-desc">
+                The action object that matches the id
+            </div>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">Promise.&lt;<a href="Action.html">Action</a>></span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="getAllActions"><span class="type-signature type-signature-async">(async) </span>getAllActions<span
+                    class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Array>}</span></h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Function that retrieves all actions by calling the "Action.findAll" method asynchronously.
+                        </li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="modelApi_action.ts.html">modelApi/action.ts</a>, <a
+                                href="modelApi_action.ts.html#line7">line 7</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="h5-returns">Returns:</h5>
+
+
+            <div class="param-desc">
+                A promise that resolves to an array of actions.
+            </div>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">Promise.&lt;Array></span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="getAllGestures"><span class="type-signature type-signature-async">(async) </span>getAllGestures<span
+                    class="signature">()</span><span
+                    class="type-signature"> &rarr; {Promise.&lt;Array.&lt;Object>>}</span></h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Retrieves all gestures from the database.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="modelApi_gesture.ts.html">modelApi/gesture.ts</a>, <a
+                                href="modelApi_gesture.ts.html#line4">line 4</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="h5-throws">Throws:</h5>
+
+
+            <dl>
+                <dt>
+                    <div class="param-desc usertext">
+                        - If there is an error while fetching the gestures from the database.
+                    </div>
+                </dt>
+                <dd></dd>
+                <dt>
+                    <dl class="param-type">
+                        <dt>
+                            Type
+                        </dt>
+                        <dd>
+
+                            <span class="param-type">Error</span>
+
+
+                        </dd>
+                    </dl>
+                </dt>
+                <dd></dd>
+            </dl>
+
+
+            <h5 class="h5-returns">Returns:</h5>
+
+
+            <div class="param-desc">
+                - A promise that resolves with an array of gestures.
+            </div>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">Promise.&lt;Array.&lt;Object>></span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="getGesture"><span class="type-signature type-signature-async">(async) </span>getGesture<span
+                    class="signature">(id)</span><span class="type-signature"> &rarr; {Promise.&lt;<a
+                    href="global.html#Gesture">Gesture</a>>}</span></h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Retrieves a gesture by its ID.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="modelApi_gesture.ts.html">modelApi/gesture.ts</a>, <a
+                                href="modelApi_gesture.ts.html#line28">line 28</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="h5-parameters">Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>id</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">number</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The ID of the gesture to retrieve.</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <h5 class="h5-returns">Returns:</h5>
+
+
+            <div class="param-desc">
+                - A promise that resolves to the retrieved gesture.
+            </div>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">Promise.&lt;<a href="global.html#Gesture">Gesture</a>></span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="pressKey"><span
+                    class="type-signature type-signature-async">(async) </span>pressKey<span
+                    class="signature">(data)</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span></h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Function to press a key using the ipcRenderer.invoke method.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="AI_executeActions.tsx.html">AI/executeActions.tsx</a>, <a
+                                href="AI_executeActions.tsx.html#line61">line 61</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="h5-parameters">Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>data</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">any</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The data to be passed to the 'pressKey' action.</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <h5 class="h5-returns">Returns:</h5>
+
+
+            <div class="param-desc">
+                - A Promise that resolves with no value on success, or rejects with an error on failure.
+            </div>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">Promise.&lt;void></span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="releaseKey"><span class="type-signature type-signature-async">(async) </span>releaseKey<span
+                    class="signature">(data)</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span></h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Release a key using the provided data.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="AI_executeActions.tsx.html">AI/executeActions.tsx</a>, <a
+                                href="AI_executeActions.tsx.html#line77">line 77</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="h5-parameters">Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>data</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">any</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The data required to release the key.</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <h5 class="h5-returns">Returns:</h5>
+
+
+            <div class="param-desc">
+                - A promise that resolves when the key is successfully released.
+            </div>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">Promise.&lt;void></span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="updateAction"><span class="type-signature type-signature-async">(async) </span>updateAction<span
+                    class="signature">(id, action)</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span>
+            </h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Updates an action with the given id.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="modelApi_action.ts.html">modelApi/action.ts</a>, <a
+                                href="modelApi_action.ts.html#line52">line 52</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="h5-parameters">Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>id</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">number</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The id of the action to update.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>action</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type"><a
+                                href="ActionCreationAttributes.html">ActionCreationAttributes</a></span>
+
+
+                    </td>
+
+
+                    <td class="description last">The updated data for the action.</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <h5 class="h5-returns">Returns:</h5>
+
+
+            <div class="param-desc">
+                - A promise that resolves once the action is updated.
+            </div>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">Promise.&lt;void></span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="updateGesture"><span class="type-signature type-signature-async">(async) </span>updateGesture<span
+                    class="signature">(id, gesture, actions)</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span>
+            </h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Updates a gesture with the provided id.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="modelApi_gesture.ts.html">modelApi/gesture.ts</a>, <a
+                                href="modelApi_gesture.ts.html#line67">line 67</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="h5-parameters">Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>id</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">number</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The id of the gesture to update.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>gesture</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type"><a href="GestureCreationAttributes.html">GestureCreationAttributes</a></span>
+
+
+                    </td>
+
+
+                    <td class="description last">The updated gesture object.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>actions</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">Array.&lt;ActionType></span>
+
+
+                    </td>
+
+
+                    <td class="description last">The actions associated with the gesture.</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <h5 class="h5-returns">Returns:</h5>
+
+
+            <div class="param-desc">
+                - A promise that resolves when the update is complete.
+            </div>
+
+
+            <dl class="param-type">
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">Promise.&lt;void></span>
+
+
+                </dd>
+            </dl>
+
+
+            <h3 class="subsection-title">Type Definitions</h3>
+
+
+            <h4 class="name" id="ActionsDataContextType">ActionsDataContextType</h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Represents a data context type for actions.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="App.tsx.html">App.tsx</a>, <a href="App.tsx.html#line151">line 151</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="subsection-title">Properties:</h5>
+
+
+            <table class="props">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>actionData</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">Array.&lt;TriggerData></span>
+                        |
+
+                        <span class="param-type">undefined</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The action data.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>setActionData</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">React.Dispatch.&lt;React.SetStateAction.&lt;(Array.&lt;TriggerData>|undefined)>></span>
+                        |
+
+                        <span class="param-type">undefined</span>
+
+
+                    </td>
+
+
+                    <td class="description last">A function to set the action data.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>gestureData</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">Array.&lt;any></span>
+                        |
+
+                        <span class="param-type">undefined</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The gesture data.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>setGestureData</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">React.Dispatch.&lt;React.SetStateAction.&lt;(Array.&lt;any>|undefined)>></span>
+                        |
+
+                        <span class="param-type">undefined</span>
+
+
+                    </td>
+
+
+                    <td class="description last">A function to set the gesture data.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>forceRender</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">any</span>
+
+
+                    </td>
+
+
+                    <td class="description last">Used to trigger a re-render of the component.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>actionData</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">Array</span>
+                        |
+
+                        <span class="param-type">undefined</span>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>setActionData</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">React.Dispatch.&lt;React.SetStateAction.&lt;(Array.&lt;TriggerData>|undefined)>></span>
+                        |
+
+                        <span class="param-type">undefined</span>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>gestureData</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">Array</span>
+                        |
+
+                        <span class="param-type">undefined</span>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>setGestureData</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">React.Dispatch.&lt;React.SetStateAction.&lt;(Array.&lt;any>|undefined)>></span>
+                        |
+
+                        <span class="param-type">undefined</span>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>forceRender</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">any</span>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <div class="description usertext">
+                Represents a data context type for actions.
+            </div>
+
+
+            <h5 class="h5-types">Type:</h5>
+            <ul>
+                <li>
+
+                    <span class="param-type">Object</span>
+
+
+                </li>
+            </ul>
+
+
+            <h4 class="name" id="ActionsDataContextType">ActionsDataContextType</h4>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="App.tsx.html">App.tsx</a>, <a href="App.tsx.html#line7">line 7</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="subsection-title">Properties:</h5>
+
+
+            <table class="props">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>actionData</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">*</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The action data.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>setActionData</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">function</span>
+
+
+                    </td>
+
+
+                    <td class="description last">A function to set the action data.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>gestureData</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">*</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The gesture data.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>setGestureData</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">function</span>
+
+
+                    </td>
+
+
+                    <td class="description last">A function to set the gesture data.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>forceRender</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">function</span>
+
+
+                    </td>
+
+
+                    <td class="description last">A function to force render.</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <h5 class="h5-types">Type:</h5>
+            <ul>
+                <li>
+
+                    <span class="param-type">Object</span>
+
+
+                </li>
+            </ul>
+
+
+            <h4 class="name" id="FaceDetectionContext">FaceDetectionContext</h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Represents the context for face detection.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="App.tsx.html">App.tsx</a>, <a href="App.tsx.html#line84">line 84</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="subsection-title">Properties:</h5>
+
+
+            <table class="props">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>faceDetection</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+
+
+                    </td>
+
+
+                    <td class="description last">determines if face detection is enabled or disabled.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>setFaceDetection</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">function</span>
+
+
+                    </td>
+
+
+                    <td class="description last">function to set the value of faceDetection.</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <div class="description usertext">
+                Represents the context for face detection.
+            </div>
+
+
+            <h5 class="h5-types">Type:</h5>
+            <ul>
+                <li>
+
+                    <span class="param-type">Object</span>
+
+
+                </li>
+            </ul>
+
+
+            <h4 class="name" id="FaceDetectionContextType">FaceDetectionContextType</h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Represents the context type for face detection feature.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="App.tsx.html">App.tsx</a>, <a href="App.tsx.html#line202">line 202</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="subsection-title">Properties:</h5>
+
+
+            <table class="props">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>faceDetection</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+
+
+                    </td>
+
+
+                    <td class="description last">Indicates whether face detection is enabled or not.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>setFaceDetection</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">React.Dispatch.&lt;React.SetStateAction.&lt;boolean>></span>
+
+
+                    </td>
+
+
+                    <td class="description last">A function to update the state of face detection.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>faceDetection</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>setFaceDetection</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">React.Dispatch.&lt;React.SetStateAction.&lt;boolean>></span>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <div class="description usertext">
+                Represents the context type for face detection feature.
+            </div>
+
+
+            <h5 class="h5-types">Type:</h5>
+            <ul>
+                <li>
+
+                    <span class="param-type">Object</span>
+
+
+                </li>
+            </ul>
+
+
+            <h4 class="name" id="FaceMeshContextType">FaceMeshContextType</h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Represents the context type for managing the face mesh state.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="App.tsx.html">App.tsx</a>, <a href="App.tsx.html#line193">line 193</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="subsection-title">Properties:</h5>
+
+
+            <table class="props">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>mesh</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The current face mesh state.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>setMesh</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">React.Dispatch.&lt;React.SetStateAction.&lt;boolean>></span>
+
+
+                    </td>
+
+
+                    <td class="description last">Function to update the face mesh state.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>mesh</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>setMesh</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">React.Dispatch.&lt;React.SetStateAction.&lt;boolean>></span>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <div class="description usertext">
+                Represents the context type for managing the face mesh state.
+            </div>
+
+
+            <h5 class="h5-types">Type:</h5>
+            <ul>
+                <li>
+
+                    <span class="param-type">Object</span>
+
+
+                </li>
+            </ul>
+
+
+            <h4 class="name" id="Gesture">Gesture</h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Represents gesture data.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="staticData_gestureData.tsx.html">staticData/gestureData.tsx</a>, <a
+                                href="staticData_gestureData.tsx.html#line2">line 2</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="subsection-title">Properties:</h5>
+
+
+            <table class="props">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>name</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The name of the gesture.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>value</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The value associated with the gesture.</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <div class="description usertext">
+                Represents gesture data.
+            </div>
+
+
+            <h5 class="h5-types">Type:</h5>
+            <ul>
+                <li>
+
+                    <span class="param-type">Object</span>
+
+
+                </li>
+            </ul>
+
+
+            <h4 class="name" id="InputProps">InputProps</h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Represents the input properties for a form field.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="Elements_useInputs_useSelectInput.tsx.html">Elements/useInputs/useSelectInput.tsx</a>,
+                            <a href="Elements_useInputs_useSelectInput.tsx.html#line42">line 42</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="subsection-title">Properties:</h5>
+
+
+            <table class="props">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th>Attributes</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>initial</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last">The initial value for the input field.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>required</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last">Indicates if the input field is required.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>initial</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>required</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <div class="description usertext">
+                Represents the input properties for a form field.
+            </div>
+
+
+            <h5 class="h5-types">Type:</h5>
+            <ul>
+                <li>
+
+                    <span class="param-type">Object</span>
+
+
+                </li>
+            </ul>
+
+
+            <h4 class="name" id="InputProps">InputProps</h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Represents the properties for the Input component.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="Elements_useInputs_useStringInput.tsx.html">Elements/useInputs/useStringInput.tsx</a>,
+                            <a href="Elements_useInputs_useStringInput.tsx.html#line51">line 51</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="subsection-title">Properties:</h5>
+
+
+            <table class="props">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th>Attributes</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>initial</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last">The initial value of the input.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>required</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last">Indicates whether the input is required or not.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>placeholder</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last">The placeholder text for the input.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>unit</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last">The unit of measurement for the input value.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>initial</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>required</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>placeholder</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>unit</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <div class="description usertext">
+                Represents the properties for the Input component.
+            </div>
+
+
+            <h5 class="h5-types">Type:</h5>
+            <ul>
+                <li>
+
+                    <span class="param-type">Object</span>
+
+
+                </li>
+            </ul>
+
+
+            <h4 class="name" id="InputTypeInput">InputTypeInput</h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Represents an input type</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="sharedUtilities_inputsToJson.tsx.html">sharedUtilities/inputsToJson.tsx</a>, <a
+                                href="sharedUtilities_inputsToJson.tsx.html#line27">line 27</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="subsection-title">Properties:</h5>
+
+
+            <table class="props">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th>Attributes</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>element</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">JSX.Element</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+
+                    </td>
+
+
+                    <td class="description last">The JSX element representing the input</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>value</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">any</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+
+                    </td>
+
+
+                    <td class="description last">The value of the input</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>clear</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">function</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+
+                    </td>
+
+
+                    <td class="description last">Clears the input value</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>key</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+
+                    </td>
+
+
+                    <td class="description last">The key used to identify the input</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>isValid</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last">Optional property indicating if the input is valid</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>element</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">React.JSX.Element</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>value</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">any</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>clear</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">function</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>key</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>isValid</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <div class="description usertext">
+                Represents an input type
+            </div>
+
+
+            <h5 class="h5-types">Type:</h5>
+            <ul>
+                <li>
+
+                    <span class="param-type">object</span>
+
+
+                </li>
+            </ul>
+
+
+            <h4 class="name" id="MeshContext">MeshContext</h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Represents the context for manipulating a face mesh.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="App.tsx.html">App.tsx</a>, <a href="App.tsx.html#line58">line 58</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="subsection-title">Properties:</h5>
+
+
+            <table class="props">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>value</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type"><a
+                                href="global.html#FaceMeshContextType">FaceMeshContextType</a></span>
+
+
+                    </td>
+
+
+                    <td class="description last">The value of the context.
+                        <h6>Properties</h6>
+
+                        <table class="props">
+                            <thead>
+                            <tr>
+
+                                <th>Name</th>
+
+
+                                <th>Type</th>
+
+
+                                <th class="last">Description</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+
+                            <tr>
+
+                                <td class="name"><code>mesh</code></td>
+
+
+                                <td class="type">
+
+
+                                    <span class="param-type">boolean</span>
+
+
+                                </td>
+
+
+                                <td class="description last">Specifies whether the mesh is active or not.</td>
+                            </tr>
+
+
+                            <tr>
+
+                                <td class="name"><code>setMesh</code></td>
+
+
+                                <td class="type">
+
+
+                                    <span class="param-type">function</span>
+
+
+                                </td>
+
+
+                                <td class="description last">A function to update the mesh value.</td>
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+
+                    </td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <div class="description usertext">
+                Represents the context for manipulating a face mesh.
+            </div>
+
+
+            <h5 class="h5-types">Type:</h5>
+            <ul>
+                <li>
+
+                    <span class="param-type">Object</span>
+
+
+                </li>
+            </ul>
+
+
+            <h5 class="h5-examples">Examples</h5>
+
+            <pre class="prettyprint"><code>// Create a new context with mesh set to false
+const meshContext = createContext&lt;FaceMeshContextType>({
+  mesh: false,
+  setMesh: () => {}
+});</code></pre>
+
+            <pre class="prettyprint"><code>// Access the mesh context value and update the mesh value
+const { mesh, setMesh } = useContext(meshContext);
+setMesh(true); // Set the mesh to true
+setMesh(false); // Set the mesh to false</code></pre>
+
+
+            <h4 class="name" id="MinimalViewContextType">MinimalViewContextType</h4>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="App.tsx.html">App.tsx</a>, <a href="App.tsx.html#line185">line 185</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="subsection-title">Properties:</h5>
+
+
+            <table class="props">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>minimalView</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+
+
+                    </td>
+
+
+                    <td class="description last">Indicates if the minimal view is enabled.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>setMinimalView</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">React.Dispatch.&lt;React.SetStateAction.&lt;boolean>></span>
+
+
+                    </td>
+
+
+                    <td class="description last">Function to set the minimal view.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>minimalView</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>setMinimalView</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">React.Dispatch.&lt;React.SetStateAction.&lt;boolean>></span>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <h5 class="h5-types">Type:</h5>
+            <ul>
+                <li>
+
+                    <span class="param-type">Object</span>
+
+
+                </li>
+            </ul>
+
+
+            <h4 class="name" id="MinimalViewContextType">MinimalViewContextType</h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Creates a context for managing the minimal view state.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="App.tsx.html">App.tsx</a>, <a href="App.tsx.html#line46">line 46</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="subsection-title">Properties:</h5>
+
+
+            <table class="props">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>minimalView</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The current state of the minimal view.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>setMinimalView</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">function</span>
+
+
+                    </td>
+
+
+                    <td class="description last">A function to update the minimal view state.</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <div class="description usertext">
+                Creates a context for managing the minimal view state.
+            </div>
+
+
+            <h5 class="h5-types">Type:</h5>
+            <ul>
+                <li>
+
+                    <span class="param-type">object</span>
+
+
+                </li>
+            </ul>
+
+
+            <h4 class="name" id="NotificationManagerContextType">NotificationManagerContextType</h4>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="App.tsx.html">App.tsx</a>, <a href="App.tsx.html#line211">line 211</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="subsection-title">Properties:</h5>
+
+
+            <table class="props">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>notificationManager</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">any</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The type of the NotificationManager object.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>notificationManager</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">any</span>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <h5 class="h5-types">Type:</h5>
+            <ul>
+                <li>
+
+                    <span class="param-type">Object</span>
+
+
+                </li>
+            </ul>
+
+
+            <h4 class="name" id="NotificationManagerContextType">NotificationManagerContextType</h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Represents the context for the NotificationManager.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="App.tsx.html">App.tsx</a>, <a href="App.tsx.html#line96">line 96</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="subsection-title">Properties:</h5>
+
+
+            <table class="props">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>notificationManager</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">NotificationManager</span>
+
+
+                    </td>
+
+
+                    <td class="description last">An instance of the notification manager.</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <div class="description usertext">
+                Represents the context for the NotificationManager.
+            </div>
+
+
+            <h5 class="h5-types">Type:</h5>
+            <ul>
+                <li>
+
+                    <span class="param-type">Object</span>
+
+
+                </li>
+            </ul>
+
+
+            <h4 class="name" id="NumberInputProps">NumberInputProps</h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Represents the properties for a NumberInput component.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="Elements_useInputs_useNumberInput.tsx.html">Elements/useInputs/useNumberInput.tsx</a>,
+                            <a href="Elements_useInputs_useNumberInput.tsx.html#line72">line 72</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="subsection-title">Properties:</h5>
+
+
+            <table class="props">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th>Attributes</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>initial</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">number</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last">The initial value for the NumberInput.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>required</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last">Specifies if the NumberInput is required.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>placeholder</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last">The placeholder text for the NumberInput.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>unit</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last">The unit of measurement for the NumberInput.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>min</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">number</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last">The minimum value allowed for the NumberInput.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>max</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">number</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last">The maximum value allowed for the NumberInput.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>initial</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">number</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>required</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>placeholder</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>unit</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>min</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">number</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>max</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">number</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <div class="description usertext">
+                Represents the properties for a NumberInput component.
+            </div>
+
+
+            <h5 class="h5-types">Type:</h5>
+            <ul>
+                <li>
+
+                    <span class="param-type">Object</span>
+
+
+                </li>
+            </ul>
+
+
+            <h4 class="name" id="RecordTimeContextType">RecordTimeContextType</h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Type definition for RecordTimeContextType.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="App.tsx.html">App.tsx</a>, <a href="App.tsx.html#line175">line 175</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="subsection-title">Properties:</h5>
+
+
+            <table class="props">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>recordedTime</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">number</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The recorded time value.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>setRecordedTime</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">React.Dispatch.&lt;React.SetStateAction.&lt;number>></span>
+
+
+                    </td>
+
+
+                    <td class="description last">Function to set the recorded time value.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>recordedTime</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">number</span>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>setRecordedTime</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">React.Dispatch.&lt;React.SetStateAction.&lt;number>></span>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <div class="description usertext">
+                Type definition for RecordTimeContextType.
+            </div>
+
+
+            <h5 class="h5-types">Type:</h5>
+            <ul>
+                <li>
+
+                    <span class="param-type">Object</span>
+
+
+                </li>
+            </ul>
+
+
+            <h4 class="name" id="RecordTimeContextType">RecordTimeContextType</h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Context variable for recording time.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="App.tsx.html">App.tsx</a>, <a href="App.tsx.html#line34">line 34</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="subsection-title">Properties:</h5>
+
+
+            <table class="props">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>recordedTime</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">number</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The recorded time value.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>setRecordedTime</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">function</span>
+
+
+                    </td>
+
+
+                    <td class="description last">A function to set the recorded time value.</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <div class="description usertext">
+                Context variable for recording time.
+            </div>
+
+
+            <h5 class="h5-types">Type:</h5>
+            <ul>
+                <li>
+
+                    <span class="param-type">Object</span>
+
+
+                </li>
+            </ul>
+
+
+            <h4 class="name" id="RecordingContextType">RecordingContextType</h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Represents the type definition for the RecordingContextType.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="App.tsx.html">App.tsx</a>, <a href="App.tsx.html#line166">line 166</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="subsection-title">Properties:</h5>
+
+
+            <table class="props">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>recording</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+                        |
+
+                        <span class="param-type">undefined</span>
+
+
+                    </td>
+
+
+                    <td class="description last">Indicates whether recording is enabled or not.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>setRecording</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">React.Dispatch.&lt;React.SetStateAction.&lt;(boolean|undefined)>></span>
+
+
+                    </td>
+
+
+                    <td class="description last">Function that can be used to update the recording state.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>recording</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+                        |
+
+                        <span class="param-type">undefined</span>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>setRecording</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">React.Dispatch.&lt;React.SetStateAction.&lt;(boolean|undefined)>></span>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <div class="description usertext">
+                Represents the type definition for the RecordingContextType.
+            </div>
+
+
+            <h5 class="h5-types">Type:</h5>
+            <ul>
+                <li>
+
+                    <span class="param-type">Object</span>
+
+
+                </li>
+            </ul>
+
+
+            <h4 class="name" id="RecordingContextType">RecordingContextType</h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Represents the recording context.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="App.tsx.html">App.tsx</a>, <a href="App.tsx.html#line22">line 22</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="subsection-title">Properties:</h5>
+
+
+            <table class="props">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>recording</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">Recording</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The current recording.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>setRecording</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">function</span>
+
+
+                    </td>
+
+
+                    <td class="description last">Function to set the recording.</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <div class="description usertext">
+                Represents the recording context.
+            </div>
+
+
+            <h5 class="h5-types">Type:</h5>
+            <ul>
+                <li>
+
+                    <span class="param-type">Object</span>
+
+
+                </li>
+            </ul>
+
+
+            <h4 class="name" id="SelectInputType">SelectInputType</h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Represents a select input type.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="Elements_useInputs_useSelectInput.tsx.html">Elements/useInputs/useSelectInput.tsx</a>,
+                            <a href="Elements_useInputs_useSelectInput.tsx.html#line52">line 52</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="subsection-title">Properties:</h5>
+
+
+            <table class="props">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>name</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+                        |
+
+                        <span class="param-type">number</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The name of the select input type.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>value</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">*</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The value of the select input type.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>name</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+                        |
+
+                        <span class="param-type">number</span>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>value</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">any</span>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <div class="description usertext">
+                Represents a select input type.
+            </div>
+
+
+            <h5 class="h5-types">Type:</h5>
+            <ul>
+                <li>
+
+                    <span class="param-type">Object</span>
+
+
+                </li>
+            </ul>
+
+
+            <h4 class="name" id="SequelizeInstance">SequelizeInstance</h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>A Sequelize instance for database connection.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="getdb.ts.html">getdb.ts</a>, <a href="getdb.ts.html#line33">line 33</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="subsection-title">Properties:</h5>
+
+
+            <table class="props">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>dialect</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The SQL dialect to be used for the connection.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>storage</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The path to the SQLite database file.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>logging</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+
+
+                    </td>
+
+
+                    <td class="description last">Whether to enable logging of database events.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>define</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">Object</span>
+
+
+                    </td>
+
+
+                    <td class="description last">Configuration options for Sequelize model definition.
+                        <h6>Properties</h6>
+
+                        <table class="props">
+                            <thead>
+                            <tr>
+
+                                <th>Name</th>
+
+
+                                <th>Type</th>
+
+
+                                <th class="last">Description</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+
+                            <tr>
+
+                                <td class="name"><code>timestamps</code></td>
+
+
+                                <td class="type">
+
+
+                                    <span class="param-type">boolean</span>
+
+
+                                </td>
+
+
+                                <td class="description last">Whether to enable creation of "createdAt" and "updatedAt"
+                                    fields in models.
+                                </td>
+                            </tr>
+
+
+                            <tr>
+
+                                <td class="name"><code>underscored</code></td>
+
+
+                                <td class="type">
+
+
+                                    <span class="param-type">boolean</span>
+
+
+                                </td>
+
+
+                                <td class="description last">Whether to use underscored naming convention for table name
+                                    and model attributes.
+                                </td>
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+
+                    </td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <div class="description usertext">
+                A Sequelize instance for database connection.
+            </div>
+
+
+            <h5 class="h5-types">Type:</h5>
+            <ul>
+                <li>
+
+                    <span class="param-type">Object</span>
+
+
+                </li>
+            </ul>
+
+
+            <h4 class="name" id="VariableConstraints">VariableConstraints</h4>
+
+
+            <dl class="details">
+
+                <dt class="tag-description">Description:</dt>
+                <dd class="tag-description">
+                    <ul class="dummy">
+                        <li>Represents the constraints for a variable.</li>
+                    </ul>
+                </dd>
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="Views_Home.tsx.html">Views/Home.tsx</a>, <a href="Views_Home.tsx.html#line21">line
+                            21</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5 class="subsection-title">Properties:</h5>
+
+
+            <table class="props">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>video</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+
+
+                    </td>
+
+
+                    <td class="description last">Indicates whether the variable should include video.</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <div class="description usertext">
+                Represents the constraints for a variable.
+            </div>
+
+
+            <h5 class="h5-types">Type:</h5>
+            <ul>
+                <li>
+
+                    <span class="param-type">Object</span>
+
+
+                </li>
+            </ul>
+
+
+        </article>
+
+    </section>
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Sun Dec 10 2023 18:08:58
+    GMT+0200 (Itä-Euroopan normaaliaika) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+</body>
+</html>

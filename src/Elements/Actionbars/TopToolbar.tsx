@@ -6,6 +6,10 @@ import {faLifeRing} from "@fortawesome/free-solid-svg-icons";
 import ToolbarItem from "@/Elements/Actionbars/ToolbarItem";
 import {openWebpage} from "@/sharedUtilities/openWebpage";
 
+/**
+ * Renders a top toolbar component with a logo and support button.
+ * @returns {JSX.Element} The top toolbar component.
+ */
 export default function TopToolbar() {
     const {setMinimalView} = useContext(MinimalViewContext)
 
