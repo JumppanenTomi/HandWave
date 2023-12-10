@@ -18,7 +18,7 @@ export default async function ExecuteActions(gestureData: any[], actionData: any
     }
 
     const time = new Date().getTime();
-    if (lastExecution && (time - lastExecution > 3000)) {
+    if (lastExecution && (time - lastExecution < 3000)) {
         console.error("too soon");
         return
     }
