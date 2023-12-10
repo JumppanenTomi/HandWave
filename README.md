@@ -8,7 +8,7 @@ Handwave transforms your hand movements into intuitive commands, enabling you to
 
 ## Technology Stack
 - **Front-ennd**: React, TypeScript, Vite
-- **Back-end**: Electron, Sequelize, SQLite3
+- **Back-end**: Electron, Sequelize, SQLite3, nut-js
 
 ## Modal Dataset
 Handwave utilizes HaGRID Dataset, a valuable resource for developing hand gesture recognition systems. It contains a variety of gestures, including common symbols, numbers, and commands, as well as a wide range of subjects and lighting conditions. Key enhancements to the dataset include:
