@@ -1,5 +1,5 @@
 <div>
-<img src="./src/assets/handwave-logo.svg" alt="logo" width="300"/>
+<img src="https://raw.githubusercontent.com/JumppanenTomi/presentation-tool-with-hand-gestures/master/src/assets/handwave-logo.svg" alt="logo" width="300"/>
 <div>
 Harness the power of your hand gestures to effortlessly control your computer with Handwave, an AI-based application that utilizes Google MediaPipe for gesture recognition and face landmarking.
 
@@ -16,7 +16,7 @@ Handwave utilizes HaGRID Dataset, a valuable resource for developing hand gestur
 - An augmentation to 18,000 images
 - Achieving a test accuracy of 0.86
 <div>
-<img src="./src/assets/gestures.jpg" alt="gestures"/>
+<img src="https://raw.githubusercontent.com/JumppanenTomi/presentation-tool-with-hand-gestures/master/src/assets/gestures.jpg" alt="gestures"/>
 <div>
 
 ## Features

@@ -1,3 +1,4 @@
+
 var searchAttr = 'data-search-mode';
 
 function contains(a, m) {

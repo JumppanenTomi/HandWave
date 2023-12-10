@@ -81,12 +81,98 @@
     </section>
 
 
+    <section class="readme usertext">
+        <article>
+            <div>
+                <img alt="logo"
+                     src="https://raw.githubusercontent.com/JumppanenTomi/presentation-tool-with-hand-gestures/master/src/assets/handwave-logo.svg" width="300"/>
+                <div>
+                    Harness the power of your hand gestures to effortlessly control your computer with Handwave, an
+                    AI-based application that utilizes Google MediaPipe for gesture recognition and face landmarking.
+                    <h2>Overview</h2>
+                    <p>Handwave transforms your hand movements into intuitive commands, enabling you to navigate your
+                        computer, control presentations, and interact with applications without the need for traditional
+                        input devices. Leveraging MediaPipe's robust hand and face recognition capabilities, Handwave
+                        integrates gesture recognition with mouse control, presentation recording, and facial detection,
+                        making it a versatile tool for enhancing accessibility and productivity.</p>
+                    <h2>Technology Stack</h2>
+                    <ul>
+                        <li><strong>Front-end</strong>: React, TypeScript, Vite, Google Mediapipe</li>
+                        <li><strong>Back-end</strong>: Electron, Sequelize, SQLite3, nut-js</li>
+                    </ul>
+                    <h2>Modal Dataset</h2>
+                    <p>Handwave utilizes HaGRID Dataset, a valuable resource for developing hand gesture recognition
+                        systems. It contains a variety of gestures, including common symbols, numbers, and commands, as
+                        well as a wide range of subjects and lighting conditions. Key enhancements to the dataset
+                        include:</p>
+                    <ul>
+                        <li>An expansion to 18 gestures</li>
+                        <li>An augmentation to 18,000 images</li>
+                        <li>Achieving a test accuracy of 0.86</li>
+                    </ul>
+                    <div>
+                        <img alt="gestures"
+                             src="https://raw.githubusercontent.com/JumppanenTomi/presentation-tool-with-hand-gestures/master/src/assets/gestures.jpg"/>
+                        <div>
+                            <h2>Features</h2>
+                            <h3>Gesture Recognition:</h3>
+                            <ul>
+                                <li>Seamlessly recognize hand gestures using MediaPipe Hands</li>
+                                <li>Map gestures to custom-defined actions for intuitive input</li>
+                                <li>Receive visual feedback for gesture recognition</li>
+                            </ul>
+                            <h3>Hand Landmarking:</h3>
+                            <ul>
+                                <li>Control the mouse pointer using the &quot;L&quot; gesture (&quot;three&quot; 2 in
+                                    HaGRID dataset)
+                                </li>
+                                <li>Perform left-click selections using thumbs</li>
+                            </ul>
+                            <h3>Map gestures to HID events</h3>
+                            <ul>
+                                <li>Use macro maker to map gestures to keyboard keys or or key combinations</li>
+                                <li>Control, click and drag mouse with gestures</li>
+                            </ul>
+                            <h3>Face Landmarking:</h3>
+                            <ul>
+                                <li>Track facial landmarks using MediaPipe Face Mesh</li>
+                                <li>Prevent unintentional keystrokes by maintaining face detection</li>
+                            </ul>
+                            <h3>Presentation Recording.</h3>
+                            <ul>
+                                <li>Select window or applications for interacting and recording</li>
+                                <li>Save recordings to your local drive once finished</li>
+                            </ul>
+                            <h3>Cross-platform Compatibility:</h3>
+                            <ul>
+                                <li>Electron enables deployment on various operating systems (Windows, macOS, Linux)
+                                </li>
+                            </ul>
+                            <h2>Authors</h2>
+                            <ul>
+                                <li>Tomi Jumppanen</li>
+                                <li>Roope Laine</li>
+                                <li>Anton Tugushi</li>
+                                <li>Dat Pham</li>
+                            </ul>
+                            <h2>Credits</h2>
+                            <ul>
+                                <li><a href="https://github.com/hukenovs/hagrid">HaGRID</a></li>
+                                <li><a href="https://nut-tree.github.io/apidoc/">nut-js</a></li>
+                                <li>
+                                    <a href="https://github.com/electron-vite/electron-vite-react">electron-vite-react</a>
+                                </li>
+                            </ul>
+        </article>
+    </section>
+
+
 </div>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Sun Dec 10 2023 17:53:20
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Sun Dec 10 2023 18:08:58
     GMT+0200 (Itä-Euroopan normaaliaika) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 

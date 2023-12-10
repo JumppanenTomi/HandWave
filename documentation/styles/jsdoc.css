@@ -173,7 +173,7 @@ tt, code, kbd, samp {
 
 pre {
     padding-bottom: 1em;
-}
+}  
 
 .class-description {
     font-size: 130%;
@@ -550,24 +550,19 @@ span.param-type, .params td .param-type, .param-type dd {
     user-select: none;
     opacity: .8;
 }
-
 .navicon-button .navicon:before, .navicon-button .navicon:after {
     transition: 0.25s;
 }
-
 .navicon-button:hover {
     transition: 0.5s;
     opacity: 1;
 }
-
 .navicon-button:hover .navicon:before, .navicon-button:hover .navicon:after {
     transition: 0.25s;
 }
-
 .navicon-button:hover .navicon:before {
     top: .825rem;
 }
-
 .navicon-button:hover .navicon:after {
     top: -.825rem;
 }
@@ -581,7 +576,6 @@ span.param-type, .params td .param-type, .param-type dd {
     transition: 0.3s;
     border-radius: 2.5rem;
 }
-
 .navicon:before, .navicon:after {
     display: block;
     content: "";
@@ -593,11 +587,9 @@ span.param-type, .params td .param-type, .param-type dd {
     transition: 0.3s 0.25s;
     border-radius: 1rem;
 }
-
 .navicon:before {
     top: .625rem;
 }
-
 .navicon:after {
     top: -.625rem;
 }
@@ -675,7 +667,6 @@ span.param-type, .params td .param-type, .param-type dd {
 .level-hide {
     display: none;
 }
-
 html[data-search-mode] .level-hide {
     display: block;
 }
