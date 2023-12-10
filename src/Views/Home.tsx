@@ -21,10 +21,21 @@ import FaceDetectionSettingsModal from "@/Elements/Modals/FaceDetectionSettingsM
 import "@/styles/primaryView.css"
 import MacroModal from "@/Elements/Modals/MacroModal";
 
+/**
+ * Represents the constraints for a variable.
+ *
+ * @typedef {Object} VariableConstraints
+ * @property {boolean} video - Indicates whether the variable should include video.
+ */
 const constraints = {
     video: true,
 }
 
+/**
+ * Represents the Home component.
+ *
+ * @returns {React.Component} The rendered Home component.
+ */
 function Home() {
     const webCamRef: MutableRefObject<HTMLVideoElement | null> = useRef(null)
     const canvasRef: MutableRefObject<HTMLCanvasElement | null> = useRef(null)
@@ -94,7 +105,7 @@ function Home() {
     useEffect(() => {
         const enableAiAndWebcam = async () => {
             if (webCamRef.current) {
-                EnableWebcam(webCamRef.current);
+                await EnableWebcam(webCamRef.current);
             }
             if (gestureAi) {
                 gestureAi.createGestureRecognizer();

@@ -8,12 +8,21 @@ import {MinimalViewContext, RecordedTimeContext, RecordingContext} from "@/App";
 import {faCircle} from "@fortawesome/free-solid-svg-icons/faCircle";
 import formatTime from "@/sharedUtilities/formatTime";
 
+/**
+ * Represents a type for toolbar item.
+ * @interface
+ */
 export interface ToolbarItemType {
     name: string,
     onClick: () => void,
     icon: React.JSX.Element
 }
 
+/**
+ * Creates a minimal view component.
+ * @function MinimalView
+ * @returns {React.Element} A React component representing the minimal view.
+ */
 export default function MinimalView() {
     const {recording, setRecording} = useContext(RecordingContext)
     const {minimalView, setMinimalView} = useContext(MinimalViewContext)

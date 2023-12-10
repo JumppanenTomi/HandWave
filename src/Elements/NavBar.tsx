@@ -4,6 +4,18 @@ import {ipcRenderer} from 'electron';
 import React from 'react';
 import {Button, Col, Container, Nav, Navbar} from "react-bootstrap";
 
+/**
+ * Represents a navigation bar component.
+ *
+ * @component
+ *
+ * @param {boolean} hideElements - Flag indicating whether to hide elements.
+ * @param {React.Dispatch<React.SetStateAction<boolean>>} setHideElements - Function to set the value of `hideElements`.
+ * @param {boolean} recording - Flag indicating whether recording is in progress.
+ * @param {React.Dispatch<React.SetStateAction<boolean>>} setRecording - Function to set the value of `recording`.
+ *
+ * @returns {React.FC} A React functional component representing a navigation bar.
+ */
 const NavBar: React.FC<{ hideElements: boolean, setHideElements: React.Dispatch<React.SetStateAction<boolean>>, recording: boolean, setRecording: React.Dispatch<React.SetStateAction<boolean>> }> = ({hideElements, setHideElements, recording, setRecording}) => {
 
     return (

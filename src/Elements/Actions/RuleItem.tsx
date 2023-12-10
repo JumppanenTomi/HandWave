@@ -10,6 +10,14 @@ import {faPlay} from "@fortawesome/free-solid-svg-icons/faPlay";
 import {faClock} from "@fortawesome/free-solid-svg-icons/faClock";
 import EditAction from "@/Elements/Actions/editAction";
 
+/**
+ * Renders a Rule Item component.
+ *
+ * @param {Object} props - The props object.
+ * @param {TriggerData} props.item - The trigger data for the Rule Item.
+ *
+ * @return {ReactElement} The Rule Item component.
+ */
 export default function RuleItem({item}: { item: TriggerData}) {
     const [keyboard, setKeyboard] = useState<string[] | undefined>()
     const editAction = EditAction(item)

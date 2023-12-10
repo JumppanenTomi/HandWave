@@ -1,8 +1,14 @@
-import React, { useContext, useState } from "react";
-import { Button, ButtonGroup, Modal } from "react-bootstrap";
-import { deleteGesture } from "@/modelApi/gesture";
-import { ActionsDataContext } from "@/App";
+import React, {useContext, useState} from "react";
+import {Button, ButtonGroup, Modal} from "react-bootstrap";
+import {deleteGesture} from "@/modelApi/gesture";
+import {ActionsDataContext} from "@/App";
 
+/**
+ * Deletes an action with the specified ID.
+ *
+ * @param {number | undefined} action_id - The ID of the action to delete.
+ * @return {Object} - An object containing the element and the open function.
+ */
 export default function DeleteAction(action_id: number | undefined) {
   const { forceRender } = useContext(ActionsDataContext);
   const [show, setShow] = useState<boolean>(false);

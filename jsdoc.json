@@ -1,0 +1,22 @@
+{
+  "source": {
+    "include": [
+      "./src"
+    ],
+    "includePattern": ".+\\.(js|ts)(doc|x)?$",
+    "excludePattern": "(^|\\/|\\\\)_"
+  },
+  "plugins": [
+    "node_modules/better-docs/typescript"
+  ],
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false
+  },
+  "opts": {
+    "destination": "./documentation/",
+    "encoding": "utf8",
+    "recurse": true,
+    "template": "node_modules/docdash"
+  }
+}

@@ -1,12 +1,15 @@
-// todo this file provides an API to interact with the db users 
+// todo this file provides an API to interact with the db users
 //todo table making it easier to work with
-import { Optional } from "sequelize";
-import { Gesture } from "../getdb"
-import { Action } from "../getdb";
-import { createAction, updateAction } from "./action";
-import { ActionAttributes, ActionCreationAttributes } from "./action";
-import { ActionType } from "@/types/ActionType";
+import {Optional} from "sequelize";
+import {Action, Gesture} from "../getdb"
+import {createAction} from "./action";
+import {ActionType} from "@/types/ActionType";
 
+/**
+ * Represents the attributes of a gesture.
+ *
+ * @interface GestureAttributes
+ */
 export interface GestureAttributes {
     name: string | null;
     trigger: string | null;
@@ -14,13 +17,23 @@ export interface GestureAttributes {
     actions?: any[] | null;
 }
 
+/**
+ * Represents the attributes required for creating a gesture.
+ *
+ * @interface
+ * @extends Optional<GestureAttributes, 'id'>
+ */
 interface GestureCreationAttributes extends Optional<GestureAttributes, 'id'>  {}
 
-/** 
- * Returns all Gestures
- * @method getAllGestures
- * @returns {Array<GestureAttributes>} All Users belonging to User Model 
-*/
+/**
+ * Retrieves all gestures from the database.
+ *
+ * @async
+ * @function getAllGestures
+ * @returns {Promise<Array<Object>>} - A promise that resolves with an array of gestures.
+ *
+ * @throws {Error} - If there is an error while fetching the gestures from the database.
+ */
 const getAllGestures = async () => {
     const gestures = await Gesture.findAll({
         include: [{
@@ -32,10 +45,10 @@ const getAllGestures = async () => {
 }
 
 /**
- * Returns a single gesture with its associated actions
- * @method getGesture
- * @param {number} id the gesture id
- * @returns {GestureAttributes & {actions: ActionAttributes[]}} the gesture with its associated actions
+ * Retrieves a gesture by its ID.
+ *
+ * @param {number} id - The ID of the gesture to retrieve.
+ * @returns {Promise<Gesture>} - A promise that resolves to the retrieved gesture.
  */
 const getGesture = async (id: number) => {
     const gesture = await Gesture.findOne({
@@ -48,12 +61,14 @@ const getGesture = async (id: number) => {
     return gesture
 }
 
-/** 
- * Returns all Gestures
- * @method createGesture
- * @param {NewGesture} gesture the gesture object
- * @returns {NewGesture} the created Gesture Object
-*/
+/**
+ * Creates a new gesture with the given attributes and actions.
+ * If actions are provided, it creates corresponding actions for the gesture.
+ *
+ * @param {GestureCreationAttributes} gesture - The attributes of the gesture to be created.
+ * @param {ActionType[]} actions - The actions to be created for the gesture.
+ * @returns {Promise<void>} - A promise that resolves when the gesture and actions are created successfully.
+ */
 const createGesture = async (gesture: GestureCreationAttributes, actions: ActionType[]) => {
     const retData = await Gesture.create(gesture)
     if (actions) {
@@ -68,13 +83,14 @@ const createGesture = async (gesture: GestureCreationAttributes, actions: Action
     }
 }
 
-/** 
- * Update a Gesture
- * @method updateGesture
- * @param {number} id the gesture id
- * @param {NewGesture} gesture the gesture object
- * @returns {NewGesture} the updated Gesture Object
-*/
+/**
+ * Updates a gesture with the provided id.
+ *
+ * @param {number} id - The id of the gesture to update.
+ * @param {GestureCreationAttributes} gesture - The updated gesture object.
+ * @param {ActionType[]} actions - The actions associated with the gesture.
+ * @returns {Promise<void>} - A promise that resolves when the update is complete.
+ */
 const updateGesture = async (id: number, gesture: GestureCreationAttributes, actions: ActionType[]) => {
     const g = await Gesture.findOne({where: {id: id}});
     if (g) {
@@ -100,12 +116,12 @@ const updateGesture = async (id: number, gesture: GestureCreationAttributes, act
     }
 }
 
-/** 
- * Delete a Gesture
- * @method deleteGesture
- * @param {number} id the gesture id
- * @returns {void} 
-*/
+/**
+ * Deletes a gesture from the database.
+ *
+ * @param {number} id - The ID of the gesture to delete.
+ * @returns {Promise<void>} - A promise that resolves when the gesture is deleted.
+ */
 const deleteGesture = async (id: number) => {
     await Action.destroy({
         where: {

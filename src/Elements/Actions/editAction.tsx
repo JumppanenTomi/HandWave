@@ -19,6 +19,12 @@ import {faArrowRight} from "@fortawesome/free-solid-svg-icons/faArrowRight";
 import AddActionInputs from "./AddActionInputs";
 import EventItem from "@/Elements/Actions/EventItem";
 
+/**
+ * EditAction is a function that creates a modal element for editing an action.
+ *
+ * @param {any | null} actionToModify - The action to be modified. Can be null if creating a new action.
+ * @return {Object} - An object with the modal element and a function to open the modal.
+ */
 export default function EditAction(actionToModify: any | null) {
     const {forceRender} = useContext(ActionsDataContext);
     const [show, setShow] = useState(false);
