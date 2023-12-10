@@ -77,9 +77,9 @@ type FaceDetectionContextType = {
 
 /**
  * @typedef {Object} NotificationManagerContextType
- * @property {typeof NotificationManager} notificationManager - The type of the NotificationManager object.
+ * @property {any} notificationManager - The type of the NotificationManager object.
  */
-type NotificationManagerContextType = { notificationManager: typeof NotificationManager }
+type NotificationManagerContextType = { notificationManager: any }
 
 /**
  * @typedef {Object} ActionsDataContextType
