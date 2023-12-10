@@ -47,12 +47,12 @@ export default function Ai(
             results = gestureRecognizer.recognizeForVideo(video, nowInMs);
         }
         if (canvasCtx) {
-            if (overlay) {
-                canvasCtx.save();
-                canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-                const drawingUtils = new DrawingUtils(canvasCtx);
-                if (results.landmarks) {
-                    for (const landmarks of results.landmarks) {
+            canvasCtx.save();
+            canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+            const drawingUtils = new DrawingUtils(canvasCtx);
+            if (results.landmarks) {
+                for (const landmarks of results.landmarks) {
+                    if (overlay) {
                         drawingUtils.drawConnectors(
                             landmarks,
                             GestureRecognizer.HAND_CONNECTIONS,
@@ -61,13 +61,11 @@ export default function Ai(
                                 lineWidth: 1,
                             }
                         );
-                        setIndexFinger([landmarks[8]]);
-                        setThumb([landmarks[4]]);
+                        canvasCtx.restore();
                     }
+                    setIndexFinger([landmarks[8]]);
+                    setThumb([landmarks[4]]);
                 }
-                canvasCtx.restore();
-            } else {
-                canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
             }
             if (results.gestures.length > 0) {
                 const tempArray = results.gestures.map((gesture, index) => {
