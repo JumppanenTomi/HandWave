@@ -5,6 +5,13 @@ import {Container, Row, Tab, Tabs} from "react-bootstrap";
 import SourceItem from "@/Elements/SourceItem";
 import SourceNotFound from "@/Elements/SourceNotFound";
 
+/**
+ * Represents a modal for selecting a source for capturing.
+ *
+ * @param {Electron.DesktopCapturerSource[]} sources - The list of available sources for capturing.
+ * @param {Function} changeSource - The callback function to be called when a source is selected.
+ * @return {Object} An object with two properties: setShow and element.
+ */
 export default function SelectSourceModal(sources: Electron.DesktopCapturerSource[], changeSource: (sourceId: string) => void) {
     const [show, setShow] = useState(false);
 

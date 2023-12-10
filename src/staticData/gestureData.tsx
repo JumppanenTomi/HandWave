@@ -1,3 +1,10 @@
+/**
+ * Represents gesture data.
+ *
+ * @typedef {Object} Gesture
+ * @property {string} name - The name of the gesture.
+ * @property {string} value - The value associated with the gesture.
+ */
 export const gestureData = [
   { name: "Call", value: "call" },
   { name: "Dislike", value: "dislike" },

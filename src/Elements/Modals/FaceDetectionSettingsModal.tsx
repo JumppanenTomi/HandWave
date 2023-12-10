@@ -4,6 +4,11 @@ import {useContext, useEffect, useState} from "react";
 import useCheckboxInput from "@/Elements/useInputs/useCheckBoxInput";
 import {FaceDetectionContext, MeshContext} from "@/App";
 
+/**
+ * Represents a modal component for face detection settings.
+ *
+ * @returns {Object} An object with setShow function and element component.
+ */
 export default function FaceDetectionSettingsModal() {
     const {faceDetection, setFaceDetection} = useContext(FaceDetectionContext)
     const {mesh, setMesh} = useContext(MeshContext)

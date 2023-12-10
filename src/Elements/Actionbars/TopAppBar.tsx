@@ -4,6 +4,11 @@ import {ipcRenderer} from 'electron';
 import React from 'react';
 import {Col, Row} from 'react-bootstrap';
 
+/**
+ * React functional component representing the top app bar.
+ *
+ * @return {JSX.Element} The top app bar component.
+ */
 const TopAppBar: React.FC = () => {
 
     const minimizeWindow = () => {

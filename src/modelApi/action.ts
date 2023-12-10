@@ -1,8 +1,19 @@
-// todo this file provides an API to interact with the db users 
+// todo this file provides an API to interact with the db users
 //todo table making it easier to work with
-import { Optional } from "sequelize";
-import { Action } from "@/getdb"
+import {Optional} from "sequelize";
+import {Action} from "@/getdb"
 
+/**
+ * Represents the attributes of an action.
+ * @interface ActionAttributes
+ *
+ * @property {string | null} press - Represents the press attribute of the action.
+ * @property {string | null} key - Represents the key attribute of the action.
+ * @property {string | null} type - Represents the type attribute of the action.
+ * @property {number | null} delay - Represents the delay attribute of the action.
+ * @property {number | null} [gestureId] - Represents the gestureId attribute of the action.
+ * @property {number | null} [id] - Represents the id attribute of the action.
+ */
 export interface ActionAttributes {
     press: string | null;
     key: string | null;
@@ -12,23 +23,28 @@ export interface ActionAttributes {
     id?: number | null;
 }
 
+/**
+ * Represents the attributes required for creating an Action.
+ *
+ * @interface ActionCreationAttributes
+ * @extends Optional<ActionAttributes, 'id'>
+ */
 export interface ActionCreationAttributes extends Optional<ActionAttributes, 'id'>  {}
 
-/** 
- * Returns all Actions
- * @method getAllActions
- * @returns {Array<ActionAttributes>} All Users belonging to User Model 
-*/
+/**
+ * Function that retrieves all actions by calling the "Action.findAll" method asynchronously.
+ * @returns {Promise<Array>} A promise that resolves to an array of actions.
+ */
 const getAllActions = async () => {
     const actions = await Action.findAll()
     return actions
 }
 
 /**
- * Returns a single action with its associated actions
- * @method getAction
- * @param {number} id the action id
- * @returns {ActionAttributes & {actions: ActionAttributes[]}} the action with its associated actions
+ * Retrieves an action by its id
+ * @async
+ * @param {number} id - The id of the action to retrieve
+ * @returns {Promise<Action>} The action object that matches the id
  */
 const getAction = async (id: number) => {
     const action = await Action.findOne({
@@ -41,12 +57,13 @@ const getAction = async (id: number) => {
     return action
 }
 
-/** 
- * Returns all Actions
- * @method createAction
- * @param {NewAction} action the action object
- * @returns {NewAction} the created Action Object
-*/
+/**
+ * Creates a new action in the system.
+ *
+ * @async
+ * @param {ActionCreationAttributes} action - The action object containing the required data for creating the action.
+ * @return {Promise<ActionAttributes>} - A promise that resolves to the added action object.
+ */
 const createAction = async (action: ActionCreationAttributes) => {
     const retData = await Action.create(action)
     const addedAction: ActionAttributes = {
@@ -59,13 +76,13 @@ const createAction = async (action: ActionCreationAttributes) => {
     return addedAction
 }
 
-/** 
- * Update a Action
- * @method updateAction
- * @param {number} id the action id
- * @param {NewAction} action the action object
- * @returns {NewAction} the updated Action Object
-*/
+/**
+ * Updates an action with the given id.
+ *
+ * @param {number} id - The id of the action to update.
+ * @param {ActionCreationAttributes} action - The updated data for the action.
+ * @returns {Promise<void>} - A promise that resolves once the action is updated.
+ */
 const updateAction = async (id: number, action: ActionCreationAttributes) => {
     const a = await Action.findOne({where: {id: id}});
     if (a) {
@@ -79,12 +96,12 @@ const updateAction = async (id: number, action: ActionCreationAttributes) => {
     }
 }
 
-/** 
- * Delete a Action
- * @method deleteAction
- * @param {number} id the action id
- * @returns {void} 
-*/
+/**
+ * Delete an action by its id.
+ *
+ * @param {number} id - The id of the action to delete.
+ * @returns {Promise<void>} - A promise that resolves when the action is deleted.
+ */
 const deleteAction = async (id: number) => {
     await Action.destroy({
         where: {

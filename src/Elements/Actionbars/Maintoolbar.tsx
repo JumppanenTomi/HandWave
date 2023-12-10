@@ -10,9 +10,19 @@ import {faMinimize} from "@fortawesome/free-solid-svg-icons/faMinimize";
 import {faDesktop} from "@fortawesome/free-solid-svg-icons/faDesktop";
 import {faHand} from "@fortawesome/free-solid-svg-icons";
 import {faSection} from "@fortawesome/free-solid-svg-icons/faSection";
+
 const { ipcRenderer } = window.require('electron');
 
 
+/**
+ * Renders the main toolbar component.
+ *
+ * @param {Object} options - The options for the main toolbar.
+ * @param {Object} options.sourceModal - The source modal.
+ * @param {Object} options.processingSettingModal - The processing setting modal.
+ * @param {Object} options.macroModal - The macro modal.
+ * @returns {JSX.Element} The rendered main toolbar component.
+ */
 export default function Maintoolbar({sourceModal, processingSettingModal, macroModal}: { sourceModal: any, processingSettingModal: any, macroModal: any }) {
     const {recording, setRecording} = useContext(RecordingContext)
     const {minimalView, setMinimalView} = useContext(MinimalViewContext)

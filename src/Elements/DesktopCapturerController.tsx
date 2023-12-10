@@ -3,6 +3,18 @@ import {ipcRenderer} from "electron";
 import os from "os";
 import {MinimalViewContext, NotificationManagerContext, RecordedTimeContext, RecordingContext} from "@/App";
 
+/**
+ * Controls the desktop capturer functionality.
+ *
+ * @param {HTMLVideoElement | null} videoRef - The reference to the video element.
+ *
+ * @return {Object} - An object containing the following properties:
+ *   - videoRef: HTMLVideoElement | null - The reference to the video element.
+ *   - sources: Electron.DesktopCapturerSource[] - The available desktop capturer sources.
+ *   - toggleRecording: () => void - Toggles the recording state.
+ *   - changeSource: (sourceId: string) => void - Changes the source of the video element.
+ *   - recording: boolean | undefined - The current recording state.
+ */
 export default function DesktopCapturerController(videoRef: HTMLVideoElement | null) {
     const isMac = os.platform() === "darwin";
     const {notificationManager} = useContext(NotificationManagerContext)

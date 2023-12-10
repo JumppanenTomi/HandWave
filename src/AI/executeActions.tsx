@@ -2,6 +2,15 @@ import {ipcRenderer} from "electron";
 import {TriggerData} from "@/types/TriggerData";
 import {Dispatch, SetStateAction} from "react";
 
+/**
+ * ExecuteActions function executes a series of actions based on given gesture and action data.
+ *
+ * @param gestureData - An array containing the data of the gesture.
+ * @param actionData - An array containing the data of the actions.
+ * @param lastExecution - The time of the last execution, or undefined if it's the first execution.
+ * @param setExecutionTime - A function to update the time of the last execution.
+ * @returns A promise that resolves when all the actions have been executed.
+ */
 export default async function ExecuteActions(gestureData: any[], actionData: any[], lastExecution: number | undefined, setExecutionTime: Dispatch<SetStateAction<number | undefined>>): Promise<void> {
     if (!gestureData || !actionData) {
         // Handle missing data
@@ -49,6 +58,12 @@ export default async function ExecuteActions(gestureData: any[], actionData: any
     }
 }
 
+/**
+ * Function to press a key using the ipcRenderer.invoke method.
+ *
+ * @param {any} data - The data to be passed to the 'pressKey' action.
+ * @returns {Promise<void>} - A Promise that resolves with no value on success, or rejects with an error on failure.
+ */
 async function pressKey(data: any) {
     try {
         const response = await ipcRenderer.invoke('pressKey', data);
@@ -58,6 +73,13 @@ async function pressKey(data: any) {
     }
 }
 
+/**
+ * Release a key using the provided data.
+ *
+ * @param {any} data - The data required to release the key.
+ *
+ * @return {Promise<void>} - A promise that resolves when the key is successfully released.
+ */
 async function releaseKey(data: any) {
     try {
         const response = await ipcRenderer.invoke('releaseKey', data);

@@ -1,7 +1,28 @@
 import {DrawingUtils, FaceLandmarker, FilesetResolver, NormalizedLandmark} from "@mediapipe/tasks-vision";
 import {Dispatch, SetStateAction} from "react";
 
+/**
+ * Utility class for detecting and tracking facial landmarks in an image.
+ *
+ * @class
+ * @memberof module:facialRecognition
+ */
 let faceLandmarker: FaceLandmarker;
+/**
+ * Creates a face detection and tracking system for webcam video.
+ *
+ * @param {HTMLVideoElement} video - The video element to capture webcam feed.
+ * @param {HTMLCanvasElement} canvasElement - The HTML canvas element for rendering the video feed and overlays.
+ * @param {Dispatch<SetStateAction<boolean>>} setGazeState - A state setter function for the gaze state.
+ *
+ * @returns {Object} - An object containing the following methods:
+ *   - createFaceMeshRecognizer: A method to create a face mesh recognizer.
+ *   - predictWebcam: A method to start predicting webcam feed and updating the gaze state.
+ *   - setOverlay: A method to toggle the overlay option.
+ *
+ * @async
+ * @returns {Promise<void>}
+ */
 export default function FaceDetection(
     video: HTMLVideoElement,
     canvasElement: HTMLCanvasElement,
@@ -9,6 +30,11 @@ export default function FaceDetection(
 ) {
     let overlay: boolean
 
+    /**
+     * Creates a face mesh recognizer.
+     * @async
+     * @returns {Promise<void>}
+     */
     const createFaceMeshRecognizer = async () => {
         const vision = await FilesetResolver.forVisionTasks(
             "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm"

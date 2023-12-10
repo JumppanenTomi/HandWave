@@ -4,8 +4,26 @@ import {GestureData} from "@/types/GestureData";
 import {IndexFinger} from "@/types/IndexFinger";
 import {Thumb} from "@/types/Thumb";
 
+/**
+ * Represents a gesture recognizer.
+ *
+ * @class
+ */
 let gestureRecognizer: GestureRecognizer;
 
+/**
+ * Initialize AI object for gesture recognition
+ *
+ * @param {HTMLVideoElement} video - The video element to be used for gesture recognition
+ * @param {HTMLCanvasElement} canvasElement - The canvas element on which to draw the hand landmarks
+ * @param {Dispatch<SetStateAction<GestureData[] | undefined>>} setGestureData - Function to set the gesture data state
+ * @param {Dispatch<SetStateAction<IndexFinger[] | undefined>>} setIndexFinger - Function to set the index finger data state
+ * @param {Dispatch<SetStateAction<Thumb[] | undefined>>} setThumb - Function to set the thumb data state
+ * @returns {Object} - Object containing the following methods:
+ *      - createGestureRecognizer: Function to create the gesture recognizer
+ *      - predictWebcam: Function to perform gesture recognition on the video frames
+ *      - setOverlay: Function to set the overlay flag for drawing hand landmarks
+ */
 export default function Ai(
     video: HTMLVideoElement,
     canvasElement: HTMLCanvasElement,
