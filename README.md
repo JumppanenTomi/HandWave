@@ -44,6 +44,9 @@ Handwave utilizes HaGRID Dataset, a valuable resource for developing hand gestur
 ### Cross-platform Compatibility:
 - Electron enables deployment on various operating systems (Windows, macOS, Linux)
 
+## Documentation
+- [JSDoc](https://presentation-tool-with-hand-gestures.vercel.app/)
+
 ## Authors
 - Tomi Jumppanen
 - Roope Laine
