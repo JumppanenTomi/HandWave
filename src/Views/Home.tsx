@@ -164,7 +164,7 @@ function Home() {
                     </Col>
                 </Row>
                 <Maintoolbar sourceModal={sourceModal} processingSettingModal={processingSetting} macroModal={macroModal}/>
-                {sourceModal.element} .                            
+                {sourceModal.element}                    
                 {processingSetting.element}
                 {macroModal.element}
             </div>
