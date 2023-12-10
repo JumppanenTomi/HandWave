@@ -1,9 +1,9 @@
 import React, {createContext, useEffect, useState} from "react";
 import {TriggerData} from "./types/TriggerData";
 import {getAllGestures} from "./modelApi/gesture";
-import Home from "@/Views/Home";
 import NotificationManager from "@/Elements/NotificationManager";
 import {ipcRenderer} from "electron";
+import ApplicationView from "@/ApplicationView";
 
 /**
  * Represents a data context type for actions.
@@ -234,7 +234,7 @@ export default function App() {
                                 <ActionsDataContext.Provider
                                     value={{actionData, setActionData, gestureData, setGestureData, forceRender}}>
                                     <RecordingContext.Provider value={{recording, setRecording}}>
-                                        <Home/>
+                                        <ApplicationView/>
                                     </RecordingContext.Provider>
                                 </ActionsDataContext.Provider>
                             </NotificationManagerContext.Provider>
