@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title>Elements/NavBar.tsx - Documentation</title>
+
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="styles/prettify.css" rel="stylesheet" type="text/css">
+    <link href="styles/jsdoc.css" rel="stylesheet" type="text/css">
+    <script defer src="scripts/nav.js"></script>
+
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+</head>
+<body>
+
+<input class="nav-trigger" id="nav-trigger" type="checkbox"/>
+<label class="navicon-button x" for="nav-trigger">
+    <div class="navicon"></div>
+</label>
+
+<label class="overlay" for="nav-trigger"></label>
+
+<nav>
+
+
+    <h2><a href="index.html">Home</a></h2>
+    <h3>Classes</h3>
+    <ul>
+        <li><a href="Action.html">Action</a></li>
+        <li><a href="global.html#Gesture">Gesture</a></li>
+        <li><a href="gestureRecognizer.html">gestureRecognizer</a></li>
+        <li><a href="module-facialRecognition.faceLandmarker.html">faceLandmarker</a></li>
+    </ul>
+    <h3>Interfaces</h3>
+    <ul>
+        <li><a href="ActionAttributes.html">ActionAttributes</a></li>
+        <li><a href="ActionCreationAttributes.html">ActionCreationAttributes</a></li>
+        <li><a href="GestureAttributes.html">GestureAttributes</a></li>
+        <li><a href="GestureCreationAttributes.html">GestureCreationAttributes</a></li>
+        <li><a href="ToolbarItemType.html">ToolbarItemType</a></li>
+    </ul>
+    <h3>Global</h3>
+    <ul>
+        <li><a href="global.html#Home">Home</a></li>
+        <li><a href="global.html#MinimalView">MinimalView</a></li>
+        <li><a href="global.html#NavBar">NavBar</a></li>
+        <li><a href="global.html#SourceItem">SourceItem</a></li>
+        <li><a href="global.html#TopAppBar">TopAppBar</a></li>
+        <li><a href="global.html#Webcam">Webcam</a></li>
+        <li><a href="global.html#createAction">createAction</a></li>
+        <li><a href="global.html#createGesture">createGesture</a></li>
+        <li><a href="global.html#deleteAction">deleteAction</a></li>
+        <li><a href="global.html#deleteGesture">deleteGesture</a></li>
+        <li><a href="global.html#formatTime">formatTime</a></li>
+        <li><a href="global.html#getAction">getAction</a></li>
+        <li><a href="global.html#getAllActions">getAllActions</a></li>
+        <li><a href="global.html#getAllGestures">getAllGestures</a></li>
+        <li><a href="global.html#getGesture">getGesture</a></li>
+        <li><a href="global.html#isBuild">isBuild</a></li>
+        <li><a href="global.html#locDb">locDb</a></li>
+        <li><a href="global.html#openWebpage">openWebpage</a></li>
+        <li><a href="global.html#pressKey">pressKey</a></li>
+        <li><a href="global.html#releaseKey">releaseKey</a></li>
+        <li><a href="global.html#updateAction">updateAction</a></li>
+        <li><a href="global.html#updateGesture">updateGesture</a></li>
+    </ul>
+
+</nav>
+
+<div id="main">
+
+    <h1 class="page-title">Elements/NavBar.tsx</h1>
+
+
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {faDisplay} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {ipcRenderer} from 'electron';
+import React from 'react';
+import {Button, Col, Container, Nav, Navbar} from "react-bootstrap";
+
+/**
+ * Represents a navigation bar component.
+ *
+ * @component
+ *
+ * @param {boolean} hideElements - Flag indicating whether to hide elements.
+ * @param {React.Dispatch&lt;React.SetStateAction&lt;boolean>>} setHideElements - Function to set the value of `hideElements`.
+ * @param {boolean} recording - Flag indicating whether recording is in progress.
+ * @param {React.Dispatch&lt;React.SetStateAction&lt;boolean>>} setRecording - Function to set the value of `recording`.
+ *
+ * @returns {React.FC} A React functional component representing a navigation bar.
+ */
+const NavBar: React.FC&lt;{ hideElements: boolean, setHideElements: React.Dispatch&lt;React.SetStateAction&lt;boolean>>, recording: boolean, setRecording: React.Dispatch&lt;React.SetStateAction&lt;boolean>> }> = ({hideElements, setHideElements, recording, setRecording}) => {
+
+    return (
+        &lt;Navbar expand={"lg"} className="drag"
+                style={{justifyContent: hideElements ? "space-between" : "space-around"}}>
+            &lt;Container>
+                &lt;Nav>
+                    &lt;Navbar.Text>
+                        &lt;img
+                            src={hideElements ? "/src/assets/handwave-favicon-color.svg" : "/src/assets/handwave-logo.svg"}
+                            alt="logo"
+                            style={{width: hideElements ? "4rem" : "16rem"}}
+                        />
+                    &lt;/Navbar.Text>
+                &lt;/Nav>
+                &lt;Col style={{display: 'flex', justifyContent: "space-around"}}>
+                    &lt;Button className="no-drag" onClick={() => {
+                        setHideElements(!hideElements)
+                        ipcRenderer.send('toggle-elements', !hideElements)
+                    }}>
+                        &lt;FontAwesomeIcon icon={faDisplay}/>
+                    &lt;/Button>
+                &lt;/Col>
+                {hideElements &amp;&amp; (
+                    &lt;div className={`video ${recording ? "recording minimized" : ""}`}
+                         style={{width: 12, height: 12, margin: 4, objectFit: "cover", borderRadius: "50%"}}/>
+                )}
+            &lt;/Container>
+        &lt;/Navbar>
+    );
+};
+
+export default NavBar;
+</code></pre>
+        </article>
+    </section>
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Sun Dec 10 2023 17:53:20
+    GMT+0200 (Itä-Euroopan normaaliaika) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+</body>
+</html>

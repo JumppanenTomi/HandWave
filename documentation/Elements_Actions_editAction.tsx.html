@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title>Elements/Actions/editAction.tsx - Documentation</title>
+
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="styles/prettify.css" rel="stylesheet" type="text/css">
+    <link href="styles/jsdoc.css" rel="stylesheet" type="text/css">
+    <script defer src="scripts/nav.js"></script>
+
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+</head>
+<body>
+
+<input class="nav-trigger" id="nav-trigger" type="checkbox"/>
+<label class="navicon-button x" for="nav-trigger">
+    <div class="navicon"></div>
+</label>
+
+<label class="overlay" for="nav-trigger"></label>
+
+<nav>
+
+
+    <h2><a href="index.html">Home</a></h2>
+    <h3>Classes</h3>
+    <ul>
+        <li><a href="Action.html">Action</a></li>
+        <li><a href="global.html#Gesture">Gesture</a></li>
+        <li><a href="gestureRecognizer.html">gestureRecognizer</a></li>
+        <li><a href="module-facialRecognition.faceLandmarker.html">faceLandmarker</a></li>
+    </ul>
+    <h3>Interfaces</h3>
+    <ul>
+        <li><a href="ActionAttributes.html">ActionAttributes</a></li>
+        <li><a href="ActionCreationAttributes.html">ActionCreationAttributes</a></li>
+        <li><a href="GestureAttributes.html">GestureAttributes</a></li>
+        <li><a href="GestureCreationAttributes.html">GestureCreationAttributes</a></li>
+        <li><a href="ToolbarItemType.html">ToolbarItemType</a></li>
+    </ul>
+    <h3>Global</h3>
+    <ul>
+        <li><a href="global.html#Home">Home</a></li>
+        <li><a href="global.html#MinimalView">MinimalView</a></li>
+        <li><a href="global.html#NavBar">NavBar</a></li>
+        <li><a href="global.html#SourceItem">SourceItem</a></li>
+        <li><a href="global.html#TopAppBar">TopAppBar</a></li>
+        <li><a href="global.html#Webcam">Webcam</a></li>
+        <li><a href="global.html#createAction">createAction</a></li>
+        <li><a href="global.html#createGesture">createGesture</a></li>
+        <li><a href="global.html#deleteAction">deleteAction</a></li>
+        <li><a href="global.html#deleteGesture">deleteGesture</a></li>
+        <li><a href="global.html#formatTime">formatTime</a></li>
+        <li><a href="global.html#getAction">getAction</a></li>
+        <li><a href="global.html#getAllActions">getAllActions</a></li>
+        <li><a href="global.html#getAllGestures">getAllGestures</a></li>
+        <li><a href="global.html#getGesture">getGesture</a></li>
+        <li><a href="global.html#isBuild">isBuild</a></li>
+        <li><a href="global.html#locDb">locDb</a></li>
+        <li><a href="global.html#openWebpage">openWebpage</a></li>
+        <li><a href="global.html#pressKey">pressKey</a></li>
+        <li><a href="global.html#releaseKey">releaseKey</a></li>
+        <li><a href="global.html#updateAction">updateAction</a></li>
+        <li><a href="global.html#updateGesture">updateGesture</a></li>
+    </ul>
+
+</nav>
+
+<div id="main">
+
+    <h1 class="page-title">Elements/Actions/editAction.tsx</h1>
+
+
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, {useContext, useEffect, useState} from "react";
+import {Accordion, Button, Col, Modal, Row,} from "react-bootstrap";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTrash} from "@fortawesome/free-solid-svg-icons";
+import useStringInput from "../useInputs/useStringInput";
+import useSelectInput from "../useInputs/useSelectInput";
+import {ipcRenderer} from "electron";
+import {ActionsDataContext} from "@/App";
+import arrayIndexAsValue from "@/sharedUtilities/arrayIndexAsValue";
+import {gestureData} from "@/staticData/gestureData";
+import InputsToJson from "@/sharedUtilities/inputsToJson";
+import {TriggerData} from "@/types/TriggerData";
+import {ActionType} from "@/types/ActionType";
+import {createGesture, updateGesture} from "@/modelApi/gesture";
+import DeleteAction from "./deleteAction";
+import {faPlay} from "@fortawesome/free-solid-svg-icons/faPlay";
+import {faFlagCheckered} from "@fortawesome/free-solid-svg-icons/faFlagCheckered";
+import {faArrowRight} from "@fortawesome/free-solid-svg-icons/faArrowRight";
+import AddActionInputs from "./AddActionInputs";
+import EventItem from "@/Elements/Actions/EventItem";
+
+/**
+ * EditAction is a function that creates a modal element for editing an action.
+ *
+ * @param {any | null} actionToModify - The action to be modified. Can be null if creating a new action.
+ * @return {Object} - An object with the modal element and a function to open the modal.
+ */
+export default function EditAction(actionToModify: any | null) {
+    const {forceRender} = useContext(ActionsDataContext);
+    const [show, setShow] = useState(false);
+    const [keys, setKeys] = useState&lt;any>([{name: "undefined", value: 0}]);
+
+    console.log(actionToModify)
+    useEffect(() => {
+        const fetchData = async () => {
+            const result = await ipcRenderer.invoke('getKeyboardKeys');
+            setKeys(arrayIndexAsValue(result));
+        };
+        fetchData();
+    }, [show]);
+
+    const initialData = {
+        name: "",
+        trigger: "",
+        actions: [],
+    };
+
+    const [newAction, setNewAction] = useState(actionToModify ? actionToModify : initialData);
+
+    const deleteRule = DeleteAction(newAction.id)
+
+    const mainInputs = [
+        useStringInput("Action name", "name", {
+            required: true,
+            placeholder: "For example, Change slide",
+            initial: newAction.name
+        }),
+        useSelectInput("Triggering gesture", "trigger", gestureData, {initial: newAction.trigger}),
+    ];
+
+    const addActionsInputs = AddActionInputs(keys, mainInputs, setNewAction, actionToModify, initialData)
+
+    const close = () => {
+        addActionsInputs.clearAll();
+        setShow(false);
+    };
+    const open = () => setShow(true);
+
+    const save = async () => {
+        if (!addActionsInputs.validateInputs()) {
+            return;
+        }
+        const parentJson = InputsToJson(mainInputs) as unknown as TriggerData;
+        setNewAction((prevState: any) => ({
+            ...prevState,
+            ...parentJson
+        }));
+
+        if (!newAction.id) {
+            await createGesture({
+                name: newAction.name,
+                trigger: newAction.trigger,
+            }, newAction.actions)
+
+        } else {
+            await updateGesture(newAction.id, {
+                name: newAction.name,
+                trigger: newAction.trigger,
+            }, newAction.actions)
+        }
+
+        forceRender();
+        close();
+    };
+
+    const element = (
+        &lt;Modal show={show} onHide={close} size={"lg"} centered>
+            {deleteRule.element}
+            &lt;Modal.Header>
+                &lt;Row style={{width: "100%", alignItems: "center"}}>
+                    &lt;Col>
+                        &lt;Row>
+                            {mainInputs.map((e) => (
+                                &lt;Col xs={6}>{e.element}&lt;/Col>
+                            ))}
+                        &lt;/Row>
+                    &lt;/Col>
+                    &lt;Col xs={"auto"}>
+                        {newAction.id &amp;&amp; (
+                            &lt;Button onClick={deleteRule.open} variant={"danger"}>&lt;FontAwesomeIcon
+                                icon={faTrash}/>&lt;/Button>
+                        )}
+                    &lt;/Col>
+                &lt;/Row>
+            &lt;/Modal.Header>
+            &lt;Modal.Body>
+                &lt;Accordion>
+                    &lt;Row style={{alignItems: "center", marginLeft: 20, marginRight: 20}}>
+                        &lt;Col xs={"auto"} className={"badgeRow"}>
+                            &lt;FontAwesomeIcon icon={faPlay} size={"2xl"}/>
+                        &lt;/Col>
+                        {newAction.actions &amp;&amp; newAction.actions.map((e: ActionType, i: number) => (
+                                &lt;>
+                                    &lt;EventItem item={e} key={i} />
+                                    {i &lt; newAction.actions.length - 1 &amp;&amp; (
+                                        &lt;Col xs={"auto"} className={"badgeRow"}>
+                                            &lt;FontAwesomeIcon icon={faArrowRight}/>
+                                        &lt;/Col>
+                                    )}
+                                &lt;/>
+                            )
+                        )}
+                        {addActionsInputs.element}
+                        &lt;Col xs={"auto"} className={"badgeRow"}>
+                            &lt;FontAwesomeIcon icon={faFlagCheckered} size={"2xl"}/>
+                        &lt;/Col>
+                    &lt;/Row>
+                &lt;/Accordion>
+            &lt;/Modal.Body>
+            &lt;Modal.Footer>
+                &lt;Button variant="secondary" onClick={close}>
+                    Close
+                &lt;/Button>
+                &lt;Button variant="primary" onClick={save}>
+                    Save Changes
+                &lt;/Button>
+            &lt;/Modal.Footer>
+        &lt;/Modal>
+    )
+
+    return {
+        element,
+        open
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Sun Dec 10 2023 17:53:20
+    GMT+0200 (Itä-Euroopan normaaliaika) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title>Elements/NotificationManager.tsx - Documentation</title>
+
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="styles/prettify.css" rel="stylesheet" type="text/css">
+    <link href="styles/jsdoc.css" rel="stylesheet" type="text/css">
+    <script defer src="scripts/nav.js"></script>
+
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+</head>
+<body>
+
+<input class="nav-trigger" id="nav-trigger" type="checkbox"/>
+<label class="navicon-button x" for="nav-trigger">
+    <div class="navicon"></div>
+</label>
+
+<label class="overlay" for="nav-trigger"></label>
+
+<nav>
+
+
+    <h2><a href="index.html">Home</a></h2>
+    <h3>Classes</h3>
+    <ul>
+        <li><a href="Action.html">Action</a></li>
+        <li><a href="global.html#Gesture">Gesture</a></li>
+        <li><a href="gestureRecognizer.html">gestureRecognizer</a></li>
+        <li><a href="module-facialRecognition.faceLandmarker.html">faceLandmarker</a></li>
+    </ul>
+    <h3>Interfaces</h3>
+    <ul>
+        <li><a href="ActionAttributes.html">ActionAttributes</a></li>
+        <li><a href="ActionCreationAttributes.html">ActionCreationAttributes</a></li>
+        <li><a href="GestureAttributes.html">GestureAttributes</a></li>
+        <li><a href="GestureCreationAttributes.html">GestureCreationAttributes</a></li>
+        <li><a href="ToolbarItemType.html">ToolbarItemType</a></li>
+    </ul>
+    <h3>Global</h3>
+    <ul>
+        <li><a href="global.html#Home">Home</a></li>
+        <li><a href="global.html#MinimalView">MinimalView</a></li>
+        <li><a href="global.html#NavBar">NavBar</a></li>
+        <li><a href="global.html#SourceItem">SourceItem</a></li>
+        <li><a href="global.html#TopAppBar">TopAppBar</a></li>
+        <li><a href="global.html#Webcam">Webcam</a></li>
+        <li><a href="global.html#createAction">createAction</a></li>
+        <li><a href="global.html#createGesture">createGesture</a></li>
+        <li><a href="global.html#deleteAction">deleteAction</a></li>
+        <li><a href="global.html#deleteGesture">deleteGesture</a></li>
+        <li><a href="global.html#formatTime">formatTime</a></li>
+        <li><a href="global.html#getAction">getAction</a></li>
+        <li><a href="global.html#getAllActions">getAllActions</a></li>
+        <li><a href="global.html#getAllGestures">getAllGestures</a></li>
+        <li><a href="global.html#getGesture">getGesture</a></li>
+        <li><a href="global.html#isBuild">isBuild</a></li>
+        <li><a href="global.html#locDb">locDb</a></li>
+        <li><a href="global.html#openWebpage">openWebpage</a></li>
+        <li><a href="global.html#pressKey">pressKey</a></li>
+        <li><a href="global.html#releaseKey">releaseKey</a></li>
+        <li><a href="global.html#updateAction">updateAction</a></li>
+        <li><a href="global.html#updateGesture">updateGesture</a></li>
+    </ul>
+
+</nav>
+
+<div id="main">
+
+    <h1 class="page-title">Elements/NotificationManager.tsx</h1>
+
+
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {Alert} from "react-bootstrap";
+import React, {useState} from "react";
+
+/**
+ * Creates a NotificationManager object that can be used to display different types of notifications.
+ * @returns {{
+ *   closeNotification: function,
+ *   notificationElement: React.Element,
+ *   reportError: function,
+ *   reportWarning: function,
+ *   reportSuccess: function
+ * }} Returns an object with methods for managing notifications.
+ */
+export default function NotificationManager() {
+    const [show, setShow] = useState(false);
+    const [dismissable, setDismissable] = useState&lt;boolean>(false)
+
+    const [title, setTitle] = useState&lt;string | undefined>()
+    const [message, setMessage] = useState&lt;string | undefined>()
+    const [additionalContent, setAdditionalContent] = useState&lt;React.JSX.Element | undefined>()
+
+    const [variant, setVariant] = useState&lt;"danger" | "success" | "warning">("success")
+
+    const reportSuccess = (title?: string, message?: string, additionalElement?: React.JSX.Element, dismissible?: boolean, durationMs: number = 3000) => {
+        setTitle(title)
+        setMessage(message)
+        setAdditionalContent(additionalElement)
+        setVariant("success")
+        setShow(true)
+        setDismissable(dismissible ? dismissible : false)
+        setTimeout(() => {
+            setShow(false);
+        }, durationMs);
+    }
+
+    const reportError = (title?: string, message?: string, additionalElement?: React.JSX.Element, dismissible?: boolean, durationMs: number = 3000) => {
+        setTitle(title)
+        setMessage(message)
+        setAdditionalContent(additionalElement)
+        setVariant("danger")
+        setShow(true)
+        setDismissable(dismissible ? dismissible : false)
+        setTimeout(() => {
+            setShow(false);
+        }, durationMs);
+    }
+
+    const reportWarning = (title?: string, message?: string, additionalElement?: React.JSX.Element, dismissible?: boolean, durationMs: number = 3000) => {
+        setTitle(title)
+        setMessage(message)
+        setAdditionalContent(additionalElement);
+        setVariant("warning");
+        setShow(true);
+        setDismissable(dismissible ? dismissible : false)
+        setTimeout(() => {
+            setShow(false);
+        }, durationMs);
+    }
+
+
+    const close = () => {
+        setShow(false)
+    }
+
+    const element = (
+        &lt;Alert show={show} variant={variant} dismissible={dismissable} style={{position: "absolute", top: 25, left: 0, zIndex: 999, width: "fit-content"}}>
+            {title &amp;&amp; (
+                &lt;Alert.Heading>{title}&lt;/Alert.Heading>
+            )}
+            {message &amp;&amp; (
+                &lt;p style={{margin: 0, padding: 0}}>{message}&lt;/p>
+            )}
+            {additionalContent &amp;&amp; (
+                &lt;>
+                    &lt;hr/>
+                    {additionalContent}
+                &lt;/>
+            )}
+        &lt;/Alert>
+    )
+
+    return {
+        closeNotification: close,
+        notificationElement: element,
+        reportError,
+        reportWarning,
+        reportSuccess,
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Sun Dec 10 2023 17:53:20
+    GMT+0200 (Itä-Euroopan normaaliaika) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+</body>
+</html>

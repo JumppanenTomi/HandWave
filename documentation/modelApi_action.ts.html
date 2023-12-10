@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title>modelApi/action.ts - Documentation</title>
+
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="styles/prettify.css" rel="stylesheet" type="text/css">
+    <link href="styles/jsdoc.css" rel="stylesheet" type="text/css">
+    <script defer src="scripts/nav.js"></script>
+
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+</head>
+<body>
+
+<input class="nav-trigger" id="nav-trigger" type="checkbox"/>
+<label class="navicon-button x" for="nav-trigger">
+    <div class="navicon"></div>
+</label>
+
+<label class="overlay" for="nav-trigger"></label>
+
+<nav>
+
+
+    <h2><a href="index.html">Home</a></h2>
+    <h3>Classes</h3>
+    <ul>
+        <li><a href="Action.html">Action</a></li>
+        <li><a href="global.html#Gesture">Gesture</a></li>
+        <li><a href="gestureRecognizer.html">gestureRecognizer</a></li>
+        <li><a href="module-facialRecognition.faceLandmarker.html">faceLandmarker</a></li>
+    </ul>
+    <h3>Interfaces</h3>
+    <ul>
+        <li><a href="ActionAttributes.html">ActionAttributes</a></li>
+        <li><a href="ActionCreationAttributes.html">ActionCreationAttributes</a></li>
+        <li><a href="GestureAttributes.html">GestureAttributes</a></li>
+        <li><a href="GestureCreationAttributes.html">GestureCreationAttributes</a></li>
+        <li><a href="ToolbarItemType.html">ToolbarItemType</a></li>
+    </ul>
+    <h3>Global</h3>
+    <ul>
+        <li><a href="global.html#Home">Home</a></li>
+        <li><a href="global.html#MinimalView">MinimalView</a></li>
+        <li><a href="global.html#NavBar">NavBar</a></li>
+        <li><a href="global.html#SourceItem">SourceItem</a></li>
+        <li><a href="global.html#TopAppBar">TopAppBar</a></li>
+        <li><a href="global.html#Webcam">Webcam</a></li>
+        <li><a href="global.html#createAction">createAction</a></li>
+        <li><a href="global.html#createGesture">createGesture</a></li>
+        <li><a href="global.html#deleteAction">deleteAction</a></li>
+        <li><a href="global.html#deleteGesture">deleteGesture</a></li>
+        <li><a href="global.html#formatTime">formatTime</a></li>
+        <li><a href="global.html#getAction">getAction</a></li>
+        <li><a href="global.html#getAllActions">getAllActions</a></li>
+        <li><a href="global.html#getAllGestures">getAllGestures</a></li>
+        <li><a href="global.html#getGesture">getGesture</a></li>
+        <li><a href="global.html#isBuild">isBuild</a></li>
+        <li><a href="global.html#locDb">locDb</a></li>
+        <li><a href="global.html#openWebpage">openWebpage</a></li>
+        <li><a href="global.html#pressKey">pressKey</a></li>
+        <li><a href="global.html#releaseKey">releaseKey</a></li>
+        <li><a href="global.html#updateAction">updateAction</a></li>
+        <li><a href="global.html#updateGesture">updateGesture</a></li>
+    </ul>
+
+</nav>
+
+<div id="main">
+
+    <h1 class="page-title">modelApi/action.ts</h1>
+
+
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// todo this file provides an API to interact with the db users
+//todo table making it easier to work with
+import {Optional} from "sequelize";
+import {Action} from "@/getdb"
+
+/**
+ * Represents the attributes of an action.
+ * @interface ActionAttributes
+ *
+ * @property {string | null} press - Represents the press attribute of the action.
+ * @property {string | null} key - Represents the key attribute of the action.
+ * @property {string | null} type - Represents the type attribute of the action.
+ * @property {number | null} delay - Represents the delay attribute of the action.
+ * @property {number | null} [gestureId] - Represents the gestureId attribute of the action.
+ * @property {number | null} [id] - Represents the id attribute of the action.
+ */
+export interface ActionAttributes {
+    press: string | null;
+    key: string | null;
+    type: string | null;
+    delay: number | null;
+    gestureId?: number | null;
+    id?: number | null;
+}
+
+/**
+ * Represents the attributes required for creating an Action.
+ *
+ * @interface ActionCreationAttributes
+ * @extends Optional&lt;ActionAttributes, 'id'>
+ */
+export interface ActionCreationAttributes extends Optional&lt;ActionAttributes, 'id'>  {}
+
+/**
+ * Function that retrieves all actions by calling the "Action.findAll" method asynchronously.
+ * @returns {Promise&lt;Array>} A promise that resolves to an array of actions.
+ */
+const getAllActions = async () => {
+    const actions = await Action.findAll()
+    return actions
+}
+
+/**
+ * Retrieves an action by its id
+ * @async
+ * @param {number} id - The id of the action to retrieve
+ * @returns {Promise&lt;Action>} The action object that matches the id
+ */
+const getAction = async (id: number) => {
+    const action = await Action.findOne({
+        where: { id: id },
+        include: [{
+            model: Action,
+            as: 'actions' // the name of the association
+        }]
+    });
+    return action
+}
+
+/**
+ * Creates a new action in the system.
+ *
+ * @async
+ * @param {ActionCreationAttributes} action - The action object containing the required data for creating the action.
+ * @return {Promise&lt;ActionAttributes>} - A promise that resolves to the added action object.
+ */
+const createAction = async (action: ActionCreationAttributes) => {
+    const retData = await Action.create(action)
+    const addedAction: ActionAttributes = {
+        press: retData.press,
+        key: retData.key,
+        type: retData.type,
+        delay: retData.delay,
+        id: retData.id
+    }
+    return addedAction
+}
+
+/**
+ * Updates an action with the given id.
+ *
+ * @param {number} id - The id of the action to update.
+ * @param {ActionCreationAttributes} action - The updated data for the action.
+ * @returns {Promise&lt;void>} - A promise that resolves once the action is updated.
+ */
+const updateAction = async (id: number, action: ActionCreationAttributes) => {
+    const a = await Action.findOne({where: {id: id}});
+    if (a) {
+        a.set({
+            press: action.press,
+            key: action.key,
+            delay: action.delay,
+            type: action.type
+        })
+        await a.save();
+    }
+}
+
+/**
+ * Delete an action by its id.
+ *
+ * @param {number} id - The id of the action to delete.
+ * @returns {Promise&lt;void>} - A promise that resolves when the action is deleted.
+ */
+const deleteAction = async (id: number) => {
+    await Action.destroy({
+        where: {
+            id: id
+        }
+    })
+}
+
+export { getAllActions, getAction, createAction, updateAction, deleteAction }</code></pre>
+        </article>
+    </section>
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Sun Dec 10 2023 17:53:20
+    GMT+0200 (Itä-Euroopan normaaliaika) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+</body>
+</html>

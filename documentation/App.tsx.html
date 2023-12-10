@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title>App.tsx - Documentation</title>
+
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="styles/prettify.css" rel="stylesheet" type="text/css">
+    <link href="styles/jsdoc.css" rel="stylesheet" type="text/css">
+    <script defer src="scripts/nav.js"></script>
+
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+</head>
+<body>
+
+<input class="nav-trigger" id="nav-trigger" type="checkbox"/>
+<label class="navicon-button x" for="nav-trigger">
+    <div class="navicon"></div>
+</label>
+
+<label class="overlay" for="nav-trigger"></label>
+
+<nav>
+
+
+    <h2><a href="index.html">Home</a></h2>
+    <h3>Classes</h3>
+    <ul>
+        <li><a href="Action.html">Action</a></li>
+        <li><a href="global.html#Gesture">Gesture</a></li>
+        <li><a href="gestureRecognizer.html">gestureRecognizer</a></li>
+        <li><a href="module-facialRecognition.faceLandmarker.html">faceLandmarker</a></li>
+    </ul>
+    <h3>Interfaces</h3>
+    <ul>
+        <li><a href="ActionAttributes.html">ActionAttributes</a></li>
+        <li><a href="ActionCreationAttributes.html">ActionCreationAttributes</a></li>
+        <li><a href="GestureAttributes.html">GestureAttributes</a></li>
+        <li><a href="GestureCreationAttributes.html">GestureCreationAttributes</a></li>
+        <li><a href="ToolbarItemType.html">ToolbarItemType</a></li>
+    </ul>
+    <h3>Global</h3>
+    <ul>
+        <li><a href="global.html#Home">Home</a></li>
+        <li><a href="global.html#MinimalView">MinimalView</a></li>
+        <li><a href="global.html#NavBar">NavBar</a></li>
+        <li><a href="global.html#SourceItem">SourceItem</a></li>
+        <li><a href="global.html#TopAppBar">TopAppBar</a></li>
+        <li><a href="global.html#Webcam">Webcam</a></li>
+        <li><a href="global.html#createAction">createAction</a></li>
+        <li><a href="global.html#createGesture">createGesture</a></li>
+        <li><a href="global.html#deleteAction">deleteAction</a></li>
+        <li><a href="global.html#deleteGesture">deleteGesture</a></li>
+        <li><a href="global.html#formatTime">formatTime</a></li>
+        <li><a href="global.html#getAction">getAction</a></li>
+        <li><a href="global.html#getAllActions">getAllActions</a></li>
+        <li><a href="global.html#getAllGestures">getAllGestures</a></li>
+        <li><a href="global.html#getGesture">getGesture</a></li>
+        <li><a href="global.html#isBuild">isBuild</a></li>
+        <li><a href="global.html#locDb">locDb</a></li>
+        <li><a href="global.html#openWebpage">openWebpage</a></li>
+        <li><a href="global.html#pressKey">pressKey</a></li>
+        <li><a href="global.html#releaseKey">releaseKey</a></li>
+        <li><a href="global.html#updateAction">updateAction</a></li>
+        <li><a href="global.html#updateGesture">updateGesture</a></li>
+    </ul>
+
+</nav>
+
+<div id="main">
+
+    <h1 class="page-title">App.tsx</h1>
+
+
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, {createContext, useEffect, useState} from "react";
+import {TriggerData} from "./types/TriggerData";
+import {getAllGestures} from "./modelApi/gesture";
+import Home from "@/Views/Home";
+import NotificationManager from "@/Elements/NotificationManager";
+import {ipcRenderer} from "electron";
+
+/**
+ * Represents a data context type for actions.
+ * @typedef {Object} ActionsDataContextType
+ * @property {TriggerData[] | undefined} actionData - The action data.
+ * @property {React.Dispatch&lt;React.SetStateAction&lt;TriggerData[] | undefined>> | undefined} setActionData - A function to set the action data.
+ * @property {any[] | undefined} gestureData - The gesture data.
+ * @property {React.Dispatch&lt;React.SetStateAction&lt;any[] | undefined>> | undefined} setGestureData - A function to set the gesture data.
+ * @property {any} forceRender - Used to trigger a re-render of the component.
+ */
+type ActionsDataContextType = {
+    actionData: TriggerData[] | undefined;
+    setActionData: React.Dispatch&lt;React.SetStateAction&lt;TriggerData[] | undefined>> | undefined;
+    gestureData: any[] | undefined;
+    setGestureData: React.Dispatch&lt;React.SetStateAction&lt;any[] | undefined>> | undefined;
+    forceRender: any,
+}
+
+/**
+ * Represents the type definition for the RecordingContextType.
+ * @typedef {Object} RecordingContextType
+ * @property {boolean | undefined} recording - Indicates whether recording is enabled or not.
+ * @property {React.Dispatch&lt;React.SetStateAction&lt;boolean | undefined>>} setRecording - Function that can be used to update the recording state.
+ */
+type RecordingContextType = {
+    recording: boolean | undefined;
+    setRecording: React.Dispatch&lt;React.SetStateAction&lt;boolean | undefined>>;
+}
+
+/**
+ * Type definition for RecordTimeContextType.
+ *
+ * @typedef {Object} RecordTimeContextType
+ * @property {number} recordedTime - The recorded time value.
+ * @property {React.Dispatch&lt;React.SetStateAction&lt;number>>} setRecordedTime - Function to set the recorded time value.
+ */
+type RecordTimeContextType = {
+    recordedTime: number;
+    setRecordedTime: React.Dispatch&lt;React.SetStateAction&lt;number>>;
+}
+
+/**
+ * @typedef {Object} MinimalViewContextType
+ * @property {boolean} minimalView - Indicates if the minimal view is enabled.
+ * @property {React.Dispatch&lt;React.SetStateAction&lt;boolean>>} setMinimalView - Function to set the minimal view.
+ */
+type MinimalViewContextType = {
+    minimalView: boolean;
+    setMinimalView: React.Dispatch&lt;React.SetStateAction&lt;boolean>>;
+}
+/**
+ * Represents the context type for managing the face mesh state.
+ * @typedef {Object} FaceMeshContextType
+ * @property {boolean} mesh - The current face mesh state.
+ * @property {React.Dispatch&lt;React.SetStateAction&lt;boolean>>} setMesh - Function to update the face mesh state.
+ */
+type FaceMeshContextType = {
+    mesh: boolean;
+    setMesh: React.Dispatch&lt;React.SetStateAction&lt;boolean>>;
+}
+/**
+ * Represents the context type for face detection feature.
+ * @typedef {Object} FaceDetectionContextType
+ * @property {boolean} faceDetection - Indicates whether face detection is enabled or not.
+ * @property {React.Dispatch&lt;React.SetStateAction&lt;boolean>>} setFaceDetection - A function to update the state of face detection.
+ */
+type FaceDetectionContextType = {
+    faceDetection: boolean;
+    setFaceDetection: React.Dispatch&lt;React.SetStateAction&lt;boolean>>;
+}
+
+/**
+ * @typedef {Object} NotificationManagerContextType
+ * @property {any} notificationManager - The type of the NotificationManager object.
+ */
+type NotificationManagerContextType = { notificationManager: any }
+
+/**
+ * @typedef {Object} ActionsDataContextType
+ * @property {*} actionData - The action data.
+ * @property { function } setActionData - A function to set the action data.
+ * @property {*} gestureData - The gesture data.
+ * @property { function } setGestureData - A function to set the gesture data.
+ * @property { function } forceRender - A function to force render.
+ */
+export const ActionsDataContext = createContext&lt;ActionsDataContextType>({
+    actionData: undefined,
+    setActionData: undefined,
+    gestureData: undefined,
+    setGestureData: undefined,
+    forceRender: undefined
+})
+
+/**
+ * Represents the recording context.
+ *
+ * @typedef {Object} RecordingContextType
+ * @property {Recording} recording - The current recording.
+ * @property {Function} setRecording - Function to set the recording.
+ */
+export const RecordingContext = createContext&lt;RecordingContextType>({
+    recording: undefined,
+    setRecording: () => {
+    }
+})
+
+/**
+ * Context variable for recording time.
+ *
+ * @typedef {Object} RecordTimeContextType
+ * @property {number} recordedTime - The recorded time value.
+ * @property {function} setRecordedTime - A function to set the recorded time value.
+ */
+export const RecordedTimeContext = createContext&lt;RecordTimeContextType>({
+    recordedTime: 0,
+    setRecordedTime: () => {
+    }
+})
+
+/**
+ * Creates a context for managing the minimal view state.
+ *
+ * @typedef {object} MinimalViewContextType
+ * @property {boolean} minimalView - The current state of the minimal view.
+ * @property {Function} setMinimalView - A function to update the minimal view state.
+ */
+export const MinimalViewContext = createContext&lt;MinimalViewContextType>({
+    minimalView: false,
+    setMinimalView: () => {
+    }
+})
+
+/**
+ * Represents the context for manipulating a face mesh.
+ *
+ * @typedef {Object} MeshContext
+ * @property {FaceMeshContextType} value - The value of the context.
+ * @property {boolean} value.mesh - Specifies whether the mesh is active or not.
+ * @property {function} value.setMesh - A function to update the mesh value.
+ *
+ * @example
+ * // Create a new context with mesh set to false
+ * const meshContext = createContext&lt;FaceMeshContextType>({
+ *   mesh: false,
+ *   setMesh: () => {}
+ * });
+ *
+ * @example
+ * // Access the mesh context value and update the mesh value
+ * const { mesh, setMesh } = useContext(meshContext);
+ * setMesh(true); // Set the mesh to true
+ * setMesh(false); // Set the mesh to false
+ */
+export const MeshContext = createContext&lt;FaceMeshContextType>({
+    mesh: false,
+    setMesh: () => {
+    }
+})
+
+/**
+ * Represents the context for face detection.
+ *
+ * @typedef {Object} FaceDetectionContext
+ * @property {boolean} faceDetection - determines if face detection is enabled or disabled.
+ * @property {Function} setFaceDetection - function to set the value of faceDetection.
+ */
+export const FaceDetectionContext = createContext&lt;FaceDetectionContextType>({
+    faceDetection: false,
+    setFaceDetection: () => {
+    }
+})
+
+/**
+ * Represents the context for the NotificationManager.
+ *
+ * @typedef {Object} NotificationManagerContextType
+ * @property {NotificationManager} notificationManager - An instance of the notification manager.
+ */
+export const NotificationManagerContext = createContext&lt;NotificationManagerContextType>({notificationManager: NotificationManager});
+
+/**
+ * App component
+ *
+ * Initializes and manages the state of various components and data in the application.
+ *
+ * @returns {JSX.Element} The rendered component
+ */
+export default function App() {
+    const [actionData, setActionData] = useState&lt;TriggerData[] | undefined>()
+    const [gestureData, setGestureData] = useState&lt;any[] | undefined>([])
+    const [render, setRender] = useState&lt;object>({})
+
+    const [recording, setRecording] = useState&lt;boolean>()
+    const [recordedTime, setRecordedTime] = useState&lt;number>(0);
+
+    const notificationManager = NotificationManager()
+
+    const [minimalView, setMinimalView] = useState&lt;boolean>(false)
+    const [mesh, setMesh] = useState&lt;boolean>(false)
+    const [faceDetection, setFaceDetection] = useState&lt;boolean>(false)
+
+    useEffect(() => {
+        const fetchGestureData = async () => {
+            let data: any = await getAllGestures();
+            data = JSON.stringify(data);
+            data = JSON.parse(data);
+            setGestureData(data);
+        }
+
+        fetchGestureData();
+    }, [render])
+
+    const forceRender = () => setRender({});
+
+    useEffect(() => {
+        ipcRenderer.send('toggle-elements', minimalView)
+    }, [minimalView]);
+
+    return (
+        &lt;>
+            {!minimalView &amp;&amp; notificationManager.notificationElement}
+            &lt;RecordedTimeContext.Provider value={{recordedTime, setRecordedTime}}>
+                &lt;MeshContext.Provider value={{mesh, setMesh}}>
+                    &lt;FaceDetectionContext.Provider value={{faceDetection, setFaceDetection}}>
+                        &lt;MinimalViewContext.Provider value={{minimalView, setMinimalView}}>
+                            &lt;NotificationManagerContext.Provider
+                                value={{notificationManager: () => notificationManager}}>
+                                &lt;ActionsDataContext.Provider
+                                    value={{actionData, setActionData, gestureData, setGestureData, forceRender}}>
+                                    &lt;RecordingContext.Provider value={{recording, setRecording}}>
+                                        &lt;Home/>
+                                    &lt;/RecordingContext.Provider>
+                                &lt;/ActionsDataContext.Provider>
+                            &lt;/NotificationManagerContext.Provider>
+                        &lt;/MinimalViewContext.Provider>
+                    &lt;/FaceDetectionContext.Provider>
+                &lt;/MeshContext.Provider>
+            &lt;/RecordedTimeContext.Provider>
+        &lt;/>
+    )
+}</code></pre>
+        </article>
+    </section>
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Sun Dec 10 2023 17:53:20
+    GMT+0200 (Itä-Euroopan normaaliaika) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title>Elements/Actions/AddActionInputs.tsx - Documentation</title>
+
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="styles/prettify.css" rel="stylesheet" type="text/css">
+    <link href="styles/jsdoc.css" rel="stylesheet" type="text/css">
+    <script defer src="scripts/nav.js"></script>
+
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+</head>
+<body>
+
+<input class="nav-trigger" id="nav-trigger" type="checkbox"/>
+<label class="navicon-button x" for="nav-trigger">
+    <div class="navicon"></div>
+</label>
+
+<label class="overlay" for="nav-trigger"></label>
+
+<nav>
+
+
+    <h2><a href="index.html">Home</a></h2>
+    <h3>Classes</h3>
+    <ul>
+        <li><a href="Action.html">Action</a></li>
+        <li><a href="global.html#Gesture">Gesture</a></li>
+        <li><a href="gestureRecognizer.html">gestureRecognizer</a></li>
+        <li><a href="module-facialRecognition.faceLandmarker.html">faceLandmarker</a></li>
+    </ul>
+    <h3>Interfaces</h3>
+    <ul>
+        <li><a href="ActionAttributes.html">ActionAttributes</a></li>
+        <li><a href="ActionCreationAttributes.html">ActionCreationAttributes</a></li>
+        <li><a href="GestureAttributes.html">GestureAttributes</a></li>
+        <li><a href="GestureCreationAttributes.html">GestureCreationAttributes</a></li>
+        <li><a href="ToolbarItemType.html">ToolbarItemType</a></li>
+    </ul>
+    <h3>Global</h3>
+    <ul>
+        <li><a href="global.html#Home">Home</a></li>
+        <li><a href="global.html#MinimalView">MinimalView</a></li>
+        <li><a href="global.html#NavBar">NavBar</a></li>
+        <li><a href="global.html#SourceItem">SourceItem</a></li>
+        <li><a href="global.html#TopAppBar">TopAppBar</a></li>
+        <li><a href="global.html#Webcam">Webcam</a></li>
+        <li><a href="global.html#createAction">createAction</a></li>
+        <li><a href="global.html#createGesture">createGesture</a></li>
+        <li><a href="global.html#deleteAction">deleteAction</a></li>
+        <li><a href="global.html#deleteGesture">deleteGesture</a></li>
+        <li><a href="global.html#formatTime">formatTime</a></li>
+        <li><a href="global.html#getAction">getAction</a></li>
+        <li><a href="global.html#getAllActions">getAllActions</a></li>
+        <li><a href="global.html#getAllGestures">getAllGestures</a></li>
+        <li><a href="global.html#getGesture">getGesture</a></li>
+        <li><a href="global.html#isBuild">isBuild</a></li>
+        <li><a href="global.html#locDb">locDb</a></li>
+        <li><a href="global.html#openWebpage">openWebpage</a></li>
+        <li><a href="global.html#pressKey">pressKey</a></li>
+        <li><a href="global.html#releaseKey">releaseKey</a></li>
+        <li><a href="global.html#updateAction">updateAction</a></li>
+        <li><a href="global.html#updateGesture">updateGesture</a></li>
+    </ul>
+
+</nav>
+
+<div id="main">
+
+    <h1 class="page-title">Elements/Actions/AddActionInputs.tsx</h1>
+
+
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from "react";
+import {Button, Col, Row} from "react-bootstrap";
+import useSelectInput from "@/Elements/useInputs/useSelectInput";
+import useNumberInput from "@/Elements/useInputs/useNumberInput";
+import InputsToJson from "@/sharedUtilities/inputsToJson";
+import {TriggerData} from "@/types/TriggerData";
+import {ActionType} from "@/types/ActionType";
+import {faPlus} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+
+/**
+ * Adds action inputs to a form.
+ *
+ * @param {any} keys - The keys to be used in the keyboard inputs.
+ * @param {any[]} mainInputs - The main inputs of the form.
+ * @param {any} setNewAction - A function to set the new action.
+ * @param {any} actionToModify - The action to modify (optional).
+ * @param {any} initialData - The initial data for the action.
+ * @returns {Object} - An object containing the element, actionTypeInput, keyboardInputs, delayInputs, clearAll, validateInputs, and addAction.
+ */
+export default function AddActionInputs(keys: any, mainInputs: any[], setNewAction: any, actionToModify: any, initialData: any) {
+    const actionTypeInput = useSelectInput("Action type", "type", [
+        {name: "keyboard", value: "keyboard"},
+        {name: "delay", value: "delay"},
+    ]);
+
+    const keyboardInputs = [
+        useSelectInput("Press or Release", "press", [
+            {name: "Press", value: true},
+            {name: "Release", value: false},
+        ]),
+        useSelectInput("Select key", "key", keys),
+    ];
+
+    const delayInputs = [
+        useNumberInput("Delay", "delay", {
+            placeholder: "Delay in milliseconds",
+            unit: "ms",
+        }),
+    ];
+
+    const clearAll = () => {
+        mainInputs.forEach((e) => e.clear());
+        actionTypeInput.clear();
+        keyboardInputs.forEach((e) => e.clear());
+        delayInputs.forEach((e) => e.clear());
+        setNewAction(actionToModify ? actionToModify : initialData);
+    };
+
+    const validateInputs = () => {
+        const isValidMainInputs = mainInputs.every((input) => input.value);
+        const isValidActionType = actionTypeInput.isValid;
+
+        const isValidKeyboardInputs = keyboardInputs.every((input) => input.isValid);
+        const isValidDelayInputs = delayInputs.every((input) => input.isValid);
+
+        return isValidMainInputs &amp;&amp; isValidActionType &amp;&amp; (actionTypeInput.value === "keyboard" ? isValidKeyboardInputs : isValidDelayInputs);
+    };
+
+    const addAction = () => {
+        if (!validateInputs()) {
+            // Validation failed, prevent adding action
+            return;
+        }
+        const parentJson = InputsToJson(mainInputs) as TriggerData;
+        const actionsJson = InputsToJson(actionTypeInput.value === "keyboard" ? keyboardInputs : delayInputs) as ActionType;
+        actionsJson.type = actionTypeInput.value as "keyboard" | "delay"
+
+        setNewAction((prevState: { actions: any; }) => ({
+            ...prevState,
+            ...parentJson,
+            actions: [...prevState.actions, actionsJson],
+        }));
+    };
+
+    const element = (
+        &lt;Col xs={"auto"}>
+            &lt;div className={"sourceItem"}>
+                &lt;Row>
+                    &lt;Col>
+                        {actionTypeInput.element}
+                        &lt;Row>
+                            {actionTypeInput.value === "delay" &amp;&amp; (
+                                &lt;Col>
+                                    {delayInputs.map(({element}, i) => element)}
+                                    &lt;Button onClick={addAction}>
+                                        &lt;FontAwesomeIcon icon={faPlus}/>
+                                    &lt;/Button>
+                                &lt;/Col>
+                            )}
+                            {actionTypeInput.value === "keyboard" &amp;&amp; (
+                                &lt;Col>
+                                    {keyboardInputs.map(({element}, i) => element)}
+                                    &lt;Button onClick={addAction}>
+                                        &lt;FontAwesomeIcon icon={faPlus}/>
+                                    &lt;/Button>
+                                &lt;/Col>
+                            )}
+                        &lt;/Row>
+                    &lt;/Col>
+                &lt;/Row>
+            &lt;/div>
+        &lt;/Col>
+    );
+
+    return {
+        element,
+        actionTypeInput,
+        keyboardInputs,
+        delayInputs,
+        clearAll,
+        validateInputs,
+        addAction,
+    };
+}
+</code></pre>
+        </article>
+    </section>
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Sun Dec 10 2023 17:53:20
+    GMT+0200 (Itä-Euroopan normaaliaika) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+</body>
+</html>
