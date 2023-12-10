@@ -49,6 +49,16 @@ function Home() {
     const [indexFinger, setIndexFinger] = useState<IndexFinger[] | undefined>()
     const [thumb, setThumb] = useState<Thumb[] | undefined>();
     const [executionTime, setExecutionTime] = useState<number | undefined>()
+    const [tick, setTick] = useState(0);
+
+    // Set up an interval to update the tick state every 0.5 second (to be able to click only every 0.5 second)
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setTick(tick => tick + 1);
+        }, 500);
+
+        return () => clearInterval(intervalId);
+    }, []);
 
     useEffect(() => {
         const configureAi = async () => {
@@ -121,9 +131,11 @@ function Home() {
             indexFinger &&
             thumb &&
             gestureData &&
-            gestureData?.[0]?.category === "one"
+            gestureData?.[0]?.category === "one" &&
+            tick > 1
         ) {
             ipcRenderer.invoke("mouseClick");
+            setTick(0);
         }
     }, [gestureData]);
 
