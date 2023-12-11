@@ -1,6 +1,51 @@
 {
   "name": "electron-vite-react",
-  "version": "2.2.0",
+  "build": {
+    "asarUnpack": [
+      "./node_modules/sqlite3/**/*"
+    ],
+    "appId": "fi.handwaveteam.handwave",
+    "asar": true,
+    "directories": {
+      "output": "./release/${version}",
+      "buildResources": "installer/resources"
+    },
+    "files": [
+      "dist-electron",
+      "dist"
+    ],
+    "mac": {
+      "artifactName": "${productName}_${version}_${platform}.${ext}",
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "${productName}_${version}_${platform}.${ext}"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "artifactName": "${productName}_${version}_${platform}.${ext}"
+    },
+    "nsis": {
+      "oneClick": true,
+      "allowToChangeInstallationDirectory": false,
+      "deleteAppDataOnUninstall": false
+    }
+  },
+  "version": "1.0.0",
   "main": "dist-electron/main/index.js",
   "description": "Electron Vite React boilerplate.",
   "author": "草鞋没号 <308487730@qq.com>",
@@ -20,12 +65,6 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "generate-docs": "node_modules/.bin/jsdoc -c jsdoc.json"
-  },
-  "build": {
-    "appId": "com.handwaveteam.handwave",
-    "mac": {
-      "category": "your.app.category.tool"
-    }
   },
   "dependencies": {
     "@electron/remote": "^2.0.12",
