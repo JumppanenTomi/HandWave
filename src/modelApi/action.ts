@@ -1,18 +1,9 @@
-// todo this file provides an API to interact with the db users
-//todo table making it easier to work with
 import {Optional} from "sequelize";
-import {Action} from "@/getdb"
+import {ipcRenderer} from "electron";
 
 /**
- * Represents the attributes of an action.
+ * Represents the attributes for an action.
  * @interface ActionAttributes
- *
- * @property {string | null} press - Represents the press attribute of the action.
- * @property {string | null} key - Represents the key attribute of the action.
- * @property {string | null} type - Represents the type attribute of the action.
- * @property {number | null} delay - Represents the delay attribute of the action.
- * @property {number | null} [gestureId] - Represents the gestureId attribute of the action.
- * @property {number | null} [id] - Represents the id attribute of the action.
  */
 export interface ActionAttributes {
     press: string | null;
@@ -24,7 +15,7 @@ export interface ActionAttributes {
 }
 
 /**
- * Represents the attributes required for creating an Action.
+ * Represents the attributes for creating an action.
  *
  * @interface ActionCreationAttributes
  * @extends Optional<ActionAttributes, 'id'>
@@ -32,82 +23,62 @@ export interface ActionAttributes {
 export interface ActionCreationAttributes extends Optional<ActionAttributes, 'id'>  {}
 
 /**
- * Function that retrieves all actions by calling the "Action.findAll" method asynchronously.
- * @returns {Promise<Array>} A promise that resolves to an array of actions.
+ * Retrieves all actions from the main process using IPC communication.
+ *
+ * @async
+ * @function getAllActions
+ * @returns {Promise<Array>} A promise that resolves to an array containing all actions.
  */
 const getAllActions = async () => {
-    const actions = await Action.findAll()
-    return actions
-}
+    return ipcRenderer.invoke('get-all-actions');
+};
 
 /**
- * Retrieves an action by its id
+ * Retrieves an action by its ID.
+ *
  * @async
- * @param {number} id - The id of the action to retrieve
- * @returns {Promise<Action>} The action object that matches the id
+ * @param {number} id - The ID of the action to retrieve.
+ * @returns {Promise<Object>} - A Promise that resolves to the retrieved action.
+ *
+ * @example
+ * const actionId = 123;
+ * const action = await getAction(actionId);
+ * console.log(action);
  */
 const getAction = async (id: number) => {
-    const action = await Action.findOne({
-        where: { id: id },
-        include: [{
-            model: Action,
-            as: 'actions' // the name of the association
-        }]
-    });
-    return action
-}
+    return ipcRenderer.invoke('get-action', id);
+};
 
 /**
- * Creates a new action in the system.
- *
+ * Creates an action using the provided attributes.
  * @async
- * @param {ActionCreationAttributes} action - The action object containing the required data for creating the action.
- * @return {Promise<ActionAttributes>} - A promise that resolves to the added action object.
+ * @param {ActionCreationAttributes} action - The attributes of the action to be created.
+ * @returns {Promise<any>} - A Promise that resolves with the result of the action creation.
  */
 const createAction = async (action: ActionCreationAttributes) => {
-    const retData = await Action.create(action)
-    const addedAction: ActionAttributes = {
-        press: retData.press,
-        key: retData.key,
-        type: retData.type,
-        delay: retData.delay,
-        id: retData.id
-    }
-    return addedAction
-}
+    return ipcRenderer.invoke('create-action', action);
+};
 
 /**
- * Updates an action with the given id.
+ * Updates an action with the given ID using IPC communication.
  *
- * @param {number} id - The id of the action to update.
- * @param {ActionCreationAttributes} action - The updated data for the action.
- * @returns {Promise<void>} - A promise that resolves once the action is updated.
+ * @param {number} id - The ID of the action to update.
+ * @param {ActionCreationAttributes} action - The new attributes of the action.
+ * @returns {Promise<void>} - A promise that resolves when the action is successfully updated.
  */
 const updateAction = async (id: number, action: ActionCreationAttributes) => {
-    const a = await Action.findOne({where: {id: id}});
-    if (a) {
-        a.set({
-            press: action.press,
-            key: action.key,
-            delay: action.delay,
-            type: action.type
-        })
-        await a.save();
-    }
-}
+    await ipcRenderer.invoke('update-action', {id, action});
+};
 
 /**
- * Delete an action by its id.
+ * Deletes an action with the given id by invoking the 'delete-action' IPC channel.
+ * This function is asynchronous and returns a Promise.
  *
- * @param {number} id - The id of the action to delete.
- * @returns {Promise<void>} - A promise that resolves when the action is deleted.
+ * @param {number} id - The id of the action to be deleted.
+ * @returns {Promise<void>} - A Promise that resolves once the action is deleted successfully.
  */
 const deleteAction = async (id: number) => {
-    await Action.destroy({
-        where: {
-            id: id
-        }
-    })
-}
+    await ipcRenderer.invoke('delete-action', id);
+};
 
 export { getAllActions, getAction, createAction, updateAction, deleteAction }

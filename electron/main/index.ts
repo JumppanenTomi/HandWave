@@ -1,22 +1,12 @@
 import {app, BrowserWindow, ipcMain, screen, shell} from "electron";
 import {release} from "node:os";
 import {join} from "node:path";
-import {sequelize} from "../../src/getdb";
-import { IndexFinger } from "@/types/IndexFinger";
-import { Thumb } from "@/types/Thumb";
+import {IndexFinger} from "@/types/IndexFinger";
+import {Thumb} from "@/types/Thumb";
+import {Action, Gesture, sequelize} from "../../Database/Init";
 
 const {Key, keyboard, mouse, Button} = require("@nut-tree/nut-js");
 
-// The built directory structure
-//
-// ├─┬ dist-electron
-// │ ├─┬ main
-// │ │ └── index.js    > Electron-Main
-// │ └─┬ preload
-// │   └── index.js    > Preload-Scripts
-// ├─┬ dist
-// │ └── index.html    > Electron-Renderer
-//
 process.env.DIST_ELECTRON = join(__dirname, "../");
 process.env.DIST = join(process.env.DIST_ELECTRON, "../dist");
 process.env.VITE_PUBLIC = process.env.VITE_DEV_SERVER_URL
@@ -185,13 +175,13 @@ ipcMain.handle("releaseKey", async (event, data) => {
     await keyboard.releaseKey(parseInt(data));
 });
 
-const calculatePosition = (indexFinger: IndexFinger, thumb:Thumb) => {
+const calculatePosition = (indexFinger: IndexFinger, thumb: Thumb) => {
     // if either is undefined
     if (!indexFinger) {
-        return { x: 0, y: 0 };
+        return {x: 0, y: 0};
     }
-    if (!thumb){
-        return {x:0, y: 0}
+    if (!thumb) {
+        return {x: 0, y: 0}
     }
 
     const minX = 0.1;
@@ -215,7 +205,7 @@ const calculatePosition = (indexFinger: IndexFinger, thumb:Thumb) => {
 
 ipcMain.handle("moveMouse", async (event, indexFinger, thumb) => {
     await mouse.setPosition(calculatePosition(indexFinger, thumb));
-}); 
+});
 
 ipcMain.handle("dragMouse", async (event, indexFinger, thumb, gestureData) => {
     console.log(gestureData);
@@ -228,7 +218,7 @@ ipcMain.handle("dragMouse", async (event, indexFinger, thumb, gestureData) => {
 });
 const sleep = (ms: number) => new Promise((r) => {
     console.log("sleeping");
-    setTimeout(r, ms)  
+    setTimeout(r, ms)
 });
 
 ipcMain.handle("mouseClick", async (event, data) => {
@@ -271,39 +261,183 @@ ipcMain.on("recording-stopped", async (event) => {
     const win = BrowserWindow.getFocusedWindow();
 
     if (win !== null)
-    try {
-        const result = await dialog.showSaveDialog(win, {
-            title: "Save Recorded File",
-            defaultPath: `recording-${Date.now()}.webm`,
-            buttonLabel: "Save",
-            filters: [{name: "WebM Files", extensions: ["webm"]}],
-        });
-
-        if (!result.canceled && result.filePath) {
-            const filePath = result.filePath;
-            const bufferData = Buffer.concat(chunks);
-
-            fs.writeFile(filePath, bufferData, (err: any) => {
-                if (err) {
-                    console.error("Error saving recording:", err);
-                    event.sender.send(
-                        "file-selection-error",
-                        err.message || "An error occurred during file selection."
-                    );
-                } else {
-                    console.log("Recording saved successfully");
-                    event.sender.send("file-selection-success", filePath);
-                    chunks.length = 0; // Clear the chunks array
-                }
+        try {
+            const result = await dialog.showSaveDialog(win, {
+                title: "Save Recorded File",
+                defaultPath: `recording-${Date.now()}.webm`,
+                buttonLabel: "Save",
+                filters: [{name: "WebM Files", extensions: ["webm"]}],
             });
-        } else {
-            event.sender.send("file-selection-cancelled");
+
+            if (!result.canceled && result.filePath) {
+                const filePath = result.filePath;
+                const bufferData = Buffer.concat(chunks);
+
+                fs.writeFile(filePath, bufferData, (err: any) => {
+                    if (err) {
+                        console.error("Error saving recording:", err);
+                        event.sender.send(
+                            "file-selection-error",
+                            err.message || "An error occurred during file selection."
+                        );
+                    } else {
+                        console.log("Recording saved successfully");
+                        event.sender.send("file-selection-success", filePath);
+                        chunks.length = 0; // Clear the chunks array
+                    }
+                });
+            } else {
+                event.sender.send("file-selection-cancelled");
+            }
+        } catch (error: any) {
+            console.error("Error during file selection:", error);
+            event.sender.send(
+                "file-selection-error",
+                error.message || "An error occurred during file selection."
+            );
         }
-    } catch (error: any) {
-        console.error("Error during file selection:", error);
-        event.sender.send(
-            "file-selection-error",
-            error.message || "An error occurred during file selection."
-        );
+});
+
+ipcMain.handle('get-all-gestures', async () => {
+    let gestures = await Gesture.findAll({
+        include: [{
+            model: Action,
+            as: 'actions' // the name of the association
+        }]
+    });
+    gestures = gestures.map(gesture => gesture.toJSON());
+    return gestures;
+});
+
+ipcMain.handle('get-gesture', async (_, id) => {
+    let gesture = await Gesture.findOne({
+        where: {id: id},
+        include: [{
+            model: Action,
+            as: 'actions'
+        }]
+    });
+    gesture = gesture ? gesture.toJSON() : null;
+    return gesture;
+});
+
+ipcMain.handle('create-gesture', async (_, gesture, actions) => {
+    try {
+        const retData = await Gesture.create(gesture)
+        if (actions) {
+            for (const action of actions) {
+                await Action.create({
+                    ...action,
+                    gestureId: retData.id,
+                });
+            }
+        }
+        return retData.toJSON();
+    } catch (error) {
+        console.error('Error creating gesture:', error);
+        // Rethrow the error so that caller knows it failed
+        throw error;
     }
+});
+
+ipcMain.handle('update-gesture', async (_, id, gesture, actions) => {
+    const g = await Gesture.findOne({where: {id: id}});
+    if (!g) {
+        // Handle gesture not found error
+        throw new Error('Gesture not found');
+    }
+
+    g.set({
+        name: gesture.name,
+        trigger: gesture.trigger
+    });
+    await g.save();
+
+    if (actions) {
+        for (const action of actions) {
+            if (action.id) {
+                const existingAction = await Action.findOne({where: {id: action.id}});
+                if (existingAction) {
+                    existingAction.set({
+                        // update necessary action properties here
+                    });
+                    await existingAction.save();
+                } else {
+                    // Handle action not found error
+                    throw new Error('Action not found');
+                }
+            } else {
+                await Action.create({...action, gestureId: id});
+            }
+        }
+    }
+
+    const updatedGesture = await Gesture.findOne({
+        where: {id: id},
+        include: [{model: Action, as: 'actions'}]
+    });
+
+    return updatedGesture ? updatedGesture.toJSON() : null;
+});
+
+ipcMain.handle('delete-gesture', async (_, id) => {
+    await Action.destroy({
+        where: {
+            gestureId: id
+        },
+    });
+    await Gesture.destroy({
+        where: {
+            id: id
+        }
+    });
+    return;
+});
+
+ipcMain.handle('get-all-actions', async () => {
+    let actions = await Action.findAll();
+    actions = actions.map(action => action.toJSON());
+    return actions;
+});
+
+ipcMain.handle('get-action', async (_, id) => {
+    let action = await Action.findOne({
+        where: {id: id},
+    });
+    action = action ? action.toJSON() : null;
+    return action;
+});
+
+ipcMain.handle('create-action', async (_, action) => {
+    try {
+        const retData = await Action.create(action);
+        return retData.toJSON();
+    } catch (error) {
+        console.error('Error creating action:', error);
+        // Rethrow the error so that caller knows it failed
+        throw error;
+    }
+});
+
+ipcMain.handle('update-action', async (_, id, action) => {
+    const a = await Action.findOne({where: {id: id}});
+    if (a) {
+        a.set({
+            press: action.press,
+            key: action.key,
+            delay: action.delay,
+            type: action.type
+        });
+        await a.save();
+    }
+    return;
+});
+
+ipcMain.handle('delete-action', async (_, id) => {
+    await Action.destroy({
+        where: {
+            id: id
+        }
+    });
+    return;
 });
