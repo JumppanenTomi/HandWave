@@ -18,7 +18,7 @@ export default function FaceDetectionSettingsModal() {
     const handleShow = () => setShow(true);
 
     const faceMeshInput = useCheckboxInput("Use camera overlay", "overlay", mesh)
-    const faceDetectionInput = useCheckboxInput("Use facedetection to prevent unintended keystrokes and mouse mouse movement", "facemesh", faceDetection)
+    const faceDetectionInput = useCheckboxInput("Use facedetection to prevent unintended keystrokes and mouse movement", "facemesh", faceDetection)
 
     useEffect(() => {
         setFaceDetection(faceDetectionInput.checkedValue)
