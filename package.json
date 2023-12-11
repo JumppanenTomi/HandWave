@@ -1,10 +1,7 @@
 {
-  "name": "electron-vite-react",
+  "name": "handwave",
   "build": {
-    "asarUnpack": [
-      "./node_modules/sqlite3/**/*"
-    ],
-    "appId": "fi.handwaveteam.handwave",
+    "appId": "fi.handwaveteam.HandWave",
     "asar": true,
     "directories": {
       "output": "./release/${version}",
@@ -47,8 +44,8 @@
   },
   "version": "1.0.0",
   "main": "dist-electron/main/index.js",
-  "description": "Electron Vite React boilerplate.",
-  "author": "草鞋没号 <308487730@qq.com>",
+  "description": "Harness the power of your hand gestures to effortlessly control your computer with Handwave, an AI-based application that utilizes Google MediaPipe for gesture recognition and face landmarking.",
+  "author": "HandWave Team",
   "license": "MIT",
   "private": true,
   "debug": {
@@ -62,8 +59,6 @@
     "preview": "vite preview",
     "pree2e": "vite build --mode=test",
     "e2e": "playwright test",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder",
     "generate-docs": "node_modules/.bin/jsdoc -c jsdoc.json"
   },
   "dependencies": {
