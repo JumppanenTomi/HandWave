@@ -5,7 +5,7 @@
     "asar": true,
     "directories": {
       "output": "./release/${version}",
-      "buildResources": "installer/resources"
+      "buildResources": "build"
     },
     "files": [
       "dist-electron",
@@ -56,6 +56,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && electron-builder",
+    "build-all": "tsc && vite build && electron-builder --mwl",
     "preview": "vite preview",
     "pree2e": "vite build --mode=test",
     "e2e": "playwright test",

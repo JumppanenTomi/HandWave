@@ -5,6 +5,8 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faLifeRing} from "@fortawesome/free-solid-svg-icons";
 import ToolbarItem from "@/Elements/Actionbars/ToolbarItem";
 import {openWebpage} from "@/sharedUtilities/openWebpage";
+import logo from '@/assets/handwave-logo.svg';
+
 
 /**
  * Renders a top toolbar component with a logo and support button.
@@ -17,13 +19,13 @@ export default function TopToolbar() {
         <Container className={"logo-bar"}>
             <Row className={"logo-bar-row"}>
                 <Col>
-                    <img
-                        src={"/src/assets/handwave-logo.svg"}
-                        alt="logo"
-                        style={{width: "10rem", userSelect: "none"}}
-                    />
+                    <img src={logo} alt="logo" style={{width: "10rem", userSelect: "none"}}/>
                 </Col>
-                <ToolbarItem item={{name: "Support", onClick: () => openWebpage('https://github.com/JumppanenTomi/presentation-tool-with-hand-gestures/wiki'), icon: <FontAwesomeIcon icon={faLifeRing}/>}}/>
+                <ToolbarItem item={{
+                    name: "Support",
+                    onClick: () => openWebpage('https://github.com/JumppanenTomi/presentation-tool-with-hand-gestures/wiki'),
+                    icon: <FontAwesomeIcon icon={faLifeRing}/>
+                }}/>
             </Row>
         </Container>
     )
