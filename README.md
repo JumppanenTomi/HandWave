@@ -44,6 +44,68 @@ Handwave utilizes HaGRID Dataset, a valuable resource for developing hand gestur
 ### Cross-platform Compatibility:
 - Electron enables deployment on various operating systems (Windows, macOS, Linux)
 
+# Regular Installation Guide
+
+Follow these steps for a regular installation of the presentation tool with hand gestures:
+
+1. Go to our [releases page](https://github.com/JumppanenTomi/presentation-tool-with-hand-gestures/releases).
+
+2. Select the version you want to install (latest suggested).
+
+3. Download the installer that fits your operating system:
+   - For Windows, download the `.exe` file.
+   - For macOS, download the `.dmg` file.
+   - Linux users probably knows their stuff ;D
+
+
+4. Start the installer and follow the on-screen steps to complete the installation.
+
+Once the installation is complete, you can start using the presentation tool with hand gestures on your system. Before getting started, we recommend checking our [Quick Start Guide](https://github.com/JumppanenTomi/presentation-tool-with-hand-gestures/wiki/How-it-Works) for an overview of how the application works and its key features. This guide will help you make the most out of the presentation tool.
+
+# Development Environment Setup
+
+To set up the development environment for the presentation tool with hand gestures, follow these steps:
+
+## 1. Getting Binaries
+
+Clone the repository using the following command to get the latest version from the `master` branch:
+
+```bash
+git clone https://github.com/JumppanenTomi/presentation-tool-with-hand-gestures.git
+```
+
+## 2. Installing Dependencies
+
+Navigate to the project's directory in your terminal and run the following command to install all necessary dependencies:
+
+```bash
+npm install
+```
+
+## 3. Start Development Version
+
+Once the dependencies are installed, initiate the development environment for testing the application using the following command:
+
+```bash
+npm run dev
+```
+
+## 4. Building the Application
+
+When you are satisfied with your work, you can build the application. Start the build process by typing one of the following commands:
+
+```bash
+npm build      # Builds the application for the current operating system and architecture
+```
+
+Or
+
+```bash
+npm build-all  # Builds the application for all supported operating systems (mac-only command)
+```
+
+For more details on multi-platform builds, refer to the [official documentation](https://www.electron.build/multi-platform-build.html) of electron builder.
+
 ## Documentation
 - [JSDoc](https://presentation-tool-with-hand-gestures.vercel.app/)
 
