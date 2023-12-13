@@ -2,26 +2,20 @@ import {DrawingUtils, FaceLandmarker, FilesetResolver, NormalizedLandmark} from 
 import {Dispatch, SetStateAction} from "react";
 
 /**
- * Utility class for detecting and tracking facial landmarks in an image.
+ * Instance of the FaceLandmarker class that is responsible for detecting facial landmarks
  *
  * @class
- * @memberof module:facialRecognition
  */
 let faceLandmarker: FaceLandmarker;
 /**
- * Creates a face detection and tracking system for webcam video.
- *
- * @param {HTMLVideoElement} video - The video element to capture webcam feed.
- * @param {HTMLCanvasElement} canvasElement - The HTML canvas element for rendering the video feed and overlays.
- * @param {Dispatch<SetStateAction<boolean>>} setGazeState - A state setter function for the gaze state.
- *
- * @returns {Object} - An object containing the following methods:
- *   - createFaceMeshRecognizer: A method to create a face mesh recognizer.
- *   - predictWebcam: A method to start predicting webcam feed and updating the gaze state.
- *   - setOverlay: A method to toggle the overlay option.
- *
- * @async
- * @returns {Promise<void>}
+ * Performs face detection and gaze tracking using MediaPipe and a webcam video feed.
+ * @param {HTMLVideoElement} video - The video element that provides the webcam feed.
+ * @param {HTMLCanvasElement} canvasElement - The canvas element used to display the video feed and overlays.
+ * @param {Dispatch<SetStateAction<boolean>>} setGazeState - A function to update the state of gaze tracking.
+ * @returns {object} - An object containing the following methods:
+ *   - createFaceMeshRecognizer: A method that creates a face mesh recognizer.
+ *   - predictWebcam: A method that performs face detection and gaze tracking on the webcam feed.
+ *   - setOverlay: A method that sets the overlay option for displaying landmarks on the canvas.
  */
 export default function FaceDetection(
     video: HTMLVideoElement,

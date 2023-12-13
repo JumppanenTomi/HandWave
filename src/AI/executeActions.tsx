@@ -3,13 +3,14 @@ import {TriggerData} from "@/types/TriggerData";
 import {Dispatch, SetStateAction} from "react";
 
 /**
- * ExecuteActions function executes a series of actions based on given gesture and action data.
+ * Executes a series of actions based on the provided gesture and action data.
  *
- * @param gestureData - An array containing the data of the gesture.
- * @param actionData - An array containing the data of the actions.
- * @param lastExecution - The time of the last execution, or undefined if it's the first execution.
- * @param setExecutionTime - A function to update the time of the last execution.
- * @returns A promise that resolves when all the actions have been executed.
+ * @param gestureData - An array of gesture data.
+ * @param actionData - An array of action data.
+ * @param lastExecution - The timestamp of the last execution, if any.
+ * @param setExecutionTime - A callback function to set the latest execution timestamp.
+ *
+ * @returns A Promise that resolves when all actions have been executed.
  */
 export default async function ExecuteActions(gestureData: any[], actionData: any[], lastExecution: number | undefined, setExecutionTime: Dispatch<SetStateAction<number | undefined>>): Promise<void> {
     if (!gestureData || !actionData) {
@@ -76,7 +77,7 @@ async function pressKey(data: any) {
 /**
  * Release a key using the provided data.
  *
- * @param {any} data - The data required to release the key.
+ * @param {*} data - The data required to release the key.
  *
  * @return {Promise<void>} - A promise that resolves when the key is successfully released.
  */
