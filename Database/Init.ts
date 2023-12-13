@@ -1,7 +1,8 @@
 import path from "path";
 import {DataTypes, Model, Sequelize} from "sequelize";
-
-const locDb = path.join("data.db");
+import {app} from 'electron'
+//const locDb = path.join(__dirname, 'data.db');
+const locDb = path.join(app.getPath("userData"), "data.db") // this works for MacOS build
 
 const sequelize = new Sequelize({
     dialect: "sqlite",
