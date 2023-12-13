@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title> Elements/DesktopCapturerController.tsx</title>
+
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="./build/entry.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+          integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" rel="stylesheet">
+    <link href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css" rel="stylesheet"
+          type="text/css">
+    <link href="styles/app.min.css" rel="stylesheet" type="text/css">
+    <link href="styles/iframe.css" rel="stylesheet" type="text/css">
+    <link href="" rel="stylesheet" type="text/css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+</head>
+
+
+<body class="layout small-header">
+<div id="stickyNavbarOverlay"></div>
+
+
+<div class="top-nav">
+    <div class="inner">
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger" id="hamburger" role="button">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+
+
+        </div>
+        <div class="menu">
+
+            <div class="navigation">
+                <a
+                        class="link"
+                        href="index.html"
+                >
+                    Documentation
+                </a>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="main">
+    <div
+            class="sidebar "
+            id="sidebarNav"
+    >
+
+        <nav>
+
+            <h2><a href="index.html">Documentation</a></h2>
+            <div class="category"><h3>Classes</h3>
+                <ul>
+                    <li><a href="faceLandmarker.html">faceLandmarker</a></li>
+                    <li><a href="gestureRecognizer.html">gestureRecognizer</a></li>
+                </ul>
+                <h3>Interfaces</h3>
+                <ul>
+                    <li><a href="ActionAttributes.html">ActionAttributes</a></li>
+                    <li><a href="ActionCreationAttributes.html">ActionCreationAttributes</a></li>
+                    <li><a href="GestureAttributes.html">GestureAttributes</a></li>
+                    <li><a href="GestureCreationAttributes.html">GestureCreationAttributes</a></li>
+                    <li><a href="ToolbarItemType.html">ToolbarItemType</a></li>
+                </ul>
+                <h3>Global</h3>
+                <ul>
+                    <li><a href="global.html#ApplicationView">ApplicationView</a></li>
+                    <li><a href="global.html#MinimalView">MinimalView</a></li>
+                    <li><a href="global.html#SourceItem">SourceItem</a></li>
+                    <li><a href="global.html#TopAppBar">TopAppBar</a></li>
+                    <li><a href="global.html#Webcam">Webcam</a></li>
+                    <li><a href="global.html#createAction">createAction</a></li>
+                    <li><a href="global.html#createGesture">createGesture</a></li>
+                    <li><a href="global.html#deleteAction">deleteAction</a></li>
+                    <li><a href="global.html#deleteGesture">deleteGesture</a></li>
+                    <li><a href="global.html#formatTime">formatTime</a></li>
+                    <li><a href="global.html#getAction">getAction</a></li>
+                    <li><a href="global.html#getAllActions">getAllActions</a></li>
+                    <li><a href="global.html#getAllGestures">getAllGestures</a></li>
+                    <li><a href="global.html#getGesture">getGesture</a></li>
+                    <li><a href="global.html#openWebpage">openWebpage</a></li>
+                    <li><a href="global.html#pressKey">pressKey</a></li>
+                    <li><a href="global.html#releaseKey">releaseKey</a></li>
+                    <li><a href="global.html#updateAction">updateAction</a></li>
+                    <li><a href="global.html#updateGesture">updateGesture</a></li>
+                </ul>
+            </div>
+
+        </nav>
+    </div>
+    <div class="core" id="main-content-wrapper">
+        <div class="content">
+            <header class="page-title">
+                <p>Source</p>
+                <h1>Elements/DesktopCapturerController.tsx</h1>
+            </header>
+
+
+            <section>
+                <article>
+            <pre class="prettyprint source linenums"><code>import {useContext, useEffect, useRef, useState} from "react";
+import {ipcRenderer} from "electron";
+import os from "os";
+import {MinimalViewContext, NotificationManagerContext, RecordedTimeContext, RecordingContext} from "@/App";
+
+/**
+ * Controls the desktop capturer functionality.
+ *
+ * @param {HTMLVideoElement | null} videoRef - The reference to the video element.
+ *
+ * @return {Object} - An object containing the following properties:
+ *   - videoRef: HTMLVideoElement | null - The reference to the video element.
+ *   - sources: Electron.DesktopCapturerSource[] - The available desktop capturer sources.
+ *   - toggleRecording: () => void - Toggles the recording state.
+ *   - changeSource: (sourceId: string) => void - Changes the source of the video element.
+ *   - recording: boolean | undefined - The current recording state.
+ */
+export default function DesktopCapturerController(videoRef: HTMLVideoElement | null) {
+    const isMac = os.platform() === "darwin";
+    const {notificationManager} = useContext(NotificationManagerContext)
+    const {setMinimalView} = useContext(MinimalViewContext)
+    const {setRecordedTime} = useContext(RecordedTimeContext)
+
+
+    const {reportError, reportSuccess} = notificationManager();
+    const {recording} = useContext(RecordingContext);
+    const [sources, setSources] = useState&lt;Electron.DesktopCapturerSource[]>([]);
+    const [sourceId, setSourceId] = useState&lt;string>(
+        localStorage.getItem("sourceId") || ""
+    );
+    const recordingInterval = useRef&lt;number | null>(null);
+    const mediaRecorderRef = useRef&lt;MediaRecorder | null>(null);
+
+    useEffect(() => {
+        ipcRenderer.send("REQUEST_SOURCES");
+        ipcRenderer.on("GET_SOURCES", (e, content) => {
+            setSources(content);
+            // Check if there are available sources
+            if (sourceId === "") {
+                // Set the first source to the video element
+                const firstSource = content[0];
+                changeSource(firstSource.id);
+            } else {
+                // Set the source to the previously selected video element if navigated back to the home page
+                changeSource(sourceId);
+            }
+        });
+        ipcRenderer.on("refresh-sources", () => {
+            ipcRenderer.send("REQUEST_SOURCES");
+        });
+        if (videoRef) {
+            ipcRenderer.on("SET_SOURCE", async (event, sourceId) => {
+                changeSource(sourceId)
+            });
+        }
+        // Clean up the listeners when the component unmounts
+        return () => {
+            ipcRenderer.removeAllListeners("GET_SOURCES");
+            ipcRenderer.removeAllListeners("refresh-sources");
+            ipcRenderer.removeAllListeners("SET_SOURCE");
+        };
+    }, [videoRef]);
+
+    // Change the source of the video element
+    const changeSource = (sourceId: string) => {
+        setSourceId(sourceId);
+        localStorage.setItem("sourceId", sourceId);
+        (navigator.mediaDevices as any)
+            .getUserMedia({
+                audio: isMac
+                    ? false
+                    : {
+                        mandatory: {
+                            chromeMediaSource: "desktop",
+                        },
+                    },
+                video: {
+                    mandatory: {
+                        chromeMediaSource: "desktop",
+                        chromeMediaSourceId: sourceId,
+                        minWidth: 1920,
+                        maxWidth: 1920,
+                        minHeight: 1080,
+                        maxHeight: 1080,
+                    },
+                },
+            } as unknown as MediaStreamConstraints)
+            .then((stream: MediaStream) => {
+                handleStream(stream, videoRef!);
+                reportSuccess(undefined, "Video source changed", undefined, false, 1500)
+            });
+    };
+
+    // Toggle the recording state
+    const toggleRecording = () => {
+        //sketchy way to make this but it works so don't touch :DDD
+        if (recording === false) {
+            setMinimalView(false)
+            stopRecording();
+        } else {
+            console.log("2 "+recording)
+            startRecording(sourceId);
+        }
+    };
+
+    //Start recording the video
+    const startRecording = (sourceId: string) => {
+        stopAndClearMediaRecorder();
+        // Start recorder timer
+        setRecordedTime(0);
+        //@ts-ignore
+        recordingInterval.current = setInterval(() => {
+            setRecordedTime((prevTime) => prevTime + 1);
+        }, 1000);
+
+        if (videoRef &amp;&amp; videoRef.srcObject instanceof MediaStream) {
+            const constraints = {
+                audio: isMac
+                    ? false
+                    : {
+                        mandatory: {
+                            chromeMediaSource: "desktop",
+                        },
+                    },
+                video: {
+                    mandatory: {
+                        chromeMediaSource: "desktop",
+                        chromeMediaSourceId: sourceId,
+                        minWidth: 1920,
+                        maxWidth: 1920,
+                        minHeight: 1080,
+                        maxHeight: 1080,
+                    },
+                },
+            };
+
+            // Get the audio stream from the microphone
+            const getMicStream = () =>
+                navigator.mediaDevices.getUserMedia({audio: true, video: false});
+
+            // Get the video stream from the screen
+            const getWindowStream = () =>
+                navigator.mediaDevices.getUserMedia(constraints as unknown as MediaStreamConstraints);
+
+            Promise.allSettled([getWindowStream(), getMicStream()])
+                .then(([windowResult, micResult]) => {
+                    if (
+                        windowResult.status === "fulfilled" &amp;&amp;
+                        micResult.status === "fulfilled"
+                    ) {
+                        const windowStream = windowResult.value;
+                        const micStream = micResult.value;
+
+                        console.log("micstream", micStream.getAudioTracks());
+                        // Combine the video and mic streams
+                        const combinedStream = new MediaStream();
+                        windowStream
+                            .getTracks()
+                            .forEach((track) => combinedStream.addTrack(track));
+                        micStream
+                            .getAudioTracks()
+                            .forEach((track) => combinedStream.addTrack(track));
+
+                        const options = {
+                            mimeType: "video/webm; codecs=vp9",
+                        };
+
+                        mediaRecorderRef.current = new MediaRecorder(
+                            combinedStream,
+                            options
+                        );
+                        mediaRecorderRef.current.ondataavailable =
+                            handleStreamDataAvailable;
+                        mediaRecorderRef.current.onstop = handleStreamEnded;
+
+                        mediaRecorderRef.current.start();
+                        console.log("Started recording");
+                        reportSuccess(undefined, "Started recording", undefined, false, 1500)
+                        mediaRecorderRef.current.onerror = (event) => {
+                            reportError("Couldn't start screen capture", event.toString(), undefined, true, 999999999)
+                            console.log("Error: ", event);
+                        };
+                    } else {
+                        if ("reason" in windowResult) {
+                            reportError("Couldn't start screen capture", windowResult.reason.toString(), undefined, true, 999999999)
+                            console.log("Error: ", windowResult.reason);
+                        }
+                        if ("reason" in micResult) {
+                            reportError("Couldn't start screen capture", micResult.reason.toString(), undefined, true, 999999999)
+                            console.log("Error: ", micResult.reason);
+                        }
+                    }
+                })
+                .catch((error) => {
+                    reportError("Couldn't start screen capture", error.toString(), undefined, true, 999999999)
+                    console.error("Error getting streams:", error);
+                });
+        }
+    };
+
+    // Stop recording the video
+    const stopRecording = () => {
+        stopAndClearMediaRecorder();
+        if (recordingInterval.current !== null) {
+            clearInterval(recordingInterval.current);
+        }
+        reportSuccess(undefined, "Stopped recording", undefined, false, 1500)
+        console.log("Stopped recording");
+    };
+
+    const stopAndClearMediaRecorder = () => {
+        if (
+            mediaRecorderRef.current &amp;&amp;
+            mediaRecorderRef.current.state !== "inactive"
+        ) {
+            mediaRecorderRef.current.stop();
+            mediaRecorderRef.current = null;
+        }
+    };
+
+    // Send the recorded video to the main process
+    const handleStreamDataAvailable = async (e: BlobEvent) => {
+        try {
+            const data = await e.data.arrayBuffer();
+            // Send the chunk data to the main process
+            ipcRenderer.send("stream-chunk-received", new Uint8Array(data));
+        } catch (error) {
+            console.error("Error in handleStreamDataAvailable:", error);
+        }
+    };
+
+    // Save the recorded video to the file system
+    const handleStreamEnded = async () => {
+        ipcRenderer.send("recording-stopped");
+    };
+
+    function handleStream(stream: MediaStream, video: HTMLVideoElement) {
+        video.srcObject = stream;
+        video.muted = true;
+        video.onloadedmetadata = () => video.play();
+    }
+
+    useEffect(() => {
+        if (recording !== undefined) {
+            toggleRecording()
+        }
+    }, [recording]);
+
+    return {
+        videoRef,
+        sources,
+        toggleRecording,
+        changeSource,
+        recording
+    }
+}</code></pre>
+                </article>
+            </section>
+
+
+        </div>
+
+        <footer class="footer">
+            <div class="content has-text-centered">
+                <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a></p>
+                <p class="sidebar-created-by">
+                    <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a>
+                    provided with <i class="fas fa-heart"></i> by
+                    <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development
+                        Agency</a>
+                </p>
+            </div>
+        </footer>
+
+    </div>
+    <div class="side-nav" id="side-nav">
+    </div>
+</div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+
+
+</body>
+</html>

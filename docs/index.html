@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title> Home</title>
+
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="./build/entry.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+          integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" rel="stylesheet">
+    <link href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css" rel="stylesheet"
+          type="text/css">
+    <link href="styles/app.min.css" rel="stylesheet" type="text/css">
+    <link href="styles/iframe.css" rel="stylesheet" type="text/css">
+    <link href="" rel="stylesheet" type="text/css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+</head>
+
+
+<body class="layout small-header">
+<div id="stickyNavbarOverlay"></div>
+
+
+<div class="top-nav">
+    <div class="inner">
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger" id="hamburger" role="button">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+
+
+        </div>
+        <div class="menu">
+
+            <div class="navigation">
+                <a
+                        class="link"
+                        href="index.html"
+                >
+                    Documentation
+                </a>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="main">
+    <div
+            class="sidebar "
+            id="sidebarNav"
+    >
+
+        <nav>
+
+            <h2><a href="index.html">Documentation</a></h2>
+            <div class="category"><h3>Classes</h3>
+                <ul>
+                    <li><a href="faceLandmarker.html">faceLandmarker</a></li>
+                    <li><a href="gestureRecognizer.html">gestureRecognizer</a></li>
+                </ul>
+                <h3>Interfaces</h3>
+                <ul>
+                    <li><a href="ActionAttributes.html">ActionAttributes</a></li>
+                    <li><a href="ActionCreationAttributes.html">ActionCreationAttributes</a></li>
+                    <li><a href="GestureAttributes.html">GestureAttributes</a></li>
+                    <li><a href="GestureCreationAttributes.html">GestureCreationAttributes</a></li>
+                    <li><a href="ToolbarItemType.html">ToolbarItemType</a></li>
+                </ul>
+                <h3>Global</h3>
+                <ul>
+                    <li><a href="global.html#ApplicationView">ApplicationView</a></li>
+                    <li><a href="global.html#MinimalView">MinimalView</a></li>
+                    <li><a href="global.html#SourceItem">SourceItem</a></li>
+                    <li><a href="global.html#TopAppBar">TopAppBar</a></li>
+                    <li><a href="global.html#Webcam">Webcam</a></li>
+                    <li><a href="global.html#createAction">createAction</a></li>
+                    <li><a href="global.html#createGesture">createGesture</a></li>
+                    <li><a href="global.html#deleteAction">deleteAction</a></li>
+                    <li><a href="global.html#deleteGesture">deleteGesture</a></li>
+                    <li><a href="global.html#formatTime">formatTime</a></li>
+                    <li><a href="global.html#getAction">getAction</a></li>
+                    <li><a href="global.html#getAllActions">getAllActions</a></li>
+                    <li><a href="global.html#getAllGestures">getAllGestures</a></li>
+                    <li><a href="global.html#getGesture">getGesture</a></li>
+                    <li><a href="global.html#openWebpage">openWebpage</a></li>
+                    <li><a href="global.html#pressKey">pressKey</a></li>
+                    <li><a href="global.html#releaseKey">releaseKey</a></li>
+                    <li><a href="global.html#updateAction">updateAction</a></li>
+                    <li><a href="global.html#updateGesture">updateGesture</a></li>
+                </ul>
+            </div>
+
+        </nav>
+    </div>
+    <div class="core" id="main-content-wrapper">
+        <div class="content">
+            <header class="page-title">
+                <p></p>
+                <h1>Home</h1>
+            </header>
+
+
+            <h3></h3>
+
+
+            <section>
+                <article>
+                    <div>
+                        <img alt="logo"
+                             src="https://raw.githubusercontent.com/JumppanenTomi/presentation-tool-with-hand-gestures/master/src/assets/handwave-logo.svg" width="300"/>
+                        <div>
+                            Harness the power of your hand gestures to effortlessly control your computer with Handwave,
+                            an AI-based application that utilizes Google MediaPipe for gesture recognition and face
+                            landmarking.
+                            <h2>Overview</h2>
+                            <p>Handwave transforms your hand movements into intuitive commands, enabling you to navigate
+                                your computer, control presentations, and interact with applications without the need
+                                for traditional input devices. Leveraging MediaPipe's robust hand and face recognition
+                                capabilities, Handwave integrates gesture recognition with mouse control, presentation
+                                recording, and facial detection, making it a versatile tool for enhancing accessibility
+                                and productivity.</p>
+                            <h2>Technology Stack</h2>
+                            <ul>
+                                <li><strong>Front-end</strong>: React, TypeScript, Vite, Google Mediapipe</li>
+                                <li><strong>Back-end</strong>: Electron, Sequelize, SQLite3, nut-js</li>
+                            </ul>
+                            <h2>Modal Dataset</h2>
+                            <p>Handwave utilizes HaGRID Dataset, a valuable resource for developing hand gesture
+                                recognition systems. It contains a variety of gestures, including common symbols,
+                                numbers, and commands, as well as a wide range of subjects and lighting conditions. Key
+                                enhancements to the dataset include:</p>
+                            <ul>
+                                <li>An expansion to 18 gestures</li>
+                                <li>An augmentation to 18,000 images</li>
+                                <li>Achieving a test accuracy of 0.86</li>
+                            </ul>
+                            <div>
+                                <img alt="gestures"
+                                     src="https://raw.githubusercontent.com/JumppanenTomi/presentation-tool-with-hand-gestures/master/src/assets/gestures.jpg"/>
+                                <div>
+                                    <h2>Features</h2>
+                                    <h3>Gesture Recognition:</h3>
+                                    <ul>
+                                        <li>Seamlessly recognize hand gestures using MediaPipe Hands</li>
+                                        <li>Map gestures to custom-defined actions for intuitive input</li>
+                                        <li>Receive visual feedback for gesture recognition</li>
+                                    </ul>
+                                    <h3>Hand Landmarking:</h3>
+                                    <ul>
+                                        <li>Control the mouse pointer using the &quot;L&quot; gesture (&quot;three&quot;
+                                            2 in HaGRID dataset)
+                                        </li>
+                                        <li>Perform left-click selections using thumbs</li>
+                                    </ul>
+                                    <h3>Map gestures to HID events</h3>
+                                    <ul>
+                                        <li>Use macro maker to map gestures to keyboard keys or or key combinations</li>
+                                        <li>Control, click and drag mouse with gestures</li>
+                                    </ul>
+                                    <h3>Face Landmarking:</h3>
+                                    <ul>
+                                        <li>Track facial landmarks using MediaPipe Face Mesh</li>
+                                        <li>Prevent unintentional keystrokes by maintaining face detection</li>
+                                    </ul>
+                                    <h3>Presentation Recording.</h3>
+                                    <ul>
+                                        <li>Select window or applications for interacting and recording</li>
+                                        <li>Save recordings to your local drive once finished</li>
+                                    </ul>
+                                    <h3>Cross-platform Compatibility:</h3>
+                                    <ul>
+                                        <li>Electron enables deployment on various operating systems (Windows, macOS,
+                                            Linux)
+                                        </li>
+                                    </ul>
+                                    <h1>Regular Installation Guide</h1>
+                                    <p>Follow these steps for a regular installation of the presentation tool with hand
+                                        gestures:</p>
+                                    <ol>
+                                        <li>
+                                            <p>Go to our <a
+                                                    href="https://github.com/JumppanenTomi/presentation-tool-with-hand-gestures/releases">releases
+                                                page</a>.</p>
+                                        </li>
+                                        <li>
+                                            <p>Select the version you want to install (latest suggested).</p>
+                                        </li>
+                                        <li>
+                                            <p>Download the installer that fits your operating system:</p>
+                                            <ul>
+                                                <li>For Windows, download the <code>.exe</code> file.</li>
+                                                <li>For macOS, download the <code>.dmg</code> file.</li>
+                                                <li>Linux users probably knows their stuff ;D</li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <p>Start the installer and follow the on-screen steps to complete the
+                                                installation.</p>
+                                        </li>
+                                    </ol>
+                                    <p>Once the installation is complete, you can start using the presentation tool with
+                                        hand gestures on your system. Before getting started, we recommend checking our
+                                        <a href="https://github.com/JumppanenTomi/presentation-tool-with-hand-gestures/wiki/How-it-Works">Quick
+                                            Start Guide</a> for an overview of how the application works and its key
+                                        features. This guide will help you make the most out of the presentation tool.
+                                    </p>
+                                    <h1>Development Environment Setup</h1>
+                                    <p>To set up the development environment for the presentation tool with hand
+                                        gestures, follow these steps:</p>
+                                    <h2>1. Getting Binaries</h2>
+                                    <p>Clone the repository using the following command to get the latest version from
+                                        the <code>master</code> branch:</p>
+                                    <pre class="prettyprint source lang-bash"><code>git clone https://github.com/JumppanenTomi/presentation-tool-with-hand-gestures.git
+</code></pre>
+                                    <h2>2. Installing Dependencies</h2>
+                                    <p>Navigate to the project's directory in your terminal and run the following
+                                        command to install all necessary dependencies:</p>
+                                    <pre class="prettyprint source lang-bash"><code>npm install
+</code></pre>
+                                    <h2>3. Start Development Version</h2>
+                                    <p>Once the dependencies are installed, initiate the development environment for
+                                        testing the application using the following command:</p>
+                                    <pre class="prettyprint source lang-bash"><code>npm run dev
+</code></pre>
+                                    <h2>4. Building the Application</h2>
+                                    <p>When you are satisfied with your work, you can build the application. Start the
+                                        build process by typing one of the following commands:</p>
+                                    <pre class="prettyprint source lang-bash"><code>npm build      # Builds the application for the current operating system and architecture
+</code></pre>
+                                    <p>Or</p>
+                                    <pre class="prettyprint source lang-bash"><code>npm build-all  # Builds the application for all supported operating systems (mac-only command)
+</code></pre>
+                                    <p>For more details on multi-platform builds, refer to the <a
+                                            href="https://www.electron.build/multi-platform-build.html">official
+                                        documentation</a> of electron builder.</p>
+                                    <h2>Documentation</h2>
+                                    <ul>
+                                        <li><a href="https://presentation-tool-with-hand-gestures.vercel.app/">JSDoc</a>
+                                        </li>
+                                    </ul>
+                                    <h2>Authors</h2>
+                                    <ul>
+                                        <li>Tomi Jumppanen</li>
+                                        <li>Roope Laine</li>
+                                        <li>Anton Tugushi</li>
+                                        <li>Dat Pham</li>
+                                    </ul>
+                                    <h2>Credits</h2>
+                                    <ul>
+                                        <li><a href="https://github.com/hukenovs/hagrid">HaGRID</a></li>
+                                        <li><a href="https://nut-tree.github.io/apidoc/">nut-js</a></li>
+                                        <li><a href="https://github.com/electron-vite/electron-vite-react">electron-vite-react</a>
+                                        </li>
+                                    </ul>
+                </article>
+            </section>
+
+
+        </div>
+
+        <footer class="footer">
+            <div class="content has-text-centered">
+                <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a></p>
+                <p class="sidebar-created-by">
+                    <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a>
+                    provided with <i class="fas fa-heart"></i> by
+                    <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development
+                        Agency</a>
+                </p>
+            </div>
+        </footer>
+
+    </div>
+    <div class="side-nav" id="side-nav">
+    </div>
+</div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+
+
+</body>
+</html>

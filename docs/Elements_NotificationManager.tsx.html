@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title> Elements/NotificationManager.tsx</title>
+
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="./build/entry.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+          integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" rel="stylesheet">
+    <link href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css" rel="stylesheet"
+          type="text/css">
+    <link href="styles/app.min.css" rel="stylesheet" type="text/css">
+    <link href="styles/iframe.css" rel="stylesheet" type="text/css">
+    <link href="" rel="stylesheet" type="text/css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+</head>
+
+
+<body class="layout small-header">
+<div id="stickyNavbarOverlay"></div>
+
+
+<div class="top-nav">
+    <div class="inner">
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger" id="hamburger" role="button">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+
+
+        </div>
+        <div class="menu">
+
+            <div class="navigation">
+                <a
+                        class="link"
+                        href="index.html"
+                >
+                    Documentation
+                </a>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="main">
+    <div
+            class="sidebar "
+            id="sidebarNav"
+    >
+
+        <nav>
+
+            <h2><a href="index.html">Documentation</a></h2>
+            <div class="category"><h3>Classes</h3>
+                <ul>
+                    <li><a href="faceLandmarker.html">faceLandmarker</a></li>
+                    <li><a href="gestureRecognizer.html">gestureRecognizer</a></li>
+                </ul>
+                <h3>Interfaces</h3>
+                <ul>
+                    <li><a href="ActionAttributes.html">ActionAttributes</a></li>
+                    <li><a href="ActionCreationAttributes.html">ActionCreationAttributes</a></li>
+                    <li><a href="GestureAttributes.html">GestureAttributes</a></li>
+                    <li><a href="GestureCreationAttributes.html">GestureCreationAttributes</a></li>
+                    <li><a href="ToolbarItemType.html">ToolbarItemType</a></li>
+                </ul>
+                <h3>Global</h3>
+                <ul>
+                    <li><a href="global.html#ApplicationView">ApplicationView</a></li>
+                    <li><a href="global.html#MinimalView">MinimalView</a></li>
+                    <li><a href="global.html#SourceItem">SourceItem</a></li>
+                    <li><a href="global.html#TopAppBar">TopAppBar</a></li>
+                    <li><a href="global.html#Webcam">Webcam</a></li>
+                    <li><a href="global.html#createAction">createAction</a></li>
+                    <li><a href="global.html#createGesture">createGesture</a></li>
+                    <li><a href="global.html#deleteAction">deleteAction</a></li>
+                    <li><a href="global.html#deleteGesture">deleteGesture</a></li>
+                    <li><a href="global.html#formatTime">formatTime</a></li>
+                    <li><a href="global.html#getAction">getAction</a></li>
+                    <li><a href="global.html#getAllActions">getAllActions</a></li>
+                    <li><a href="global.html#getAllGestures">getAllGestures</a></li>
+                    <li><a href="global.html#getGesture">getGesture</a></li>
+                    <li><a href="global.html#openWebpage">openWebpage</a></li>
+                    <li><a href="global.html#pressKey">pressKey</a></li>
+                    <li><a href="global.html#releaseKey">releaseKey</a></li>
+                    <li><a href="global.html#updateAction">updateAction</a></li>
+                    <li><a href="global.html#updateGesture">updateGesture</a></li>
+                </ul>
+            </div>
+
+        </nav>
+    </div>
+    <div class="core" id="main-content-wrapper">
+        <div class="content">
+            <header class="page-title">
+                <p>Source</p>
+                <h1>Elements/NotificationManager.tsx</h1>
+            </header>
+
+
+            <section>
+                <article>
+            <pre class="prettyprint source linenums"><code>import {Alert} from "react-bootstrap";
+import React, {useState} from "react";
+
+/**
+ * Creates a NotificationManager object that can be used to display different types of notifications.
+ * @returns {{
+ *   closeNotification: function,
+ *   notificationElement: React.Element,
+ *   reportError: function,
+ *   reportWarning: function,
+ *   reportSuccess: function
+ * }} Returns an object with methods for managing notifications.
+ */
+export default function NotificationManager() {
+    const [show, setShow] = useState(false);
+    const [dismissable, setDismissable] = useState&lt;boolean>(false)
+
+    const [title, setTitle] = useState&lt;string | undefined>()
+    const [message, setMessage] = useState&lt;string | undefined>()
+    const [additionalContent, setAdditionalContent] = useState&lt;React.JSX.Element | undefined>()
+
+    const [variant, setVariant] = useState&lt;"danger" | "success" | "warning">("success")
+
+    const reportSuccess = (title?: string, message?: string, additionalElement?: React.JSX.Element, dismissible?: boolean, durationMs: number = 3000) => {
+        setTitle(title)
+        setMessage(message)
+        setAdditionalContent(additionalElement)
+        setVariant("success")
+        setShow(true)
+        setDismissable(dismissible ? dismissible : false)
+        setTimeout(() => {
+            setShow(false);
+        }, durationMs);
+    }
+
+    const reportError = (title?: string, message?: string, additionalElement?: React.JSX.Element, dismissible?: boolean, durationMs: number = 3000) => {
+        setTitle(title)
+        setMessage(message)
+        setAdditionalContent(additionalElement)
+        setVariant("danger")
+        setShow(true)
+        setDismissable(dismissible ? dismissible : false)
+        setTimeout(() => {
+            setShow(false);
+        }, durationMs);
+    }
+
+    const reportWarning = (title?: string, message?: string, additionalElement?: React.JSX.Element, dismissible?: boolean, durationMs: number = 3000) => {
+        setTitle(title)
+        setMessage(message)
+        setAdditionalContent(additionalElement);
+        setVariant("warning");
+        setShow(true);
+        setDismissable(dismissible ? dismissible : false)
+        setTimeout(() => {
+            setShow(false);
+        }, durationMs);
+    }
+
+
+    const close = () => {
+        setShow(false)
+    }
+
+    const element = (
+        &lt;Alert show={show} variant={variant} dismissible={dismissable} className={"notification"}>
+            {title &amp;&amp; (
+                &lt;Alert.Heading>{title}&lt;/Alert.Heading>
+            )}
+            {message &amp;&amp; (
+                &lt;p>{message}&lt;/p>
+            )}
+            {additionalContent &amp;&amp; (
+                &lt;>
+                    &lt;hr/>
+                    {additionalContent}
+                &lt;/>
+            )}
+        &lt;/Alert>
+    )
+
+    return {
+        closeNotification: close,
+        notificationElement: element,
+        reportError,
+        reportWarning,
+        reportSuccess,
+    }
+}</code></pre>
+                </article>
+            </section>
+
+
+        </div>
+
+        <footer class="footer">
+            <div class="content has-text-centered">
+                <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a></p>
+                <p class="sidebar-created-by">
+                    <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a>
+                    provided with <i class="fas fa-heart"></i> by
+                    <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development
+                        Agency</a>
+                </p>
+            </div>
+        </footer>
+
+    </div>
+    <div class="side-nav" id="side-nav">
+    </div>
+</div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+
+
+</body>
+</html>
