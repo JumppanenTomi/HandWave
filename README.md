@@ -79,7 +79,7 @@ git clone https://github.com/JumppanenTomi/presentation-tool-with-hand-gestures.
 Navigate to the project's directory in your terminal and run the following command to install all necessary dependencies:
 
 ```bash
-npm install
+npm install --legacy-peer-deps #since better-docs is still relying to React 17 and some packages on our application needs React 18 we must use --legacy-peer-deps here to bypass errors
 ```
 
 ## 3. Start Development Version
