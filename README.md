@@ -54,8 +54,8 @@ Follow these steps for a regular installation of the presentation tool with hand
 
 3. Download the installer that fits your operating system:
    - For Windows, download the `.exe` file.
-   - For macOS, download the `.dmg` file.
-   - Linux users probably knows their stuff ;D
+   - For macOS, not released. For testing, use the development environment. (Instructions below).
+   - For Linux, not released. For testing, use the development environment. (Instructions below).
 
 
 4. Start the installer and follow the on-screen steps to complete the installation.
