@@ -54,8 +54,8 @@ Follow these steps for a regular installation of the presentation tool with hand
 
 3. Download the installer that fits your operating system:
    - For Windows, download the `.exe` file.
-   - For macOS, not released. For testing, use the development environment. (Instructions below).
-   - For Linux, not released. For testing, use the development environment. (Instructions below).
+   - For macOS, not released. For testing, use the development environment (instructions below).
+   - For Linux, not released. For testing, use the development environment (instructions below).
 
 
 4. Start the installer and follow the on-screen steps to complete the installation.
