@@ -40,7 +40,7 @@ export default function Ai(
         gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
             baseOptions: {
                 /**TODO: Replace this to use local version instead of web version**/
-                modelAssetPath: "https://github.com/JumppanenTomi/presentation-tool-with-hand-gestures/raw/feature/cursor-full-reach/src/tasks/hagrid_dataset_512_1000.task",
+                modelAssetPath: "src/assets/hagrid.task",
                 delegate: "GPU",
             },
             numHands: 2,
