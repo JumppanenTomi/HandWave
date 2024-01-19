@@ -231,7 +231,7 @@ ipcMain.handle("mouseClick", async (event, data) => {
 ipcMain.on("toggle-elements", (event, hideElements) => {
     if (hideElements) {
         win?.setSize(400, 75);
-        //win?.setPosition(screenSize.width / 4, 0); this line causes a javascript error when window goes to minimalView
+        win?.setPosition(Math.round(screenSize.width / 4), 0);// this caused JS error without Math.round()
         win?.setResizable(false);
     } else {
         let windowSize = {width: 1000, height: 700}
